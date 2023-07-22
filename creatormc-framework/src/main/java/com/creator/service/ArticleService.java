@@ -12,6 +12,12 @@ import com.creator.entity.util.ResponseResult;
  */
 public interface ArticleService extends IService<Article> {
 
+    /**
+     * 查询浏览量前10条的文章<br>
+     * 需要是正式发布出来的文章<br>
+     * 删除了的文章不能被查出来（因为yml里配置了逻辑删除字段，所以这里不用手动处理）
+     * @return
+     */
     ResponseResult hotArticleList();
 }
 
