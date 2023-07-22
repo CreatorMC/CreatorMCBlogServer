@@ -2,6 +2,7 @@ package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.entity.Article;
+import com.creator.entity.util.ResponseResult;
 
 /**
  * 文章表(Article)表服务接口
@@ -11,5 +12,6 @@ import com.creator.entity.Article;
  */
 public interface ArticleService extends IService<Article> {
 
+    ResponseResult hotArticleList();
 }
 
