@@ -1,6 +1,6 @@
 package com.creator.controller;
 
-import com.creator.entity.util.ResponseResult;
+import com.creator.dao.entity.utils.ResponseResult;
 import com.creator.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

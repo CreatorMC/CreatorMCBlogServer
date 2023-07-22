@@ -1,4 +1,4 @@
-package com.creator.entity.util;
+package com.creator.dao.entity.utils;
 
 import com.creator.enums.AppHttpCodeEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;

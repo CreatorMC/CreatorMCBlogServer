@@ -5,9 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.ArticleDao;
-import com.creator.entity.Article;
-import com.creator.entity.util.ResponseResult;
+import com.creator.dao.entity.Article;
+import com.creator.dao.entity.utils.ResponseResult;
 import com.creator.service.ArticleService;
+import com.creator.utils.BeanCopyUtils;
 import com.creator.vo.HotArticleVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -36,12 +37,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         page(page, queryWrapper);
         //获取查询到的结果
         List<Article> articles = page.getRecords();
-        List<HotArticleVo> articleVos = new ArrayList<>();
-        for (Article record : articles) {
-            HotArticleVo vo = new HotArticleVo();
-            BeanUtils.copyProperties(record, vo);
-            articleVos.add(vo);
-        }
+        //将结果放进VO列表中
+        List<HotArticleVo> articleVos = BeanCopyUtils.copyBeanList(articles, HotArticleVo.class);
         return ResponseResult.okResult(articleVos);
     }
 }
