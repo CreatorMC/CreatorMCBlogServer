@@ -20,4 +20,9 @@ public class SystemConstants {
      * 每页显示十行记录
      */
     public static final int PAGE_SIZE_TEN = 10;
+
+    /**
+     * 分类处于正常状态
+     */
+    public static final String CATEGORY_STATUS_NORMAL = "0";
 }

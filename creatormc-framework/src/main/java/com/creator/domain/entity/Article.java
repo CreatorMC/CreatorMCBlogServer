@@ -1,4 +1,4 @@
-package com.creator.dao.entity;
+package com.creator.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;

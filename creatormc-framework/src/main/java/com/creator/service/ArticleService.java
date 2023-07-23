@@ -1,8 +1,8 @@
 package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.creator.dao.entity.Article;
-import com.creator.dao.entity.utils.ResponseResult;
+import com.creator.domain.entity.Article;
+import com.creator.domain.ResponseResult;
 
 /**
  * 文章表(Article)表服务接口
