@@ -5,22 +5,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.ArticleDao;
-import com.creator.domain.entity.Article;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.entity.Article;
 import com.creator.domain.vo.ArticleListVo;
 import com.creator.domain.vo.ArticleVo;
+import com.creator.domain.vo.HotArticleVo;
 import com.creator.domain.vo.PageVo;
 import com.creator.service.ArticleService;
 import com.creator.service.CategoryService;
 import com.creator.utils.BeanCopyUtils;
-import com.creator.domain.vo.HotArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**

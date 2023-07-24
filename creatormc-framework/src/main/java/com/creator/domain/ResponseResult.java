@@ -2,6 +2,7 @@ package com.creator.domain;
 
 import com.creator.enums.AppHttpCodeEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
