@@ -1,33 +1,35 @@
 package com.creator.domain.entity;
 
+import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
- * 分类表(Category)表实体类
+ * 友链(Link)表实体类
  *
  * @author makejava
- * @since 2023-07-23 16:13:26
+ * @since 2023-07-24 16:03:32
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class Link {
 
     @TableId
     private Long id;
-    //分类名
+    
     private String name;
-    //父分类id，如果没有父分类为-1
-    private Long pid;
-    //描述
+    
+    private String logo;
+    
     private String description;
-    //状态0:正常,1禁用
+    //网站地址
+    private String address;
+    //审核状态 (0代表审核通过，1代表审核未通过，2代表未审核)
     private String status;
     
     private Long createBy;
