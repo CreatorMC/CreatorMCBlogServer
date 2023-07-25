@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.creator.dao.UserDao;
 import com.creator.domain.entity.LoginUser;
 import com.creator.domain.entity.User;
+import com.creator.enums.AppHttpCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .eq(User::getUserName, username));
         //判断是否查到用户  如果没查到抛出异常
         if(Objects.isNull(user)) {
-            throw new RuntimeException("用户不存在");
+            throw new RuntimeException(AppHttpCodeEnum.LOGIN_ERROR.getMsg());
         }
         //查到用户  返回用户信息
         //TODO 查询权限信息封装
