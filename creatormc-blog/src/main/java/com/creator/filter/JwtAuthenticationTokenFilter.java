@@ -32,7 +32,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //获取请求头中的token
-        String token = request.getHeader("token");
+        String token = request.getHeader(SystemConstants.TOKEN_KEY);
         if(!StringUtils.hasText(token)) {
             //说明该接口不需要登录，直接放行（接口需不需要登录是配置到了SpringSecurity的配置类里了，所以此处应该放行，放行到后面的过滤器中）
             filterChain.doFilter(request, response);

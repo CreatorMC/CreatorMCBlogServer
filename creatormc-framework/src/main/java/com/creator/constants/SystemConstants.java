@@ -35,4 +35,9 @@ public class SystemConstants {
      * 前台博客登录后redis中的Key
      */
     public static final String LOGIN_BLOG_KEY = "bloglogin:";
+
+    /**
+     * 前端请求中Header中的token的key
+     */
+    public static final String TOKEN_KEY = "token";
 }
