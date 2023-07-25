@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 //只有未登录才能访问
                 .antMatchers("/login").anonymous()
+                .antMatchers("/logout").authenticated()
                 //除上面外的接口不管登录与否都能访问
                 .anyRequest().permitAll();
         http
@@ -48,6 +49,9 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
+        http
+                //禁用默认注销接口
+                .logout().disable();
         http
                 //允许SpringSecurity跨域
                 .cors();
