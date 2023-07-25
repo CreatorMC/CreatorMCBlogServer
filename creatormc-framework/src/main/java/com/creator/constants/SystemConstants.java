@@ -30,4 +30,9 @@ public class SystemConstants {
      * 友链审核通过
      */
     public static final int LINK_STATUS_NORMAL = 0;
+
+    /**
+     * 前台博客登录后redis中的Key
+     */
+    public static final String LOGIN_BLOG_KEY = "bloglogin:";
 }

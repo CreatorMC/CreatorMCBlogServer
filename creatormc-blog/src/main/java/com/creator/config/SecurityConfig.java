@@ -1,5 +1,7 @@
 package com.creator.config;
 
+import com.creator.filter.JwtAuthenticationTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -27,9 +32,9 @@ public class SecurityConfig {
                 .antMatchers("/login").anonymous()
                 //除上面外的接口不管登录与否都能访问
                 .anyRequest().permitAll();
-//        http
-//                //配置过滤器，放在UsernamePasswordAuthenticationFilter之前
-//                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                //配置过滤器，放在UsernamePasswordAuthenticationFilter之前
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 //        http
 //                //配置异常处理器
 //                .exceptionHandling()

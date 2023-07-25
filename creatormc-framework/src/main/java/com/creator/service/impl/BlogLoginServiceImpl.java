@@ -1,5 +1,6 @@
 package com.creator.service.impl;
 
+import com.creator.constants.SystemConstants;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.LoginUser;
 import com.creator.domain.entity.User;
@@ -39,7 +40,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         //把用户信息存入redis
-        redisCache.setCacheObject("bloglogin:" + userId, loginUser);
+        redisCache.setCacheObject(SystemConstants.LOGIN_BLOG_KEY + userId, loginUser);
         //把token和userinfo封装返回
         BlogUserLoginVo vo = new BlogUserLoginVo(jwt, BeanCopyUtils.copyBean(loginUser.getUser(), UserInfo.class));
         return ResponseResult.okResult(vo);
