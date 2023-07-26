@@ -1,8 +1,8 @@
 package com.creator.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
 import com.creator.domain.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 用户表(User)表数据库访问层
