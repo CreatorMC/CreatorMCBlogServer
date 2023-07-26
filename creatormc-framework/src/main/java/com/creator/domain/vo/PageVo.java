@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
