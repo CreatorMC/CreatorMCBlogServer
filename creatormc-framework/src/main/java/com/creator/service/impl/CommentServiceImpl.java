@@ -10,11 +10,15 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.Comment;
 import com.creator.domain.vo.CommentVo;
 import com.creator.domain.vo.PageVo;
+import com.creator.enums.AppHttpCodeEnum;
+import com.creator.exception.SystemException;
 import com.creator.service.CommentService;
 import com.creator.utils.BeanCopyUtils;
+import com.creator.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +65,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
 
         PageVo pageVo = new PageVo(commentVos, page.getTotal());
         return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    public ResponseResult addComment(Comment comment) {
+        if(!StringUtils.hasText(comment.getContent())) {
+            throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
+        }
+        save(comment);
+        return ResponseResult.okResult();
     }
 
     /**

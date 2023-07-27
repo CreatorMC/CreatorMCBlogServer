@@ -21,4 +21,11 @@ public interface CommentService extends IService<Comment> {
      * @return
      */
     ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize);
+
+    /**
+     * 添加评论
+     * @param comment
+     * @return
+     */
+    ResponseResult addComment(Comment comment);
 }

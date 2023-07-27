@@ -10,11 +10,11 @@ import com.creator.service.BlogLoginService;
 import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.JwtUtil;
 import com.creator.utils.RedisCache;
+import com.creator.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -49,9 +49,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
 
     @Override
     public ResponseResult logout() {
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = loginUser.getUser().getId();
-        redisCache.deleteObject(SystemConstants.LOGIN_BLOG_KEY + userId);
+        redisCache.deleteObject(SystemConstants.LOGIN_BLOG_KEY + SecurityUtils.getUserId());
         return ResponseResult.okResult();
     }
 }
