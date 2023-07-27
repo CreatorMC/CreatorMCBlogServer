@@ -5,7 +5,7 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.LoginUser;
 import com.creator.domain.entity.User;
 import com.creator.domain.vo.BlogUserLoginVo;
-import com.creator.domain.vo.UserInfo;
+import com.creator.domain.vo.UserInfoVo;
 import com.creator.service.BlogLoginService;
 import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.JwtUtil;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+@SuppressWarnings("rawtypes")
 @Service
 public class BlogLoginServiceImpl implements BlogLoginService {
 
@@ -43,7 +44,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         //把用户信息存入redis
         redisCache.setCacheObject(SystemConstants.LOGIN_BLOG_KEY + userId, loginUser);
         //把token和userinfo封装返回
-        BlogUserLoginVo vo = new BlogUserLoginVo(jwt, BeanCopyUtils.copyBean(loginUser.getUser(), UserInfo.class));
+        BlogUserLoginVo vo = new BlogUserLoginVo(jwt, BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class));
         return ResponseResult.okResult(vo);
     }
 

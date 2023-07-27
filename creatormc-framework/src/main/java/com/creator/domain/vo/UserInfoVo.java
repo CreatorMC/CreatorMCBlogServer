@@ -5,7 +5,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class UserInfo {
+public class UserInfoVo {
     //主键
     private Long id;
     //昵称
