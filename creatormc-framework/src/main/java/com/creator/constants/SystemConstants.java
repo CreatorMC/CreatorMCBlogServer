@@ -52,12 +52,12 @@ public class SystemConstants {
     public static final Long TO_COMMENT_USER_ID_NULL = -1L;
 
     /**
-     * 评论类型是文章
+     * 评论类型：文章
      */
-    public static final Integer COMMENT_TYPE_ARTICLE = 0;
+    public static final String ARTICLE_COMMENT = "0";
 
     /**
-     * 评论类型是友链
+     * 评论类型：友链
      */
-    public static final Integer COMMENT_TYPE_LINK = 1;
+    public static final String LINK_COMMENT = "1";
 }

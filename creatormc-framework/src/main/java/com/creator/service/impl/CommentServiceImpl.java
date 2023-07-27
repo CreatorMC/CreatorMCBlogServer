@@ -14,7 +14,6 @@ import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
 import com.creator.service.CommentService;
 import com.creator.utils.BeanCopyUtils;
-import com.creator.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,16 +37,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
     private UserDao userDao;
 
     @Override
-    public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize) {
+    public ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
         //构造条件
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper
                 //此文章下的评论
-                .eq(Comment::getArticleId, articleId)
+                .eq(SystemConstants.ARTICLE_COMMENT.equals(commentType), Comment::getArticleId, articleId)
                 //这条评论是根评论
                 .eq(Comment::getRootId, SystemConstants.COMMENT_ROOT_ID)
-                //这条评论是文章评论
-                .eq(Comment::getType, SystemConstants.COMMENT_TYPE_ARTICLE);
+                //这条评论的类型
+                .eq(Comment::getType, commentType);
         //分页查询
         Page<Comment> page = new Page<>(pageNum, pageSize);
         page(page, queryWrapper);
