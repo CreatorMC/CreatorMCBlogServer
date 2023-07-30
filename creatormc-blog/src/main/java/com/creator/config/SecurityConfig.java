@@ -40,7 +40,8 @@ public class SecurityConfig {
                 .antMatchers("/login").anonymous()
                 .antMatchers("/logout",
                         "/comment",
-                        "/user/userInfo").authenticated()
+                        "/user/userInfo",
+                        "/upload").authenticated()
                 //除上面外的接口不管登录与否都能访问
                 .anyRequest().permitAll();
         http
