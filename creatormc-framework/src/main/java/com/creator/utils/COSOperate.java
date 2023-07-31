@@ -6,12 +6,10 @@ import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -62,5 +60,21 @@ public class COSOperate {
         // 因为COSClient是线程安全的类，还可以让其他线程访问，所以不能关闭
         // cosClient.shutdown();
         return url;
+    }
+
+    /**
+     * 删除文件
+     * @param key 文件在COS中的Key
+     * @return
+     */
+    @SuppressWarnings("TryWithIdenticalCatches")
+    public void deleteFile(String key) {
+        try {
+            cosClient.deleteObject(cosConfig.getBucket(), key);
+        } catch (CosServiceException e) {
+            throw new RuntimeException(e);
+        } catch (CosClientException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
