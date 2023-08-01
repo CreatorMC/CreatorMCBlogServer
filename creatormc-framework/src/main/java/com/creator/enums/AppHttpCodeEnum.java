@@ -14,7 +14,12 @@ public enum AppHttpCodeEnum {
     LOGIN_ERROR(505,"用户名或密码错误"),
     CONTENT_NOT_NULL(506, "评论内容不能为空"),
     FILE_TYPE_ERROR(507, "文件类型错误"),
-    FILE_SIZE_ERROR(508, "文件超出大小限制");
+    FILE_SIZE_ERROR(508, "文件超出大小限制"),
+    USERNAME_NOT_NULL(509, "用户名不能为空"),
+    NICKNAME_NOT_NULL(510, "昵称不能为空"),
+    PASSWORD_NOT_NULL(511, "密码不能为空"),
+    EMAIL_NOT_NULL(512, "邮箱不能为空"),
+    NICKNAME_EXIST(513, "昵称已存在");
     int code;
     String msg;
 

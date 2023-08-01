@@ -1,5 +1,7 @@
 package com.creator.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.COSConstants;
 import com.creator.dao.UserDao;
@@ -14,6 +16,7 @@ import com.creator.utils.COSOperate;
 import com.creator.utils.PathUtils;
 import com.creator.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +34,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Autowired
     private COSOperate cosOperate;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public ResponseResult userInfo() {
         //获取当前用户id
@@ -44,6 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public ResponseResult updateUserInfo(MultipartFile file, User user) {
+        //TODO 修改个人信息时也需判断昵称等是否已存在
         //从token中获取用户id
         Long userId = SecurityUtils.getUserId();
         //获取旧头像路径
@@ -61,6 +68,51 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         //更新数据库
         updateById(user);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult register(User user) {
+        //TODO 多线程下有可能同时都判断为不冲突，但结果两个人的昵称都相同。 可以在数据库中设置唯一性约束解决此问题吗？
+        //对数据进行非空判断
+        if(!StringUtils.hasText(user.getUserName())) {
+            throw new SystemException(AppHttpCodeEnum.USERNAME_NOT_NULL);
+        }
+        if(!StringUtils.hasText(user.getPassword())) {
+            throw new SystemException(AppHttpCodeEnum.PASSWORD_NOT_NULL);
+        }
+        if(!StringUtils.hasText(user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_NOT_NULL);
+        }
+        if(!StringUtils.hasText(user.getNickName())) {
+            throw new SystemException(AppHttpCodeEnum.NICKNAME_NOT_NULL);
+        }
+        //对数据进行是否存在的判断
+        if(userDataExist(User::getUserName ,user.getUserName())) {
+            throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
+        }
+        if(userDataExist(User::getNickName, user.getNickName())) {
+            throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
+        }
+        if(userDataExist(User::getEmail, user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
+        }
+        //对密码进行加密
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //存入数据库
+        save(user);
+        return ResponseResult.okResult();
+    }
+
+    /**
+     * 判断是否存在该字符串数据
+     * @param column 列
+     * @param data 数据
+     * @return
+     */
+    private boolean userDataExist(SFunction<User, ?> column, String data) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(column, data);
+        return count(queryWrapper) > 0;
     }
 
     /**

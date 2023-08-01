@@ -27,5 +27,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult updateUserInfo(MultipartFile file, User user);
+
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
+    ResponseResult register(User user);
 }
 
