@@ -21,9 +21,7 @@ import java.util.Objects;
 public class LogAspect {
 
     @Pointcut("@annotation(com.creator.annotation.SystemLog)")
-    public void pt() {
-
-    }
+    public void pt() {}
 
     @Around("pt()")
     public Object printLog(ProceedingJoinPoint joinPoint) throws Throwable {
