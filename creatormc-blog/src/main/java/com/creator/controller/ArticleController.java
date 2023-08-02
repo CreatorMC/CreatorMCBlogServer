@@ -4,10 +4,7 @@ import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -36,5 +33,11 @@ public class ArticleController {
     @SystemLog(businessName = "查询文章详情")
     public ResponseResult getArticle(@PathVariable Long id) {
         return articleService.getArticle(id);
+    }
+
+    @PutMapping("/updateViewCount/{id}")
+    @SystemLog(businessName = "更新对应文章的浏览量")
+    public ResponseResult updateViewCount(@PathVariable Long id) {
+        return articleService.updateViewCount(id);
     }
 }

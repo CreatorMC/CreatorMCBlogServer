@@ -215,4 +215,14 @@ public class RedisCache {
     public Collection<String> keys(final String pattern) {
         return redisTemplate.keys(pattern);
     }
+
+    /**
+     * 对redis中的某个hash的key对应的value自增
+     * @param key redis的key
+     * @param hashKey hash的key
+     * @param v 增加几
+     */
+    public void incrementCacheMapValue(String key, String hashKey, int v) {
+        redisTemplate.opsForHash().increment(key, hashKey, v);
+    }
 }

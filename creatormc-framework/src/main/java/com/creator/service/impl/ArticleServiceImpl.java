@@ -14,6 +14,7 @@ import com.creator.domain.vo.PageVo;
 import com.creator.service.ArticleService;
 import com.creator.service.CategoryService;
 import com.creator.utils.BeanCopyUtils;
+import com.creator.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,16 @@ import java.util.stream.Collectors;
  * @author makejava
  * @since 2023-07-22 17:22:09
  */
+@SuppressWarnings("rawtypes")
 @Service("articleService")
 public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> implements ArticleService {
 
     @Autowired
     @Lazy   //防止循环注入
     private CategoryService categoryService;
+
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -84,6 +89,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         article.setCategoryName(categoryService.getById(article.getCategoryId()).getName());
         ArticleVo articleVo = BeanCopyUtils.copyBean(article, ArticleVo.class);
         return ResponseResult.okResult(articleVo);
+    }
+
+    @Override
+    public ResponseResult updateViewCount(Long id) {
+        //更新对应文章的浏览量
+        redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString(), 1);
+        return ResponseResult.okResult();
     }
 }
 

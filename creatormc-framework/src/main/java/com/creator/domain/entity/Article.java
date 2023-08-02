@@ -56,5 +56,15 @@ public class Article {
     private Date updateTime;
     //删除标志（0代表未删除，1代表已删除）
     private Integer delFlag;
+
+    /**
+     * 为了将redis中的文章浏览量封装成Article对象而创建的构造函数
+     * @param id 文章 id
+     * @param viewCount 浏览量
+     */
+    public Article(long id, long viewCount) {
+        this.id = id;
+        this.viewCount = viewCount;
+    }
 }
 

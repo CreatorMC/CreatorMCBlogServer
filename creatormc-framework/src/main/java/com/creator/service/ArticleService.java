@@ -10,6 +10,7 @@ import com.creator.domain.entity.Article;
  * @author makejava
  * @since 2023-07-22 17:22:07
  */
+@SuppressWarnings("rawtypes")
 public interface ArticleService extends IService<Article> {
 
     /**
@@ -35,5 +36,12 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     ResponseResult getArticle(Long id);
+
+    /**
+     * 更新对应文章的浏览量
+     * @param id 文章 id
+     * @return
+     */
+    ResponseResult updateViewCount(Long id);
 }
 
