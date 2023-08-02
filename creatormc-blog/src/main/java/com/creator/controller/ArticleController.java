@@ -1,5 +1,6 @@
 package com.creator.controller;
 
+import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
@@ -16,6 +18,7 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping("/hotArticleList")
+    @SystemLog(businessName = "查询浏览量前10条的文章")
     public ResponseResult hotArticleList() {
         return articleService.hotArticleList();
     }

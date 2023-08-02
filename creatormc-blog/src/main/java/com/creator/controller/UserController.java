@@ -1,5 +1,6 @@
 package com.creator.controller;
 
+import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.User;
 import com.creator.service.UserService;
@@ -21,6 +22,7 @@ public class UserController {
     }
 
     @PutMapping("/userInfo")
+    @SystemLog(businessName = "更新用户信息")
     public ResponseResult updateUserInfo(MultipartFile file, User user) {
         return userService.updateUserInfo(file, user);
     }
