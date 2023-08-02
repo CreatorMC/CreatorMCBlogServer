@@ -1,5 +1,6 @@
 package com.creator.controller;
 
+import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.User;
 import com.creator.enums.AppHttpCodeEnum;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@SuppressWarnings("rawtypes")
 @RestController
 public class BlogLoginController {
 
@@ -18,6 +20,7 @@ public class BlogLoginController {
     private BlogLoginService blogLoginService;
 
     @PostMapping("/login")
+    @SystemLog(businessName = "用户名登录")
     public ResponseResult login(@RequestBody User user) {
         if(!StringUtils.hasText(user.getUserName())) {
             //没传用户名
@@ -27,6 +30,7 @@ public class BlogLoginController {
     }
 
     @PostMapping("/logout")
+    @SystemLog(businessName = "退出登录")
     public ResponseResult logout() {
         return blogLoginService.logout();
     }

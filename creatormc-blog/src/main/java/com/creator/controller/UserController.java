@@ -17,6 +17,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/userInfo")
+    @SystemLog(businessName = "获取当前用户信息")
     public ResponseResult userInfo() {
         return userService.userInfo();
     }
@@ -28,6 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @SystemLog(businessName = "用户注册")
     public ResponseResult register(@RequestBody User user) {
         return userService.register(user);
     }

@@ -27,11 +27,13 @@ public class ArticleController {
         "/articleList/{pageNum}/{pageSize}/{categoryId}",
         "/articleList/{pageNum}/{pageSize}"
     })
+    @SystemLog(businessName = "查询文章列表")
     public ResponseResult articleList(@PathVariable Integer pageNum, @PathVariable Integer pageSize, @PathVariable(required = false) Long categoryId) {
         return articleService.articleList(pageNum, pageSize, categoryId);
     }
 
     @GetMapping("/{id}")
+    @SystemLog(businessName = "查询文章详情")
     public ResponseResult getArticle(@PathVariable Long id) {
         return articleService.getArticle(id);
     }
