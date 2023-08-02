@@ -52,6 +52,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         page(page, queryWrapper);
         //获取查询到的结果
         List<Article> articles = page.getRecords();
+        //从Redis中获取浏览量并设置给Article对象
+        articles = articles.stream()
+                .map(article -> article.setViewCount(getViewCount(article.getId()).longValue()))
+                .collect(Collectors.toList());
         //将结果放进VO列表中
         List<HotArticleVo> articleVos = BeanCopyUtils.copyBeanList(articles, HotArticleVo.class);
         return ResponseResult.okResult(articleVos);
@@ -74,7 +78,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         //查询 categoryName
         List<Article> articles = page.getRecords();
         articles = articles.stream()
-                .map(article -> article.setCategoryName(categoryService.getById(article.getCategoryId()).getName()))
+                .peek(article -> {
+                    article.setCategoryName(categoryService.getById(article.getCategoryId()).getName());
+                    //从Redis中获取浏览量并设置给Article对象
+                    article.setViewCount(getViewCount(article.getId()).longValue());
+                })
                 .collect(Collectors.toList());
 
         //封装结果
@@ -87,6 +95,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     public ResponseResult getArticle(Long id) {
         Article article = getById(id);
         article.setCategoryName(categoryService.getById(article.getCategoryId()).getName());
+        //从Redis中获取浏览量并设置给Article对象
+        article.setViewCount(getViewCount(id).longValue());
         ArticleVo articleVo = BeanCopyUtils.copyBean(article, ArticleVo.class);
         return ResponseResult.okResult(articleVo);
     }
@@ -96,6 +106,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         //更新对应文章的浏览量
         redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString(), 1);
         return ResponseResult.okResult();
+    }
+
+    /**
+     * 从Redis中返回指定的文章浏览量
+     * @param id 文章id
+     * @return 浏览量
+     */
+    private Integer getViewCount(Long id) {
+        return redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
     }
 }
 
