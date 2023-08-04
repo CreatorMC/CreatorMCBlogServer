@@ -4,14 +4,11 @@ import com.creator.constants.SystemConstants;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.LoginUser;
 import com.creator.domain.entity.User;
-import com.creator.domain.vo.BlogUserLoginVo;
-import com.creator.domain.vo.UserInfoVo;
+import com.creator.domain.vo.LoginVo;
 import com.creator.enums.AppHttpCodeEnum;
-import com.creator.service.BlogLoginService;
-import com.creator.utils.BeanCopyUtils;
+import com.creator.service.LoginService;
 import com.creator.utils.JwtUtil;
 import com.creator.utils.RedisCache;
-import com.creator.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +19,7 @@ import java.util.Objects;
 
 @SuppressWarnings({"rawtypes", "DuplicatedCode"})
 @Service
-public class BlogLoginServiceImpl implements BlogLoginService {
+public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -43,15 +40,10 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         //把用户信息存入redis
-        redisCache.setCacheObject(SystemConstants.LOGIN_BLOG_KEY + userId, loginUser);
+        redisCache.setCacheObject(SystemConstants.LOGIN_ADMIN_KEY + userId, loginUser);
         //把token和userinfo封装返回
-        BlogUserLoginVo vo = new BlogUserLoginVo(jwt, BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class));
+        LoginVo vo = new LoginVo(jwt);
         return ResponseResult.okResult(vo);
     }
-
-    @Override
-    public ResponseResult logout() {
-        redisCache.deleteObject(SystemConstants.LOGIN_BLOG_KEY + SecurityUtils.getUserId());
-        return ResponseResult.okResult();
-    }
 }
+

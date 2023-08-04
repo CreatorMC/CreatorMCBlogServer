@@ -3,6 +3,7 @@ package com.creator.service;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.User;
 
+@SuppressWarnings("rawtypes")
 public interface BlogLoginService {
     /**
      * 用户名登录
