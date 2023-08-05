@@ -2,6 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.RegisterDto;
 import com.creator.domain.dto.UpdateUserInfoDto;
 import com.creator.domain.entity.User;
 import com.creator.service.UserService;
@@ -32,7 +33,7 @@ public class UserController {
 
     @PostMapping("/register")
     @SystemLog(businessName = "用户注册")
-    public ResponseResult register(@RequestBody User user) {
-        return userService.register(user);
+    public ResponseResult register(@RequestBody RegisterDto registerDto) {
+        return userService.register(BeanCopyUtils.copyBean(registerDto, User.class));
     }
 }
