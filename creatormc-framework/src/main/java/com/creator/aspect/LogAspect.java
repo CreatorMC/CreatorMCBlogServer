@@ -11,6 +11,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -57,7 +58,14 @@ public class LogAspect {
         log.info("HTTP Method    : {}", request.getMethod());
         log.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         log.info("IP             : {}", request.getRemoteHost());
-        log.info("Request Args   : {}", JSON.toJSONString(joinPoint.getArgs()));
+        Object[] args = joinPoint.getArgs();
+        for (int i = 0; i < args.length; i++) {
+            if(args[i] instanceof MultipartFile) {
+                //如果这个对象是文件的话，以文件名代替
+                args[i] = ((MultipartFile)args[i]).getOriginalFilename();
+            }
+        }
+        log.info("Request Args   : {}", JSON.toJSONString(args));
     }
 
     /**

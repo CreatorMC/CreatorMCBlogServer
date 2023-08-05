@@ -2,8 +2,10 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.UpdateUserInfoDto;
 import com.creator.domain.entity.User;
 import com.creator.service.UserService;
+import com.creator.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +26,8 @@ public class UserController {
 
     @PutMapping("/userInfo")
     @SystemLog(businessName = "更新用户信息")
-    public ResponseResult updateUserInfo(MultipartFile file, User user) {
-        return userService.updateUserInfo(file, user);
+    public ResponseResult updateUserInfo(MultipartFile file, UpdateUserInfoDto updateUserInfoDto) {
+        return userService.updateUserInfo(file, BeanCopyUtils.copyBean(updateUserInfoDto, User.class));
     }
 
     @PostMapping("/register")
