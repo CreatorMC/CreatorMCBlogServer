@@ -17,31 +17,39 @@ import org.springframework.web.bind.annotation.*;
 @SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/comment")
-@Api(tags = "评论", description = "评论相关接口")
+@Api(tags = "评论")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
 
+    @ApiOperation("获取文章评论列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "articleId", value = "文章id", defaultValue = "1", paramType = "path"),
+            @ApiImplicitParam(name = "pageNum", value = "第几页", defaultValue = "1",  paramType = "path"),
+            @ApiImplicitParam(name = "pageSize", value = "一页几条记录", defaultValue = "10",  paramType = "path")
+    })
+    @SystemLog(businessName = "获取文章评论列表")
     @GetMapping("/commentList/{articleId}/{pageNum}/{pageSize}")
-    @SystemLog(businessName = "获取评论列表")
     public ResponseResult commentList(@PathVariable Long articleId, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
         return commentService.commentList(SystemConstants.ARTICLE_COMMENT, articleId, pageNum, pageSize);
     }
 
-    @PostMapping
+    @ApiOperation("添加评论")
     @SystemLog(businessName = "添加评论")
+    @PostMapping
     public ResponseResult addComment(@RequestBody AddCommentDto addCommentDto) {
         return commentService.addComment(BeanCopyUtils.copyBean(addCommentDto, Comment.class));
     }
 
-    @GetMapping("/linkCommentList/{pageNum}/{pageSize}")
-    @SystemLog(businessName = "获取评论列表")
-    @ApiOperation(value = "评论列表", notes = "获取评论列表")
+
+    @ApiOperation("获取友链评论列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "第几页"),
-            @ApiImplicitParam(name = "pageSize", value = "每页几条记录")
+            @ApiImplicitParam(name = "pageNum", value = "第几页", defaultValue = "1", paramType = "path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "path")
     })
+    @SystemLog(businessName = "获取友链评论列表")
+    @GetMapping("/linkCommentList/{pageNum}/{pageSize}")
     public ResponseResult linkCommentList(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
         return commentService.commentList(SystemConstants.LINK_COMMENT, null, pageNum, pageSize);
     }

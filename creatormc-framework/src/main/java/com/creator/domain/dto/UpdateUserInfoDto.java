@@ -1,5 +1,7 @@
 package com.creator.domain.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,11 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(description = "更新用户信息dto")
 public class UpdateUserInfoDto {
-    //邮箱
+    @ApiModelProperty("邮箱")
     private String email;
-    //昵称
+    @ApiModelProperty("昵称")
     private String nickName;
-    //用户性别（0男，1女，2未知）
+    @ApiModelProperty(value = "用户性别", notes = "0男，1女，2未知")
     private String sex;
 }

@@ -8,6 +8,8 @@ import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
 import com.creator.service.BlogLoginService;
 import com.creator.utils.BeanCopyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings("rawtypes")
 @RestController
+@Api(tags = "登录退出")
 public class BlogLoginController {
 
     @Autowired
     private BlogLoginService blogLoginService;
 
-    @PostMapping("/login")
+    @ApiOperation("用户名登录")
     @SystemLog(businessName = "用户名登录")
+    @PostMapping("/login")
     public ResponseResult login(@RequestBody LoginDto loginDto) {
         if(!StringUtils.hasText(loginDto.getUserName())) {
             //没传用户名
@@ -31,8 +35,9 @@ public class BlogLoginController {
         return blogLoginService.login(BeanCopyUtils.copyBean(loginDto, User.class));
     }
 
-    @PostMapping("/logout")
+    @ApiOperation("退出登录")
     @SystemLog(businessName = "退出登录")
+    @PostMapping("/logout")
     public ResponseResult logout() {
         return blogLoginService.logout();
     }

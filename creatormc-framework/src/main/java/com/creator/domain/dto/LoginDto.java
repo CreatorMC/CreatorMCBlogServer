@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @ApiModel(description = "用户登录dto")
 public class LoginDto {
-    @ApiModelProperty(notes = "用户名")
+    @ApiModelProperty("用户名")
     private String userName;
-    @ApiModelProperty(notes = "密码")
+    @ApiModelProperty("密码")
     private String password;
 }

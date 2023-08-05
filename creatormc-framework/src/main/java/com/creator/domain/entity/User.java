@@ -2,6 +2,7 @@ package com.creator.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ import java.util.Date;
 @TableName("sys_user")
 public class User {
     //主键
+    @TableId
     private Long id;
     //用户名
     private String userName;

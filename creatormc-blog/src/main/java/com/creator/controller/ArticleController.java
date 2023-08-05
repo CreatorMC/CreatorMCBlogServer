@@ -2,6 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.vo.HotArticleVo;
 import com.creator.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -9,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -43,7 +46,7 @@ public class ArticleController {
 
     @ApiOperation("查询文章详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "文章id")
+            @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path")
     })
     @SystemLog(businessName = "查询文章详情")
     @GetMapping("/{id}")
@@ -53,7 +56,7 @@ public class ArticleController {
 
     @ApiOperation("更新对应文章的浏览量")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "文章id")
+            @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path")
     })
     @SystemLog(businessName = "更新对应文章的浏览量")
     @PutMapping("/updateViewCount/{id}")

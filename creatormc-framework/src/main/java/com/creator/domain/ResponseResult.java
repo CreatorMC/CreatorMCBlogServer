@@ -2,13 +2,20 @@ package com.creator.domain;
 
 import com.creator.enums.AppHttpCodeEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
+@SuppressWarnings("rawtypes")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ApiModel("统一返回封装类")
 public class ResponseResult<T> implements Serializable {
+    @ApiModelProperty("响应代码")
     private Integer code;
+    @ApiModelProperty("响应信息")
     private String msg;
+    @ApiModelProperty("响应数据")
     private T data;
 
     public ResponseResult() {
