@@ -38,7 +38,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 //只有未登录才能访问
                 .antMatchers("/user/login").anonymous()
-                .antMatchers("/logout").authenticated()
+                .antMatchers("/logout",
+                        "/getInfo").authenticated()
                 //除上面外的接口不管登录与否都能访问
                 .anyRequest().permitAll();
         http

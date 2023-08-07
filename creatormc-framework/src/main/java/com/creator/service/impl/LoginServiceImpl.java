@@ -4,7 +4,7 @@ import com.creator.constants.SystemConstants;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.LoginUser;
 import com.creator.domain.entity.User;
-import com.creator.domain.vo.LoginVo;
+import com.creator.domain.vo.AdminUserLoginVo;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.service.LoginService;
 import com.creator.utils.JwtUtil;
@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
         //把用户信息存入redis
         redisCache.setCacheObject(SystemConstants.LOGIN_ADMIN_KEY + userId, loginUser);
         //把token和userinfo封装返回
-        LoginVo vo = new LoginVo(jwt);
+        AdminUserLoginVo vo = new AdminUserLoginVo(jwt);
         return ResponseResult.okResult(vo);
     }
 }

@@ -70,4 +70,24 @@ public class SystemConstants {
      * 文章浏览量redis中的key
      */
     public static final String ARTICLE_VIEW_COUNT_KEY = "article:viewCount";
+
+    /**
+     * 角色状态正常
+     */
+    public static final String ROLE_STATUS_NORMAL = "0";
+
+    /**
+     * 菜单类型为菜单
+     */
+    public static final String MENU_TYPE_MENU = "C";
+
+    /**
+     * 菜单类型为按钮
+     */
+    public static final String MENU_TYPE_BUTTON = "F";
+
+    /**
+     * 菜单状态正常
+     */
+    public static final String MENU_STATUS_NORMAL = "0";
 }

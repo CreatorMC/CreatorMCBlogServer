@@ -47,7 +47,13 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>3.5.2</version>
             </dependency>
-<!--            MySQL驱动-->
+<!--        MybatisPlusJoin-->
+            <dependency>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join-boot-starter</artifactId>
+                <version>1.4.5</version>
+            </dependency>
+            <!--            MySQL驱动-->
             <dependency>
                 <groupId>com.mysql</groupId>
                 <artifactId>mysql-connector-j</artifactId>

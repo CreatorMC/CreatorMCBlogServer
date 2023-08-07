@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UserService extends IService<User> {
 
     /**
-     * 获取当前用户信息
+     * 前台获取当前用户信息
      * @return
      */
     ResponseResult userInfo();
@@ -34,5 +34,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult register(User user);
+
+    /**
+     * 后台获取当前用户信息
+     * @return
+     */
+    ResponseResult getAdminUserInfo();
 }
 

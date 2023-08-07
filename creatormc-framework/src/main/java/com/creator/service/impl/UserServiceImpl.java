@@ -7,9 +7,14 @@ import com.creator.constants.COSConstants;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.User;
+import com.creator.domain.entity.UserRole;
+import com.creator.domain.vo.AdminUserInfoVo;
 import com.creator.domain.vo.UserInfoVo;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
+import com.creator.service.MenuService;
+import com.creator.service.RoleService;
+import com.creator.service.UserRoleService;
 import com.creator.service.UserService;
 import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.COSOperate;
@@ -20,6 +25,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * 用户表(User)表服务实现类
@@ -36,6 +44,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private MenuService menuService;
 
     @Override
     public ResponseResult userInfo() {
@@ -101,6 +115,21 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         //存入数据库
         save(user);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getAdminUserInfo() {
+        //从上下文中得到用户id
+        Long userId = SecurityUtils.getUserId();
+        //通过用户id查询用户信息
+        User user = getById(userId);
+        //得到用户信息
+        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user, UserInfoVo.class);
+        //根据用户id查询用户拥有的角色的role_key
+        List<String> roles = roleService.selectRoleKeysByUserId(userId);
+        //获取权限数组
+        List<String> perms = menuService.selectMenuPermsByUserId(userId);
+        return ResponseResult.okResult(new AdminUserInfoVo(perms, roles, userInfoVo));
     }
 
     /**
