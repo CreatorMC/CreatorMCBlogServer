@@ -40,5 +40,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult getAdminUserInfo();
+
+    /**
+     * 后台获取用户所能访问的菜单数据
+     * @return
+     */
+    ResponseResult getRouters();
 }
 

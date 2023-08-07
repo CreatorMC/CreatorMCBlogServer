@@ -7,10 +7,12 @@ import com.creator.dao.UserRoleDao;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.UserRole;
 import com.creator.service.RoleService;
+import com.creator.utils.SecurityUtils;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +29,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
 
     @Override
     public List<String> selectRoleKeysByUserId(Long userId) {
+        if(SecurityUtils.isAdmin()) {
+            //是超级管理员，和前端商量只需要返回admin即可
+            List<String> roleKeys = new ArrayList<>();
+            roleKeys.add(SystemConstants.ADMIN);
+            return  roleKeys;
+        }
         return userRoleDao.selectJoinList(String.class, new MPJLambdaWrapper<UserRole>()
                 .select(Role::getRoleKey)
                 .innerJoin(Role.class, Role::getId, UserRole::getRoleId)

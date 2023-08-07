@@ -17,4 +17,9 @@ public class UserController {
     public ResponseResult getAdminUserInfo() {
         return userService.getAdminUserInfo();
     }
+
+    @GetMapping("/getRouters")
+    public ResponseResult getRouters() {
+        return userService.getRouters();
+    }
 }

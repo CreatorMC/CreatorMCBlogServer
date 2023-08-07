@@ -90,4 +90,9 @@ public class SystemConstants {
      * 菜单状态正常
      */
     public static final String MENU_STATUS_NORMAL = "0";
+
+    /**
+     * 超级管理员的roleKey
+     */
+    public static final String ADMIN = "admin";
 }

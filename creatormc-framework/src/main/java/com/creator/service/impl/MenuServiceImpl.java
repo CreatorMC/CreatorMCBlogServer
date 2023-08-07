@@ -43,6 +43,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
             return menuList.stream().map(Menu::getPerms).collect(Collectors.toList());
         }
         return userRoleDao.selectJoinList(String.class, new MPJLambdaWrapper<UserRole>()
+                //去重，一个用户可以有多个角色，每个角色都可以有多个权限，部分角色的权限可能有重复的，所以要去重
+                .distinct()
                 .select(Menu::getPerms)
                 .innerJoin(Role.class, Role::getId, UserRole::getRoleId)
                 .innerJoin(RoleMenu.class, RoleMenu::getRoleId, Role::getId)

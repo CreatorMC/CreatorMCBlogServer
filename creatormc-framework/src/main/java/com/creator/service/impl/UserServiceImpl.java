@@ -132,6 +132,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return ResponseResult.okResult(new AdminUserInfoVo(perms, roles, userInfoVo));
     }
 
+    @Override
+    public ResponseResult getRouters() {
+
+        return null;
+    }
+
     /**
      * 判断是否存在该字符串数据
      * @param column 列
