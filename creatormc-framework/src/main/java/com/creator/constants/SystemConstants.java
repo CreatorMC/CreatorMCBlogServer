@@ -77,6 +77,11 @@ public class SystemConstants {
     public static final String ROLE_STATUS_NORMAL = "0";
 
     /**
+     * 菜单类型为目录
+     */
+    public static final String MENU_TYPE_CATALOG = "M";
+
+    /**
      * 菜单类型为菜单
      */
     public static final String MENU_TYPE_MENU = "C";

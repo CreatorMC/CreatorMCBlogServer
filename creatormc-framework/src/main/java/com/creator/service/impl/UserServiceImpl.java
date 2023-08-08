@@ -6,15 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.COSConstants;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.User;
-import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.AdminUserInfoVo;
+import com.creator.domain.vo.MenuArrayVo;
+import com.creator.domain.vo.MenuVo;
 import com.creator.domain.vo.UserInfoVo;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
 import com.creator.service.MenuService;
 import com.creator.service.RoleService;
-import com.creator.service.UserRoleService;
 import com.creator.service.UserService;
 import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.COSOperate;
@@ -26,8 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 用户表(User)表服务实现类
@@ -134,8 +135,38 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public ResponseResult getRouters() {
+        Long userId = SecurityUtils.getUserId();
+        //查询该用户可用的菜单
+        List<Menu> menus = menuService.selectRouters(userId);
+        //转换为MenuVo
+        List<MenuVo> menuVos = BeanCopyUtils.copyBeanList(menus, MenuVo.class);
+        //存放根菜单的列表
+        List<MenuVo> menuVoList = new ArrayList<>();
+        //查找根菜单的子菜单
+        for (int i = 0; i < menuVos.size(); i++) {
+            if(menuVos.get(i).getParentId().equals(0L)) {
+                //根菜单，找它下面还有哪些子菜单
+                findSubMenu(menuVos.get(i), menuVos);
+                menuVoList.add(menuVos.get(i));
+            }
+        }
+        return ResponseResult.okResult(new MenuArrayVo(menuVoList));
+    }
 
-        return null;
+    /**
+     * 查找根菜单下有哪些子菜单
+     * @param menuVo 父菜单
+     * @param menuVos 菜单列表
+     * @return
+     */
+    private void findSubMenu(MenuVo menuVo, List<MenuVo> menuVos) {
+        for (MenuVo m: menuVos) {
+            if(menuVo.getId().equals(m.getParentId())) {
+                //如果父菜单的id等于子菜单的父id，那么当前这个菜单是父菜单的子菜单
+                menuVo.getChildren().add(m);
+                findSubMenu(m, menuVos);
+            }
+        }
     }
 
     /**

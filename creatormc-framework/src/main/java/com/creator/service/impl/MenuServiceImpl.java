@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.MenuDao;
-import com.creator.dao.RoleMenuDao;
 import com.creator.dao.UserRoleDao;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.Role;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +54,34 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
                 .in(Menu::getMenuType, SystemConstants.MENU_TYPE_MENU, SystemConstants.MENU_TYPE_BUTTON)
                 //菜单状态为正常
                 .eq(Menu::getStatus, SystemConstants.MENU_STATUS_NORMAL)
+        );
+    }
+
+    @Override
+    public List<Menu> selectRouters(Long userId) {
+        if(SecurityUtils.isAdmin()) {
+            //是超级管理员，返回所有菜单
+            return list(new LambdaQueryWrapper<Menu>()
+                    //只查找M和C类型的菜单
+                    .in(Menu::getMenuType, SystemConstants.MENU_TYPE_CATALOG, SystemConstants.MENU_TYPE_MENU)
+                    //菜单状态为正常
+                    .eq(Menu::getStatus, SystemConstants.MENU_STATUS_NORMAL)
+            );
+        }
+        return userRoleDao.selectJoinList(Menu.class, new MPJLambdaWrapper<UserRole>()
+                .distinct()
+                .selectAll(Menu.class)
+                .innerJoin(Role.class, Role::getId, UserRole::getRoleId)
+                .innerJoin(RoleMenu.class, RoleMenu::getRoleId, Role::getId)
+                .innerJoin(Menu.class, Menu::getId, RoleMenu::getMenuId)
+                //查找指定用户
+                .eq(UserRole::getUserId, userId)
+                //角色状态为正常
+                .eq(Role::getStatus, SystemConstants.ROLE_STATUS_NORMAL)
+                //菜单状态为正常
+                .eq(Menu::getStatus, SystemConstants.MENU_STATUS_NORMAL)
+                //只查找M和C类型的菜单
+                .in(Menu::getMenuType, SystemConstants.MENU_TYPE_CATALOG, SystemConstants.MENU_TYPE_MENU)
         );
     }
 }
