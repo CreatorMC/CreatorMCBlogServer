@@ -1,6 +1,7 @@
 package com.creator.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.MenuDao;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @author makejava
  * @since 2023-08-07 08:43:17
  */
+@SuppressWarnings("unchecked")
 @Service("menuService")
 public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuService {
 
@@ -66,6 +68,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
                     .in(Menu::getMenuType, SystemConstants.MENU_TYPE_CATALOG, SystemConstants.MENU_TYPE_MENU)
                     //菜单状态为正常
                     .eq(Menu::getStatus, SystemConstants.MENU_STATUS_NORMAL)
+                    //先根据父菜单id排序，再根据排序字段排序
+                    .orderByAsc(Menu::getParentId, Menu::getOrderNum)
             );
         }
         return userRoleDao.selectJoinList(Menu.class, new MPJLambdaWrapper<UserRole>()
@@ -82,6 +86,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
                 .eq(Menu::getStatus, SystemConstants.MENU_STATUS_NORMAL)
                 //只查找M和C类型的菜单
                 .in(Menu::getMenuType, SystemConstants.MENU_TYPE_CATALOG, SystemConstants.MENU_TYPE_MENU)
+                //先根据父菜单id排序，再根据排序字段排序
+                .orderByAsc(Menu::getParentId, Menu::getOrderNum)
         );
     }
 }
