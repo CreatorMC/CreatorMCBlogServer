@@ -36,6 +36,9 @@ public class CommentController {
     }
 
     @ApiOperation("添加评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
     @SystemLog(businessName = "添加评论")
     @PostMapping
     public ResponseResult addComment(@RequestBody AddCommentDto addCommentDto) {

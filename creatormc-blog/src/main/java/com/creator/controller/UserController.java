@@ -25,6 +25,9 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation("获取当前用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
     @SystemLog(businessName = "获取当前用户信息")
     @GetMapping("/userInfo")
     public ResponseResult userInfo() {
@@ -36,7 +39,8 @@ public class UserController {
             @ApiImplicitParam(name = "file", value = "头像文件", paramType = "form"),
             @ApiImplicitParam(name = "email", value = "邮箱", defaultValue = "test@qq.com", paramType = "form"),
             @ApiImplicitParam(name = "nickName", value = "昵称", defaultValue = "测试昵称", paramType = "form"),
-            @ApiImplicitParam(name = "sex", value = "性别（0男，1女，2未知）", defaultValue = "1", paramType = "form")
+            @ApiImplicitParam(name = "sex", value = "性别（0男，1女，2未知）", defaultValue = "1", paramType = "form"),
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新用户信息")
     @PutMapping("/userInfo")

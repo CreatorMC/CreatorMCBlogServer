@@ -9,6 +9,8 @@ import com.creator.exception.SystemException;
 import com.creator.service.LoginService;
 import com.creator.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -26,7 +28,10 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @ApiOperation("后台用户名登录")
+    @ApiOperation("用户名登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
     @SystemLog(businessName = "后台用户名登录")
     @PostMapping("/login")
     public ResponseResult login(@RequestBody LoginDto loginDto) {

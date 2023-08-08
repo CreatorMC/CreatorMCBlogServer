@@ -1,11 +1,11 @@
 package com.creator.domain.entity;
 
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * 菜单权限表(Menu)表实体类
