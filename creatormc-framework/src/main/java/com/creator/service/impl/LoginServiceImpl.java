@@ -9,6 +9,7 @@ import com.creator.enums.AppHttpCodeEnum;
 import com.creator.service.LoginService;
 import com.creator.utils.JwtUtil;
 import com.creator.utils.RedisCache;
+import com.creator.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,6 +45,12 @@ public class LoginServiceImpl implements LoginService {
         //把token和userinfo封装返回
         AdminUserLoginVo vo = new AdminUserLoginVo(jwt);
         return ResponseResult.okResult(vo);
+    }
+
+    @Override
+    public ResponseResult logout() {
+        redisCache.deleteObject(SystemConstants.LOGIN_ADMIN_KEY + SecurityUtils.getUserId());
+        return ResponseResult.okResult();
     }
 }
 

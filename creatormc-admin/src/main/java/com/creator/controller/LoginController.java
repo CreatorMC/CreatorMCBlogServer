@@ -29,9 +29,6 @@ public class LoginController {
     private LoginService loginService;
 
     @ApiOperation("用户名登录")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
-    })
     @SystemLog(businessName = "后台用户名登录")
     @PostMapping("/login")
     public ResponseResult login(@RequestBody LoginDto loginDto) {
@@ -40,5 +37,15 @@ public class LoginController {
             throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
         }
         return loginService.login(BeanCopyUtils.copyBean(loginDto, User.class));
+    }
+
+    @ApiOperation("退出登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "后台退出登录")
+    @PostMapping("/logout")
+    public ResponseResult logout() {
+        return loginService.logout();
     }
 }
