@@ -38,12 +38,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 //只有未登录才能访问
                 .antMatchers("/user/login").anonymous()
-                .antMatchers("/logout",
-                        "/getInfo",
-                        "/getRouters",
-                        "/user/logout").authenticated()
-                //除上面外的接口不管登录与否都能访问
-                .anyRequest().permitAll();
+                //其他接口都需要登录后才能访问
+                .anyRequest().authenticated();
         http
                 //配置过滤器，放在UsernamePasswordAuthenticationFilter之前
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
