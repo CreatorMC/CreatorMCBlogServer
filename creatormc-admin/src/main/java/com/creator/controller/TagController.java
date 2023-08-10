@@ -43,4 +43,14 @@ public class TagController {
     public ResponseResult addTag(@RequestBody TagListDto tagListDto) {
         return tagService.adTag(tagListDto);
     }
+
+    @ApiOperation("删除标签")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "标签id（变长参数）", paramType = "path", required = true)
+    })
+    @SystemLog(businessName = "删除标签")
+    @DeleteMapping("/{id}")
+    public ResponseResult deleteTag(@PathVariable Long ...id) {
+        return tagService.deleteTag(id);
+    }
 }

@@ -14,7 +14,12 @@ import com.creator.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 标签(Tag)表服务实现类
@@ -45,6 +50,17 @@ public class TagServiceImpl extends ServiceImpl<TagDao, Tag> implements TagServi
         tag.setName(tagListDto.getName());
         tag.setRemark(tagListDto.getRemark());
         save(tag);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult deleteTag(Long[] id) {
+        List<Tag> tags = Arrays.stream(id).map(aLong -> {
+            Tag tag = new Tag();
+            tag.setId(aLong);
+            return tag;
+        }).collect(Collectors.toList());
+        removeByIds(tags);
         return ResponseResult.okResult();
     }
 }
