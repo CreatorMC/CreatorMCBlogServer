@@ -15,5 +15,7 @@ import com.creator.domain.entity.Tag;
 public interface TagService extends IService<Tag> {
 
     ResponseResult getTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto);
+
+    ResponseResult adTag(TagListDto tagListDto);
 }
 

@@ -38,5 +38,14 @@ public class TagServiceImpl extends ServiceImpl<TagDao, Tag> implements TagServi
         PageVo pageVo = new PageVo(BeanCopyUtils.copyBeanList(page.getRecords(), TagVo.class), page.getTotal());
         return ResponseResult.okResult(pageVo);
     }
+
+    @Override
+    public ResponseResult adTag(TagListDto tagListDto) {
+        Tag tag = new Tag();
+        tag.setName(tagListDto.getName());
+        tag.setRemark(tagListDto.getRemark());
+        save(tag);
+        return ResponseResult.okResult();
+    }
 }
 

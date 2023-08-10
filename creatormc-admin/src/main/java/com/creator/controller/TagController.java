@@ -33,4 +33,14 @@ public class TagController {
     public ResponseResult getTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
         return tagService.getTagList(pageNum, pageSize, tagListDto);
     }
+
+    @ApiOperation("添加标签")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "添加标签")
+    @PostMapping
+    public ResponseResult addTag(@RequestBody TagListDto tagListDto) {
+        return tagService.adTag(tagListDto);
+    }
 }
