@@ -9,6 +9,7 @@ import com.creator.domain.dto.TagDto;
 import com.creator.domain.dto.TagListDto;
 import com.creator.domain.entity.Tag;
 import com.creator.domain.vo.PageVo;
+import com.creator.domain.vo.TagAllVo;
 import com.creator.domain.vo.TagVo;
 import com.creator.service.TagService;
 import com.creator.utils.BeanCopyUtils;
@@ -46,7 +47,7 @@ public class TagServiceImpl extends ServiceImpl<TagDao, Tag> implements TagServi
     }
 
     @Override
-    public ResponseResult adTag(TagListDto tagListDto) {
+    public ResponseResult addTag(TagListDto tagListDto) {
         Tag tag = new Tag();
         tag.setName(tagListDto.getName());
         tag.setRemark(tagListDto.getRemark());
@@ -79,6 +80,12 @@ public class TagServiceImpl extends ServiceImpl<TagDao, Tag> implements TagServi
         tag.setRemark(tagDto.getRemark());
         updateById(tag);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getAllTag() {
+        List<Tag> tagList = list();
+        return ResponseResult.okResult(BeanCopyUtils.copyBeanList(tagList, TagAllVo.class));
     }
 }
 

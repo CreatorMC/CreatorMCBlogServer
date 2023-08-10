@@ -21,7 +21,7 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @ApiOperation("查询标签列表")
+    @ApiOperation("分页查询标签列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
             @ApiImplicitParam(name = "pageNum", value = "第几页", defaultValue = "1", paramType = "query", required = true),
@@ -29,7 +29,7 @@ public class TagController {
             @ApiImplicitParam(name = "name", value = "标签名", paramType = "query", required = false),
             @ApiImplicitParam(name = "remark", value = "标签备注", paramType = "query", required = false)
     })
-    @SystemLog(businessName = "查询标签列表")
+    @SystemLog(businessName = "分页查询标签列表")
     @GetMapping("/list")
     public ResponseResult getTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
         return tagService.getTagList(pageNum, pageSize, tagListDto);
@@ -42,7 +42,7 @@ public class TagController {
     @SystemLog(businessName = "添加标签")
     @PostMapping
     public ResponseResult addTag(@RequestBody TagListDto tagListDto) {
-        return tagService.adTag(tagListDto);
+        return tagService.addTag(tagListDto);
     }
 
     @ApiOperation("删除标签")
@@ -56,12 +56,12 @@ public class TagController {
         return tagService.deleteTag(id);
     }
 
-    @ApiOperation("获取标签信息")
+    @ApiOperation("查询标签信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
             @ApiImplicitParam(name = "id", value = "标签id", defaultValue = "1", paramType = "path", required = true)
     })
-    @SystemLog(businessName = "获取标签信息")
+    @SystemLog(businessName = "查询标签信息")
     @GetMapping("/{id}")
     public ResponseResult getTag(@PathVariable Long id) {
         return tagService.getTag(id);
@@ -75,5 +75,15 @@ public class TagController {
     @PutMapping
     public ResponseResult upDataTag(@RequestBody TagDto tagDto) {
         return tagService.upDataTag(tagDto);
+    }
+
+    @ApiOperation("查询所有标签")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "查询所有标签")
+    @GetMapping("/listAllTag")
+    public ResponseResult getAllTag() {
+        return tagService.getAllTag();
     }
 }

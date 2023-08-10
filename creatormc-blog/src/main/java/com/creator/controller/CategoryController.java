@@ -19,8 +19,8 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @ApiOperation("获取分类表")
-    @SystemLog(businessName = "获取分类表")
+    @ApiOperation("查询已有文章的分类表")
+    @SystemLog(businessName = "查询已有文章的分类表")
     @GetMapping("/getCategoryList")
     public ResponseResult getCategoryList() {
         return categoryService.getCategoryList();
