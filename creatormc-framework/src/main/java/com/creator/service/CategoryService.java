@@ -10,6 +10,7 @@ import com.creator.domain.entity.Category;
  * @author makejava
  * @since 2023-07-23 16:13:26
  */
+@SuppressWarnings("rawtypes")
 public interface CategoryService extends IService<Category> {
 
     /**
@@ -19,5 +20,11 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResponseResult getCategoryList();
+
+    /**
+     * 获取所有分类
+     * @return
+     */
+    ResponseResult getAllCategory();
 }
 

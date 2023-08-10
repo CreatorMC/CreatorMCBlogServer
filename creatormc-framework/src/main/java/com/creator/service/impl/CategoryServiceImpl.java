@@ -7,6 +7,7 @@ import com.creator.dao.CategoryDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.Article;
 import com.creator.domain.entity.Category;
+import com.creator.domain.vo.CategoryAllVo;
 import com.creator.domain.vo.CategoryVo;
 import com.creator.service.ArticleService;
 import com.creator.service.CategoryService;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @author makejava
  * @since 2023-07-23 16:13:26
  */
+@SuppressWarnings("rawtypes")
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> implements CategoryService {
 
@@ -48,6 +50,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
         //封装成Vo
         List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
         return ResponseResult.okResult(categoryVos);
+    }
+
+    @Override
+    public ResponseResult getAllCategory() {
+        //查询正常状态下的分类
+        List<Category> categoryList = list(new LambdaQueryWrapper<Category>()
+                .eq(Category::getStatus, SystemConstants.CATEGORY_STATUS_NORMAL)
+        );
+        return ResponseResult.okResult(BeanCopyUtils.copyBeanList(categoryList, CategoryAllVo.class));
     }
 }
 
