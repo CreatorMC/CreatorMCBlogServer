@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.dao.TagDao;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.TagDto;
 import com.creator.domain.dto.TagListDto;
 import com.creator.domain.entity.Tag;
 import com.creator.domain.vo.PageVo;
@@ -61,6 +62,22 @@ public class TagServiceImpl extends ServiceImpl<TagDao, Tag> implements TagServi
             return tag;
         }).collect(Collectors.toList());
         removeByIds(tags);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getTag(Long id) {
+        Tag tag = getById(id);
+        return ResponseResult.okResult(BeanCopyUtils.copyBean(tag, TagVo.class));
+    }
+
+    @Override
+    public ResponseResult upDataTag(TagDto tagDto) {
+        Tag tag = new Tag();
+        tag.setId(tagDto.getId());
+        tag.setName(tagDto.getName());
+        tag.setRemark(tagDto.getRemark());
+        updateById(tag);
         return ResponseResult.okResult();
     }
 }

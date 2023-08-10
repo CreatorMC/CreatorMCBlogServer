@@ -2,6 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.TagDto;
 import com.creator.domain.dto.TagListDto;
 import com.creator.service.TagService;
 import io.swagger.annotations.Api;
@@ -46,11 +47,33 @@ public class TagController {
 
     @ApiOperation("删除标签")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "标签id（变长参数）", paramType = "path", required = true)
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "id", value = "标签id（变长参数）", defaultValue = "1", paramType = "path", required = true)
     })
     @SystemLog(businessName = "删除标签")
     @DeleteMapping("/{id}")
     public ResponseResult deleteTag(@PathVariable Long ...id) {
         return tagService.deleteTag(id);
+    }
+
+    @ApiOperation("获取标签信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "id", value = "标签id", defaultValue = "1", paramType = "path", required = true)
+    })
+    @SystemLog(businessName = "获取标签信息")
+    @GetMapping("/{id}")
+    public ResponseResult getTag(@PathVariable Long id) {
+        return tagService.getTag(id);
+    }
+
+    @ApiOperation("更新标签信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "更新标签信息")
+    @PutMapping
+    public ResponseResult upDataTag(@RequestBody TagDto tagDto) {
+        return tagService.upDataTag(tagDto);
     }
 }
