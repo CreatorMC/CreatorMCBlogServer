@@ -29,7 +29,6 @@ public class UpdateViewCountJob {
      */
     @Scheduled(cron = "0 0/10 * * * ?")
     public void updateViewCount() {
-        //TODO 问题：当有新文章添加进数据库后如何处理？
         //获取Redis中的浏览量
         Map<String, Integer> viewCountMap = redisCache.getCacheMap(SystemConstants.ARTICLE_VIEW_COUNT_KEY);
         List<Article> articles = viewCountMap.entrySet()

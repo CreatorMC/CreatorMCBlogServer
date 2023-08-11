@@ -133,7 +133,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
      * @return 浏览量
      */
     private Integer getViewCount(Long id) {
-        return redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
+        Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
+        if(Objects.isNull(viewCount)) {
+            //获取不到文章浏览量，说明文章是新添加的文章，直接返回0
+            viewCount = 0;
+        }
+        return viewCount;
     }
 }
 
