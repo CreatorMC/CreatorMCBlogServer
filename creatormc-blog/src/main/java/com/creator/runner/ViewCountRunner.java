@@ -7,6 +7,7 @@ import com.creator.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class ViewCountRunner implements CommandLineRunner {
     private RedisCache redisCache;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         //查询博客信息 id viewCount
         List<Article> articles = articleDao.selectList(null);
@@ -36,6 +38,7 @@ public class ViewCountRunner implements CommandLineRunner {
                                 article -> article.getViewCount().intValue()
                         ));
         //存储到Redis中
+        redisCache.deleteObject(SystemConstants.ARTICLE_VIEW_COUNT_KEY);
         redisCache.setCacheMap(SystemConstants.ARTICLE_VIEW_COUNT_KEY,viewCountMap);
     }
 }

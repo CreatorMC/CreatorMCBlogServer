@@ -26,7 +26,17 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
+        Long userId;
+        try {
+            userId = SecurityUtils.getUserId();
+        } catch (Exception e) {
+            //获取不到当前用户id
+            //情况：在程序启动后会定时执行把Redis中的文章浏览量保存到数据库中的操作，此时不是用户发送的请求，故没有相应的token，所以获取不到。
+            //throw new RuntimeException(e);
+            return;
+        }
+        //防止定时任务设置文章的更新时间
         this.setFieldValByName("updateTime", new Date(), metaObject);
-        this.setFieldValByName("updateBy", SecurityUtils.getUserId(), metaObject);
+        this.setFieldValByName("updateBy", userId, metaObject);
     }
 }
