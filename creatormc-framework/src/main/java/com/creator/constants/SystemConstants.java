@@ -110,4 +110,9 @@ public class SystemConstants {
      * 导出分类Excel表格的底部名称
      */
     public static final String CATEGORY_EXPORT_SHEETNAME = "分类导出";
+
+    /**
+     * 用户类型是管理员
+     */
+    public static final String USER_TYPE_ADMIN = "1";
 }

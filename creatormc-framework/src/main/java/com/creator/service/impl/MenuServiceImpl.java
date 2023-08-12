@@ -33,7 +33,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
 
     @Override
     public List<String> selectMenuPermsByUserId(Long userId) {
-        if(SecurityUtils.isAdmin()) {
+        //这里不能使用SecurityUtils.isAdmin()，因为这个方法是从SecurityContextHolder中获取的用户id，这个方法在封装LoginUser阶段也会被调用
+        //而在封装LoginUser的这个阶段，SecurityContextHolder中还没有LoginUser，自然也就获取不到用户id
+        if(SecurityUtils.ADMIN_USER_ID.equals(userId)) {
             //是超级管理员，返回所有权限
             List<Menu> menuList = list(new LambdaQueryWrapper<Menu>()
                     .in(Menu::getMenuType, SystemConstants.MENU_TYPE_MENU, SystemConstants.MENU_TYPE_BUTTON)
