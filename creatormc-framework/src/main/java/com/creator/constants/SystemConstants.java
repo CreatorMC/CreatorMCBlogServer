@@ -100,4 +100,14 @@ public class SystemConstants {
      * 超级管理员的roleKey
      */
     public static final String ADMIN = "admin";
+
+    /**
+     * 导出分类Excel文件的文件名
+     */
+    public static final String CATEGORY_EXPORT_FILENAME = "分类";
+
+    /**
+     * 导出分类Excel表格的底部名称
+     */
+    public static final String CATEGORY_EXPORT_SHEETNAME = "分类导出";
 }

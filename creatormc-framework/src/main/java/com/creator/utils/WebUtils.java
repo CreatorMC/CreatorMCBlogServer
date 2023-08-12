@@ -1,6 +1,5 @@
 package com.creator.utils;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,7 +11,6 @@ public class WebUtils {
      *
      * @param response 渲染对象
      * @param string   待渲染的字符串
-     * @return null
      */
     public static void renderString(HttpServletResponse response, String string) {
         try {
@@ -26,13 +24,17 @@ public class WebUtils {
     }
 
 
-    public static void setDownLoadHeader(String filename, ServletContext context, HttpServletResponse response) throws UnsupportedEncodingException {
-        String mimeType = context.getMimeType(filename);//获取文件的mime类型
-        response.setHeader("content-type", mimeType);
-        String fname = URLEncoder.encode(filename, "UTF-8");
-        response.setHeader("Content-disposition", "attachment; filename=" + fname);
-
-//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//        response.setCharacterEncoding("utf-8");
+    /**
+     * 设置下载Excel文件的响应头
+     * @param filename 文件名（不带扩展名）
+     * @param response 响应对象
+     * @throws UnsupportedEncodingException
+     */
+    public static void setDownLoadHeader(String filename, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        String fileName = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=" + fileName + ".xlsx");
     }
 }

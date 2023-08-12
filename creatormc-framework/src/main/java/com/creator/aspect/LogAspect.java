@@ -14,6 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 @Component
@@ -63,6 +64,9 @@ public class LogAspect {
             if(args[i] instanceof MultipartFile) {
                 //如果这个对象是文件的话，以文件名代替
                 args[i] = ((MultipartFile)args[i]).getOriginalFilename();
+            } else if(args[i] instanceof HttpServletResponse) {
+                //如果这个对象是响应对象的话
+                args[i] = args[i].toString();
             }
         }
         log.info("Request Args   : {}", JSON.toJSONString(args));

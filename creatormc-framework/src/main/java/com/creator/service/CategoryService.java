@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.Category;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 分类表(Category)表服务接口
  *
@@ -26,5 +28,10 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResponseResult getAllCategory();
+
+    /**
+     * 导出分类表到Excel
+     */
+    void export(HttpServletResponse response);
 }
 
