@@ -38,7 +38,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "title", value = "文章标题", defaultValue = "Spring", paramType = "query"),
             @ApiImplicitParam(name = "summary", value = "文章摘要", defaultValue = "摘要", paramType = "query")
     })
-    @SystemLog(businessName = "查询文章列表")
+    @SystemLog(businessName = "后台查询文章列表")
     @GetMapping("/list")
     public ResponseResult getArticleList(Integer pageNum, Integer pageSize, String title, String summary) {
         return articleService.getArticleList(pageNum, pageSize, title, summary);

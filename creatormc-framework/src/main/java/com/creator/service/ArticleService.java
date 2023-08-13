@@ -53,7 +53,7 @@ public interface ArticleService extends IService<Article> {
     ResponseResult addArticle(AddArticleDto articleDto);
 
     /**
-     * 查询文章列表
+     * 后台查询文章列表
      * @param pageNum 第几页
      * @param pageSize 一页几条记录
      * @param title 标题
