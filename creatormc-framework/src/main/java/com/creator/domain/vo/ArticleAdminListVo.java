@@ -1,7 +1,5 @@
 package com.creator.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticleDetailVo {
+public class ArticleAdminListVo {
     //id
     private Long id;
     //标题

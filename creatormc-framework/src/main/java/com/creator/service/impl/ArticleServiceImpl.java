@@ -134,7 +134,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
                 .like(StringUtils.hasText(summary), Article::getSummary, summary)
         );
         List<Article> articles = page.getRecords();
-        return ResponseResult.okResult(new PageVo(BeanCopyUtils.copyBeanList(articles, ArticleDetailVo.class), page.getTotal()));
+        return ResponseResult.okResult(new PageVo(BeanCopyUtils.copyBeanList(articles, ArticleAdminListVo.class), page.getTotal()));
+    }
+
+    @Override
+    public ResponseResult getArticleAdmin(Long id) {
+        return null;
     }
 
     /**

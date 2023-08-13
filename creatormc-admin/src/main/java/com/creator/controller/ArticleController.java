@@ -45,4 +45,10 @@ public class ArticleController {
     public ResponseResult getArticleList(Integer pageNum, Integer pageSize, String title, String summary) {
         return articleService.getArticleList(pageNum, pageSize, title, summary);
     }
+
+    @SystemLog(businessName = "查询文章详情")
+    @GetMapping("/{id}")
+    public ResponseResult getArticle(@PathVariable Long id) {
+        return articleService.getArticleAdmin(id);
+    }
 }
