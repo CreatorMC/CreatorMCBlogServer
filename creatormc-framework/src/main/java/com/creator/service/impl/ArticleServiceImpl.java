@@ -9,10 +9,7 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddArticleDto;
 import com.creator.domain.entity.Article;
 import com.creator.domain.entity.ArticleTag;
-import com.creator.domain.vo.ArticleListVo;
-import com.creator.domain.vo.ArticleVo;
-import com.creator.domain.vo.HotArticleVo;
-import com.creator.domain.vo.PageVo;
+import com.creator.domain.vo.*;
 import com.creator.service.ArticleService;
 import com.creator.service.ArticleTagService;
 import com.creator.service.CategoryService;
@@ -22,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -125,6 +123,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         List<ArticleTag> articleTags = articleDto.getTags().stream().map(tagId -> new ArticleTag(article.getId(),tagId)).collect(Collectors.toList());
         articleTagService.saveBatch(articleTags);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getArticleList(Integer pageNum, Integer pageSize, String title, String summary) {
+        //有标题按标题查，有摘要按摘要查，两个都没有查全部
+        Page<Article> page = new Page<>(pageNum, pageSize);
+        page(page, new LambdaQueryWrapper<Article>()
+                .like(StringUtils.hasText(title), Article::getTitle, title)
+                .like(StringUtils.hasText(summary), Article::getSummary, summary)
+        );
+        List<Article> articles = page.getRecords();
+        return ResponseResult.okResult(new PageVo(BeanCopyUtils.copyBeanList(articles, ArticleDetailVo.class), page.getTotal()));
     }
 
     /**
