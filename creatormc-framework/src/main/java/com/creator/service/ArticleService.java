@@ -68,5 +68,13 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     ResponseResult getArticleAdmin(Long id);
+
+    /**
+     * 后台更新文章
+     *
+     * @param article
+     * @return
+     */
+    ResponseResult updateArticle(Article article);
 }
 

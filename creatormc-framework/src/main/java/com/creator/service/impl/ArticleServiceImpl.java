@@ -1,7 +1,7 @@
 package com.creator.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
@@ -25,7 +25,6 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -150,6 +149,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         List<Long> tags = articleTags.stream().map(ArticleTag::getTagId).collect(Collectors.toList());
         article.setTags(tags);
         return ResponseResult.okResult(article);
+    }
+
+    @Override
+    @Transactional  //开启事务功能
+    public ResponseResult updateArticle(Article article) {
+        //更新文章表
+        updateById(article);
+        //删除文章与标签的关联表中的相关记录
+        articleTagService.remove(new LambdaQueryWrapper<ArticleTag>()
+                .eq(ArticleTag::getArticleId, article.getId())
+        );
+        //封装为ArticleTag列表
+        List<ArticleTag> articleTags = article.getTags().stream().map(tagId -> new ArticleTag(article.getId(), tagId)).collect(Collectors.toList());
+        //保存到文章与标签的关联表中
+        articleTagService.saveBatch(articleTags);
+        return ResponseResult.okResult();
     }
 
     /**

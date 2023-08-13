@@ -3,7 +3,10 @@ package com.creator.controller;
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddArticleDto;
+import com.creator.domain.dto.UpdateArticleDto;
+import com.creator.domain.entity.Article;
 import com.creator.service.ArticleService;
+import com.creator.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -51,9 +54,19 @@ public class ArticleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
             @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path", required = true)
     })
-    @SystemLog(businessName = "查询文章详情")
+    @SystemLog(businessName = "后台查询文章详情")
     @GetMapping("/{id}")
     public ResponseResult getArticle(@PathVariable Long id) {
         return articleService.getArticleAdmin(id);
+    }
+
+    @ApiOperation("更新文章")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "后台更新文章")
+    @PutMapping
+    public ResponseResult updateArticle(@RequestBody UpdateArticleDto updateArticleDto) {
+        return articleService.updateArticle(BeanCopyUtils.copyBean(updateArticleDto, Article.class));
     }
 }
