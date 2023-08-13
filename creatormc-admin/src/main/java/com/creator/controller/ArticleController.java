@@ -26,7 +26,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加文章")
-    @PreAuthorize("@ps('content:article:writer')")
+    @PreAuthorize("@ps.hasPermission('content:article:writer')")
     @PostMapping
     public ResponseResult addArticle(@RequestBody AddArticleDto addArticleDto) {
         return articleService.addArticle(addArticleDto);
@@ -46,6 +46,11 @@ public class ArticleController {
         return articleService.getArticleList(pageNum, pageSize, title, summary);
     }
 
+    @ApiOperation("查询文章详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path", required = true)
+    })
     @SystemLog(businessName = "查询文章详情")
     @GetMapping("/{id}")
     public ResponseResult getArticle(@PathVariable Long id) {

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 文章表(Article)表实体类
@@ -47,6 +48,9 @@ public class Article {
     private Long viewCount;
     //是否允许评论 1是，0否
     private String isComment;
+    //标签id列表
+    @TableField(exist = false)
+    private List<Long> tags;
 
     @TableField(fill = FieldFill.INSERT)
     private Long createBy;

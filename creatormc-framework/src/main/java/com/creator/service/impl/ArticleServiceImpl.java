@@ -1,6 +1,7 @@
 package com.creator.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
@@ -23,6 +24,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -139,7 +142,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
 
     @Override
     public ResponseResult getArticleAdmin(Long id) {
-        return null;
+        Article article = getById(id);
+        List<ArticleTag> articleTags = articleTagService.list(new LambdaQueryWrapper<ArticleTag>()
+                .select(ArticleTag::getTagId)
+                .eq(ArticleTag::getArticleId, article.getId())
+        );
+        List<Long> tags = articleTags.stream().map(ArticleTag::getTagId).collect(Collectors.toList());
+        article.setTags(tags);
+        return ResponseResult.okResult(article);
     }
 
     /**
