@@ -167,6 +167,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         return ResponseResult.okResult();
     }
 
+    @Override
+    public ResponseResult deleteArticle(Long id) {
+        removeById(id);
+        return ResponseResult.okResult();
+    }
+
     /**
      * 从Redis中返回指定的文章浏览量
      * @param id 文章id

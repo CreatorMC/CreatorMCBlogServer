@@ -69,4 +69,14 @@ public class ArticleController {
     public ResponseResult updateArticle(@RequestBody UpdateArticleDto updateArticleDto) {
         return articleService.updateArticle(BeanCopyUtils.copyBean(updateArticleDto, Article.class));
     }
+
+    @ApiOperation("删除文章")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "删除文章")
+    @DeleteMapping("/{id}")
+    public ResponseResult deleteArticle(@PathVariable Long id) {
+        return articleService.deleteArticle(id);
+    }
 }

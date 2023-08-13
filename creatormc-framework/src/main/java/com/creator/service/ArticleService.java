@@ -76,5 +76,12 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     ResponseResult updateArticle(Article article);
+
+    /**
+     * 删除文章
+     * @param id 文章 id
+     * @return
+     */
+    ResponseResult deleteArticle(Long id);
 }
 
