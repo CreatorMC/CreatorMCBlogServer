@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
@@ -25,6 +26,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加文章")
+    @PreAuthorize("@ps('content:article:writer')")
     @PostMapping
     public ResponseResult addArticle(@RequestBody AddArticleDto addArticleDto) {
         return articleService.addArticle(addArticleDto);
