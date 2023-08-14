@@ -1,16 +1,22 @@
 package com.creator.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.RoleDao;
 import com.creator.dao.UserRoleDao;
+import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.RoleListDto;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.UserRole;
+import com.creator.domain.vo.PageVo;
 import com.creator.service.RoleService;
 import com.creator.utils.SecurityUtils;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +27,7 @@ import java.util.List;
  * @author makejava
  * @since 2023-08-06 22:20:33
  */
+@SuppressWarnings("rawtypes")
 @Service("roleService")
 public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleService {
 
@@ -42,6 +49,21 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
                 //角色状态为正常
                 .eq(Role::getStatus, SystemConstants.ROLE_STATUS_NORMAL)
         );
+    }
+
+    @Override
+    public ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, RoleListDto roleListDto) {
+        //分页查询
+        Page<Role> page = new Page<>(pageNum, pageSize);
+        page(page, new LambdaQueryWrapper<Role>()
+                //根据角色名进行模糊查询
+                .like(StringUtils.hasText(roleListDto.getRoleName()), Role::getRoleName, roleListDto.getRoleName())
+                //根据状态进行查询
+                .eq(StringUtils.hasText(roleListDto.getStatus()), Role::getStatus, roleListDto.getStatus())
+                //按照role_sort进行升序排列
+                .orderByAsc(Role::getRoleSort)
+        );
+        return ResponseResult.okResult(new PageVo(page.getRecords(), page.getTotal()));
     }
 }
 
