@@ -2,6 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.AddRoleDto;
 import com.creator.domain.dto.RoleListDto;
 import com.creator.domain.dto.RoleStatusDto;
 import com.creator.domain.entity.Role;
@@ -41,5 +42,15 @@ public class RoleController {
     @PutMapping("/changeStatus")
     public ResponseResult changeRoleStatus(@RequestBody RoleStatusDto roleStatusDto) {
         return roleService.changeRoleStatus(BeanCopyUtils.copyBean(roleStatusDto, Role.class));
+    }
+
+    @ApiOperation("添加角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "添加角色")
+    @PostMapping
+    public ResponseResult addRole(@RequestBody AddRoleDto addRoleDto) {
+        return roleService.addRole(addRoleDto);
     }
 }

@@ -7,19 +7,25 @@ import com.creator.constants.SystemConstants;
 import com.creator.dao.RoleDao;
 import com.creator.dao.UserRoleDao;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.AddRoleDto;
 import com.creator.domain.dto.RoleListDto;
 import com.creator.domain.entity.Role;
+import com.creator.domain.entity.RoleMenu;
 import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.PageVo;
+import com.creator.service.RoleMenuService;
 import com.creator.service.RoleService;
+import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.SecurityUtils;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 角色信息表(Role)表服务实现类
@@ -33,6 +39,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
 
     @Autowired
     private UserRoleDao userRoleDao;
+
+    @Autowired
+    private RoleMenuService roleMenuService;
 
     @Override
     public List<String> selectRoleKeysByUserId(Long userId) {
@@ -69,6 +78,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     @Override
     public ResponseResult changeRoleStatus(Role role) {
         updateById(role);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    @Transactional  //开启事务
+    public ResponseResult addRole(AddRoleDto addRoleDto) {
+        //保存角色到数据库
+        Role role = BeanCopyUtils.copyBean(addRoleDto, Role.class);
+        save(role);
+        //将角色与菜单建立对应关系
+        List<Long> menuIds = addRoleDto.getMenuIds();
+        List<RoleMenu> roleMenus = menuIds.stream().map(menuId -> new RoleMenu(role.getId(), menuId)).collect(Collectors.toList());
+        roleMenuService.saveBatch(roleMenus);
         return ResponseResult.okResult();
     }
 }

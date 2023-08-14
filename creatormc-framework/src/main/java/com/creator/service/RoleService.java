@@ -2,6 +2,7 @@ package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.AddRoleDto;
 import com.creator.domain.dto.RoleListDto;
 import com.creator.domain.dto.RoleStatusDto;
 import com.creator.domain.entity.Role;
@@ -34,5 +35,12 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     ResponseResult changeRoleStatus(Role role);
+
+    /**
+     * 添加角色
+     * @param addRoleDto
+     * @return
+     */
+    ResponseResult addRole(AddRoleDto addRoleDto);
 }
 
