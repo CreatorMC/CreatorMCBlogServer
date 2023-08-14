@@ -43,4 +43,14 @@ public class MenuController {
         return menuService.addMenu(BeanCopyUtils.copyBean(menuDto, Menu.class));
     }
 
+    @ApiOperation("查询单个菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "查询单个菜单")
+    @GetMapping("/{id}")
+    public ResponseResult getMenu(@PathVariable Long id) {
+        return menuService.getMenu(id);
+    }
+
 }
