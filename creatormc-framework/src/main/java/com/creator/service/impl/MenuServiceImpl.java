@@ -12,6 +12,7 @@ import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
 import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.MenuAdminListVo;
+import com.creator.enums.AppHttpCodeEnum;
 import com.creator.service.MenuService;
 import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.SecurityUtils;
@@ -119,6 +120,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
     public ResponseResult getMenu(Long id) {
         Menu menu = getById(id);
         return ResponseResult.okResult(BeanCopyUtils.copyBean(menu, MenuAdminListVo.class));
+    }
+
+    @Override
+    public ResponseResult updateMenu(Menu menu) {
+        if(menu.getId().equals(menu.getParentId())) {
+            //当前菜单id等于父菜单id
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR.getCode(), String.format(SystemConstants.UPDATE_MENU_ERROR, menu.getMenuName()));
+        }
+        updateById(menu);
+        return ResponseResult.okResult();
     }
 }
 

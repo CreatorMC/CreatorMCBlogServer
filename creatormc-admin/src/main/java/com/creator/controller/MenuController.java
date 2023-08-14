@@ -4,6 +4,7 @@ import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.MenuDto;
 import com.creator.domain.dto.MenuListDto;
+import com.creator.domain.dto.UpdateMenuDto;
 import com.creator.domain.entity.Menu;
 import com.creator.service.MenuService;
 import com.creator.utils.BeanCopyUtils;
@@ -51,6 +52,16 @@ public class MenuController {
     @GetMapping("/{id}")
     public ResponseResult getMenu(@PathVariable Long id) {
         return menuService.getMenu(id);
+    }
+
+    @ApiOperation("更新菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "更新菜单")
+    @PutMapping
+    public ResponseResult updateMenu(@RequestBody UpdateMenuDto updateMenuDto) {
+        return menuService.updateMenu(BeanCopyUtils.copyBean(updateMenuDto, Menu.class));
     }
 
 }
