@@ -3,6 +3,7 @@ package com.creator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.RoleListDto;
+import com.creator.domain.dto.RoleStatusDto;
 import com.creator.domain.entity.Role;
 
 import java.util.List;
@@ -26,5 +27,12 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, RoleListDto roleListDto);
+
+    /**
+     * 更新角色状态
+     * @param role
+     * @return
+     */
+    ResponseResult changeRoleStatus(Role role);
 }
 

@@ -65,5 +65,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         );
         return ResponseResult.okResult(new PageVo(page.getRecords(), page.getTotal()));
     }
+
+    @Override
+    public ResponseResult changeRoleStatus(Role role) {
+        updateById(role);
+        return ResponseResult.okResult();
+    }
 }
 
