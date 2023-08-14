@@ -13,6 +13,7 @@ import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
 import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.PageVo;
+import com.creator.domain.vo.RoleAdminVo;
 import com.creator.service.RoleMenuService;
 import com.creator.service.RoleService;
 import com.creator.utils.BeanCopyUtils;
@@ -92,6 +93,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         List<RoleMenu> roleMenus = menuIds.stream().map(menuId -> new RoleMenu(role.getId(), menuId)).collect(Collectors.toList());
         roleMenuService.saveBatch(roleMenus);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getRole(Long id) {
+        Role role = getById(id);
+        return ResponseResult.okResult(BeanCopyUtils.copyBean(role, RoleAdminVo.class));
     }
 }
 

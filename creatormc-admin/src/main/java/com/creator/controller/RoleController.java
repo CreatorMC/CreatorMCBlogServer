@@ -53,4 +53,14 @@ public class RoleController {
     public ResponseResult addRole(@RequestBody AddRoleDto addRoleDto) {
         return roleService.addRole(addRoleDto);
     }
+
+    @ApiOperation("查询单个角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "查询单个角色")
+    @GetMapping("/{id}")
+    public ResponseResult getRole(@PathVariable Long id) {
+        return roleService.getRole(id);
+    }
 }
