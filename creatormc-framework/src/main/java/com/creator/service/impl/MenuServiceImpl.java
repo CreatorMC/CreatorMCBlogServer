@@ -5,15 +5,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.MenuDao;
 import com.creator.dao.UserRoleDao;
+import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.MenuListDto;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
 import com.creator.domain.entity.UserRole;
+import com.creator.domain.vo.MenuAdminListVo;
 import com.creator.service.MenuService;
+import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.SecurityUtils;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +29,7 @@ import java.util.stream.Collectors;
  * @author makejava
  * @since 2023-08-07 08:43:17
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 @Service("menuService")
 public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuService {
 
@@ -90,6 +95,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
                 //先根据父菜单id排序，再根据排序字段排序
                 .orderByAsc(Menu::getParentId, Menu::getOrderNum)
         );
+    }
+
+    @Override
+    public ResponseResult getMenuList(MenuListDto menuListDto) {
+        List<Menu> menus = list(new LambdaQueryWrapper<Menu>()
+                //模糊查找
+                .like(StringUtils.hasText(menuListDto.getStatus()), Menu::getStatus, menuListDto.getStatus())
+                .like(StringUtils.hasText(menuListDto.getMenuName()), Menu::getMenuName, menuListDto.getMenuName())
+                //先按父菜单id排序，再按orderNum排序，都是升序排序
+                .orderByAsc(Menu::getParentId, Menu::getOrderNum)
+        );
+        return ResponseResult.okResult(BeanCopyUtils.copyBeanList(menus, MenuAdminListVo.class));
     }
 }
 
