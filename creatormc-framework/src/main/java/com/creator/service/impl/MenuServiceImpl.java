@@ -12,6 +12,7 @@ import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
 import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.MenuAdminListVo;
+import com.creator.domain.vo.MenuAdminTreeVo;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.service.MenuService;
 import com.creator.utils.BeanCopyUtils;
@@ -21,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -143,6 +146,35 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
         }
         removeById(id);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getMenuTree() {
+        //查询菜单
+        List<Menu> menus = list(new LambdaQueryWrapper<Menu>()
+                //菜单状态为正常
+                .eq(Menu::getStatus, SystemConstants.MENU_STATUS_NORMAL)
+        );
+        //转换为MenuAdminTreeVo列表
+        List<MenuAdminTreeVo> menuAdminTreeVos = menus.stream().map(menu -> new MenuAdminTreeVo(menu.getId(), menu.getMenuName(), menu.getParentId(), new ArrayList<>())).collect(Collectors.toList());
+        //查找子菜单
+        List<MenuAdminTreeVo> result = findSubMenuTree(0L, menuAdminTreeVos);
+        return ResponseResult.okResult(result);
+    }
+
+    /**
+     * 查找子菜单
+     * @param source 原列表
+     */
+    public List<MenuAdminTreeVo> findSubMenuTree(Long parentId, List<MenuAdminTreeVo> source) {
+        List<MenuAdminTreeVo> res = new ArrayList<>();
+        for (MenuAdminTreeVo vo: source) {
+            if(vo.getParentId().equals(parentId)) {
+                vo.setChildren(findSubMenuTree(vo.getId(), source));
+                res.add(vo);
+            }
+        }
+        return res;
     }
 }
 

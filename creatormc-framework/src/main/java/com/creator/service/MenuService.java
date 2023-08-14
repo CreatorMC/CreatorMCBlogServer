@@ -54,5 +54,11 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     ResponseResult deleteMenu(Long id);
+
+    /**
+     * 查询菜单树 (在新增角色页面被调用)
+     * @return
+     */
+    ResponseResult getMenuTree();
 }
 

@@ -74,4 +74,14 @@ public class MenuController {
         return menuService.deleteMenu(id);
     }
 
+    @ApiOperation("查询菜单树")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "查询菜单树")
+    @GetMapping("/treeselect")
+    public ResponseResult getMenuTree() {
+        return menuService.getMenuTree();
+    }
+
 }
