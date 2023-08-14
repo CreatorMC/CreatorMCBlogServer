@@ -5,6 +5,7 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddRoleDto;
 import com.creator.domain.dto.RoleListDto;
 import com.creator.domain.dto.RoleStatusDto;
+import com.creator.domain.dto.UpdateRoleDto;
 import com.creator.domain.entity.Role;
 
 import java.util.List;
@@ -49,5 +50,12 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     ResponseResult getRole(Long id);
+
+    /**
+     * 更新角色
+     * @param updateRoleDto
+     * @return
+     */
+    ResponseResult updateRole(UpdateRoleDto updateRoleDto);
 }
 

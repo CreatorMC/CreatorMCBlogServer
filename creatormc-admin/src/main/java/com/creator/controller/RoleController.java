@@ -5,6 +5,7 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddRoleDto;
 import com.creator.domain.dto.RoleListDto;
 import com.creator.domain.dto.RoleStatusDto;
+import com.creator.domain.dto.UpdateRoleDto;
 import com.creator.domain.entity.Role;
 import com.creator.service.RoleService;
 import com.creator.utils.BeanCopyUtils;
@@ -62,5 +63,15 @@ public class RoleController {
     @GetMapping("/{id}")
     public ResponseResult getRole(@PathVariable Long id) {
         return roleService.getRole(id);
+    }
+
+    @ApiOperation("更新角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "更新角色")
+    @PutMapping
+    public ResponseResult updateRole(@RequestBody UpdateRoleDto updateRoleDto) {
+        return roleService.updateRole(updateRoleDto);
     }
 }

@@ -9,6 +9,7 @@ import com.creator.dao.UserRoleDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddRoleDto;
 import com.creator.domain.dto.RoleListDto;
+import com.creator.domain.dto.UpdateRoleDto;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
 import com.creator.domain.entity.UserRole;
@@ -26,6 +27,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -99,6 +101,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     public ResponseResult getRole(Long id) {
         Role role = getById(id);
         return ResponseResult.okResult(BeanCopyUtils.copyBean(role, RoleAdminVo.class));
+    }
+
+    @Override
+    @Transactional  //开启事务
+    public ResponseResult updateRole(UpdateRoleDto updateRoleDto) {
+        //更新角色
+        Role role = BeanCopyUtils.copyBean(updateRoleDto, Role.class);
+        updateById(role);
+        //删除原来角色与菜单权限的关联
+        roleMenuService.remove(new LambdaQueryWrapper<RoleMenu>()
+                .eq(RoleMenu::getRoleId, role.getId())
+        );
+        //添加现在角色与菜单权限的关联
+        List<RoleMenu> roleMenus = updateRoleDto.getMenuIds().stream().map(menuId -> new RoleMenu(role.getId(), menuId)).collect(Collectors.toList());
+        roleMenuService.saveBatch(roleMenus);
+        return ResponseResult.okResult();
     }
 }
 
