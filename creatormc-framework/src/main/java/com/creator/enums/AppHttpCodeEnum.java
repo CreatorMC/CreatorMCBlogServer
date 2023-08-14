@@ -19,7 +19,8 @@ public enum AppHttpCodeEnum {
     NICKNAME_NOT_NULL(510, "昵称不能为空"),
     PASSWORD_NOT_NULL(511, "密码不能为空"),
     EMAIL_NOT_NULL(512, "邮箱不能为空"),
-    NICKNAME_EXIST(513, "昵称已存在");
+    NICKNAME_EXIST(513, "昵称已存在"),
+    MENU_DELETE_ERROR(500, "存在子菜单不允许删除");
     int code;
     String msg;
 

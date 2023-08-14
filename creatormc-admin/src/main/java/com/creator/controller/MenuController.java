@@ -64,4 +64,14 @@ public class MenuController {
         return menuService.updateMenu(BeanCopyUtils.copyBean(updateMenuDto, Menu.class));
     }
 
+    @ApiOperation("删除菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "删除菜单")
+    @DeleteMapping("/{id}")
+    public ResponseResult deleteMenu(@PathVariable Long id) {
+        return menuService.deleteMenu(id);
+    }
+
 }

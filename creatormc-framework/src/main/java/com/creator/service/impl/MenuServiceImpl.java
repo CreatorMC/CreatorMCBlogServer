@@ -131,5 +131,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
         updateById(menu);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult deleteMenu(Long id) {
+        long count = count(new LambdaQueryWrapper<Menu>()
+                .eq(Menu::getParentId, id)
+        );
+        if(count > 0) {
+            //有子菜单
+            return ResponseResult.errorResult(AppHttpCodeEnum.MENU_DELETE_ERROR);
+        }
+        removeById(id);
+        return ResponseResult.okResult();
+    }
 }
 
