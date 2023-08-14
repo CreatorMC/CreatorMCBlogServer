@@ -2,16 +2,17 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.MenuDto;
 import com.creator.domain.dto.MenuListDto;
+import com.creator.domain.entity.Menu;
 import com.creator.service.MenuService;
+import com.creator.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -31,4 +32,15 @@ public class MenuController {
     public ResponseResult getMenuList(MenuListDto menuListDto) {
         return menuService.getMenuList(menuListDto);
     }
+
+    @ApiOperation("添加菜单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "添加菜单")
+    @PostMapping
+    public ResponseResult addMenu(@RequestBody MenuDto menuDto) {
+        return menuService.addMenu(BeanCopyUtils.copyBean(menuDto, Menu.class));
+    }
+
 }

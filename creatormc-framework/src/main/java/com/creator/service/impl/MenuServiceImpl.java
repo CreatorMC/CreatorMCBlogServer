@@ -108,5 +108,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
         );
         return ResponseResult.okResult(BeanCopyUtils.copyBeanList(menus, MenuAdminListVo.class));
     }
+
+    @Override
+    public ResponseResult addMenu(Menu menu) {
+        save(menu);
+        return ResponseResult.okResult();
+    }
 }
 

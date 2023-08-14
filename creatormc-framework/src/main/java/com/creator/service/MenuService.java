@@ -26,5 +26,12 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     ResponseResult getMenuList(MenuListDto menuListDto);
+
+    /**
+     * 后台添加菜单
+     * @param menu
+     * @return
+     */
+    ResponseResult addMenu(Menu menu);
 }
 
