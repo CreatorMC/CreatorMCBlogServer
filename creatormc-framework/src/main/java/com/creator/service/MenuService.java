@@ -60,5 +60,12 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     ResponseResult getMenuTree();
+
+    /**
+     * 查询对应角色菜单列表树 (在修改角色时被调用)
+     * @param id 角色 id
+     * @return
+     */
+    ResponseResult getRoleMenuTree(Long id);
 }
 

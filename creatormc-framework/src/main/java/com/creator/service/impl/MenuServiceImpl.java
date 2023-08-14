@@ -12,9 +12,11 @@ import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
 import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.MenuAdminListVo;
+import com.creator.domain.vo.MenuAdminRoleTreeVo;
 import com.creator.domain.vo.MenuAdminTreeVo;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.service.MenuService;
+import com.creator.service.RoleMenuService;
 import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.SecurityUtils;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
@@ -39,6 +41,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
 
     @Autowired
     private UserRoleDao userRoleDao;
+
+    @Autowired
+    private RoleMenuService roleMenuService;
 
     @Override
     public List<String> selectMenuPermsByUserId(Long userId) {
@@ -150,6 +155,28 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
 
     @Override
     public ResponseResult getMenuTree() {
+        List<MenuAdminTreeVo> result = getMenuAdminTreeVos();
+        return ResponseResult.okResult(result);
+    }
+    
+    @Override
+    public ResponseResult getRoleMenuTree(Long id) {
+        //查询菜单树
+        List<MenuAdminTreeVo> menus = getMenuAdminTreeVos();
+        //查询角色关联的菜单权限id
+        List<RoleMenu> roleMenus = roleMenuService.list(new LambdaQueryWrapper<RoleMenu>()
+                .eq(RoleMenu::getRoleId, id)
+        );
+        List<Long> checkedKeys = roleMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
+        //封装
+        return ResponseResult.okResult(new MenuAdminRoleTreeVo(menus, checkedKeys));
+    }
+
+    /**
+     * 查询菜单树
+     * @return
+     */
+    private List<MenuAdminTreeVo> getMenuAdminTreeVos() {
         //查询菜单
         List<Menu> menus = list(new LambdaQueryWrapper<Menu>()
                 //菜单状态为正常
@@ -158,8 +185,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
         //转换为MenuAdminTreeVo列表
         List<MenuAdminTreeVo> menuAdminTreeVos = menus.stream().map(menu -> new MenuAdminTreeVo(menu.getId(), menu.getMenuName(), menu.getParentId(), new ArrayList<>())).collect(Collectors.toList());
         //查找子菜单
-        List<MenuAdminTreeVo> result = findSubMenuTree(0L, menuAdminTreeVos);
-        return ResponseResult.okResult(result);
+        return findSubMenuTree(0L, menuAdminTreeVos);
     }
 
     /**

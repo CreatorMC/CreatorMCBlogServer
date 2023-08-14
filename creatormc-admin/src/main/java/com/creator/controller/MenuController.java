@@ -84,4 +84,14 @@ public class MenuController {
         return menuService.getMenuTree();
     }
 
+    @ApiOperation("查询对应角色菜单列表树")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "查询对应角色菜单列表树")
+    @GetMapping("/roleMenuTreeselect/{id}")
+    public ResponseResult getRoleMenuTree(@PathVariable Long id) {
+        return menuService.getRoleMenuTree(id);
+    }
+
 }
