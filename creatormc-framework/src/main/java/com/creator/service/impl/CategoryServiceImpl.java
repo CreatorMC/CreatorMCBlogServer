@@ -105,5 +105,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
         //封装
         return ResponseResult.okResult(new PageVo(categoryAdminListVos, page.getTotal()));
     }
+
+    @Override
+    public ResponseResult addCategory(Category category) {
+        save(category);
+        return ResponseResult.okResult();
+    }
 }
 

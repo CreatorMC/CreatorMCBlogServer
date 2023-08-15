@@ -43,5 +43,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, CategoryListDto categoryListDto);
+
+    /**
+     * 添加分类
+     * @param category
+     * @return
+     */
+    ResponseResult addCategory(Category category);
 }
 
