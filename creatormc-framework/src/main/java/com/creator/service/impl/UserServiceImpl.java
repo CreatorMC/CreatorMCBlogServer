@@ -2,16 +2,15 @@ package com.creator.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.COSConstants;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.UserListDto;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.User;
-import com.creator.domain.vo.AdminUserInfoVo;
-import com.creator.domain.vo.MenuArrayVo;
-import com.creator.domain.vo.MenuVo;
-import com.creator.domain.vo.UserInfoVo;
+import com.creator.domain.vo.*;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
 import com.creator.service.MenuService;
@@ -151,6 +150,22 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             }
         }
         return ResponseResult.okResult(new MenuArrayVo(menuVoList));
+    }
+
+    @Override
+    public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, UserListDto userListDto) {
+        //分页查询
+        Page<User> page = new Page<>(pageNum, pageSize);
+        page(page, new LambdaQueryWrapper<User>()
+                //根据用户名模糊搜索
+                .like(StringUtils.hasText(userListDto.getUserName()), User::getUserName, userListDto.getUserName())
+                //根据手机号模糊搜索
+                .like(StringUtils.hasText(userListDto.getPhonenumber()), User::getPhonenumber, userListDto.getPhonenumber())
+                //根据状态进行查询
+                .eq(StringUtils.hasText(userListDto.getStatus()), User::getStatus, userListDto.getStatus())
+        );
+        List<UserAdminListVo> userAdminListVos = BeanCopyUtils.copyBeanList(page.getRecords(), UserAdminListVo.class);
+        return ResponseResult.okResult(new PageVo(userAdminListVos, page.getTotal()));
     }
 
     /**

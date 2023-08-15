@@ -2,6 +2,7 @@ package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.UserListDto;
 import com.creator.domain.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,5 +47,14 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult getRouters();
+
+    /**
+     * 分页查询用户列表
+     * @param pageNum 第几页
+     * @param pageSize 一页几条记录
+     * @param userListDto
+     * @return
+     */
+    ResponseResult getPageUserList(Integer pageNum, Integer pageSize, UserListDto userListDto);
 }
 

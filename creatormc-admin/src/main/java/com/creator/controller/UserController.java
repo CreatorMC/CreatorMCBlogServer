@@ -2,6 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.UserListDto;
 import com.creator.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -37,5 +38,17 @@ public class UserController {
     @GetMapping("/getRouters")
     public ResponseResult getRouters() {
         return userService.getRouters();
+    }
+
+    @ApiOperation("分页查询用户列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "pageNum", value = "第几页", defaultValue = "1", paramType = "query", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "query", required = true)
+    })
+    @SystemLog(businessName = "分页查询用户列表")
+    @GetMapping("system/user/list")
+    public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, UserListDto userListDto) {
+        return userService.getPageUserList(pageNum, pageSize, userListDto);
     }
 }
