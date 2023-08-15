@@ -8,6 +8,7 @@ import com.creator.constants.COSConstants;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
+import com.creator.domain.dto.UpdateUserDto;
 import com.creator.domain.dto.UserListDto;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.Role;
@@ -187,6 +188,22 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         UserAdminGetVo user = BeanCopyUtils.copyBean(getById(id), UserAdminGetVo.class);
         //封装
         return ResponseResult.okResult(new UserAdminVo(roleIds, roles, user));
+    }
+
+    @Override
+    @Transactional  //开启事务
+    public ResponseResult updateUser(UpdateUserDto updateUserDto) {
+        //更新用户
+        User user = BeanCopyUtils.copyBean(updateUserDto, User.class);
+        updateById(user);
+        //删除原来用户与角色的关联
+        userRoleService.remove(new LambdaQueryWrapper<UserRole>()
+                .eq(UserRole::getUserId, user.getId())
+        );
+        //插入现在用户与角色的关联
+        List<UserRole> userRoles = updateUserDto.getRoleIds().stream().map(roleId -> new UserRole(user.getId(), roleId)).collect(Collectors.toList());
+        userRoleService.saveBatch(userRoles);
+        return ResponseResult.okResult();
     }
 
     /**

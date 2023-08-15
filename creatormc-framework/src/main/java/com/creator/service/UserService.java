@@ -3,6 +3,7 @@ package com.creator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
+import com.creator.domain.dto.UpdateUserDto;
 import com.creator.domain.dto.UserListDto;
 import com.creator.domain.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,5 +81,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult getUser(Long id);
+
+    /**
+     * 更新用户
+     * @param updateUserDto
+     * @return
+     */
+    ResponseResult updateUser(UpdateUserDto updateUserDto);
 }
 

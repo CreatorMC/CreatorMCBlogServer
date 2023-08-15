@@ -3,6 +3,7 @@ package com.creator.controller;
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
+import com.creator.domain.dto.UpdateUserDto;
 import com.creator.domain.dto.UserListDto;
 import com.creator.service.UserService;
 import io.swagger.annotations.Api;
@@ -85,5 +86,15 @@ public class UserController {
     @GetMapping("/system/user/{id}")
     public ResponseResult getUser(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    @ApiOperation("更新用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "更新用户")
+    @PutMapping("/system/user")
+    public ResponseResult updateUser(@RequestBody UpdateUserDto updateUserDto) {
+        return userService.updateUser(updateUserDto);
     }
 }
