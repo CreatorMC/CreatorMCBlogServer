@@ -206,6 +206,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return ResponseResult.okResult();
     }
 
+    @Override
+    public ResponseResult changeUserStatus(User user) {
+        updateById(user);
+        return ResponseResult.okResult();
+    }
+
     /**
      * 查找根菜单下有哪些子菜单
      * @param menuVo 父菜单

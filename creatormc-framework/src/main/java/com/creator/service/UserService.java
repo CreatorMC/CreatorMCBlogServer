@@ -88,5 +88,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult updateUser(UpdateUserDto updateUserDto);
+
+    /**
+     * 更新用户状态
+     * @param user
+     * @return
+     */
+    ResponseResult changeUserStatus(User user);
 }
 

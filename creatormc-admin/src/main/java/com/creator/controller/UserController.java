@@ -5,7 +5,10 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.UpdateUserDto;
 import com.creator.domain.dto.UserListDto;
+import com.creator.domain.dto.UserStatusDto;
+import com.creator.domain.entity.User;
 import com.creator.service.UserService;
+import com.creator.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -96,5 +99,15 @@ public class UserController {
     @PutMapping("/system/user")
     public ResponseResult updateUser(@RequestBody UpdateUserDto updateUserDto) {
         return userService.updateUser(updateUserDto);
+    }
+
+    @ApiOperation("更新用户状态")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "更新用户状态")
+    @PutMapping("/system/user/changeStatus")
+    public ResponseResult changeUserStatus(@RequestBody UserStatusDto userStatusDto) {
+        return userService.changeUserStatus(BeanCopyUtils.copyBean(userStatusDto, User.class));
     }
 }
