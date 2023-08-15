@@ -89,4 +89,14 @@ public class CategoryController {
     public ResponseResult updateCategory(@RequestBody UpdateCategoryDto updateCategoryDto) {
         return categoryService.updateCategory(BeanCopyUtils.copyBean(updateCategoryDto, Category.class));
     }
+
+    @ApiOperation("删除分类")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "删除分类")
+    @DeleteMapping("/{id}")
+    public ResponseResult deleteCategory(@PathVariable Long id) {
+        return categoryService.deleteCategory(id);
+    }
 }

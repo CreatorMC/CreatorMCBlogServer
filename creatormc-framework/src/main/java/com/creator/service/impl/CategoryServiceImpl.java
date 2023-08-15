@@ -124,5 +124,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
         updateById(category);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult deleteCategory(Long id) {
+        removeById(id);
+        return ResponseResult.okResult();
+    }
 }
 

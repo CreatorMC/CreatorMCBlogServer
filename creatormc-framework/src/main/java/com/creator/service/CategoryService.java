@@ -64,5 +64,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResponseResult updateCategory(Category category);
+
+    /**
+     * 删除分类
+     * @param id 分类 id
+     * @return
+     */
+    ResponseResult deleteCategory(Long id);
 }
 
