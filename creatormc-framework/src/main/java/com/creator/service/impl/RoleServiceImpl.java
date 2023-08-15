@@ -124,5 +124,15 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         removeById(id);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult getRoleList() {
+        //查询角色列表
+        List<Role> roles = list(new LambdaQueryWrapper<Role>()
+                //查询状态正常的角色
+                .eq(Role::getStatus, SystemConstants.ROLE_STATUS_NORMAL)
+        );
+        return ResponseResult.okResult(roles);
+    }
 }
 

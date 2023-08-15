@@ -64,5 +64,11 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     ResponseResult deleteRole(Long id);
+
+    /**
+     * 查询角色列表
+     * @return
+     */
+    ResponseResult getRoleList();
 }
 

@@ -84,4 +84,14 @@ public class RoleController {
     public ResponseResult deleteRole(@PathVariable Long id) {
         return roleService.deleteRole(id);
     }
+
+    @ApiOperation("查询角色列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "查询角色列表")
+    @GetMapping("/listAllRole")
+    public ResponseResult getRoleList() {
+        return roleService.getRoleList();
+    }
 }
