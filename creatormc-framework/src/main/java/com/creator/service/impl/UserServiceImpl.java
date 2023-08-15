@@ -7,14 +7,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.COSConstants;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.UserListDto;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.User;
+import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.*;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
 import com.creator.service.MenuService;
 import com.creator.service.RoleService;
+import com.creator.service.UserRoleService;
 import com.creator.service.UserService;
 import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.COSOperate;
@@ -23,11 +26,13 @@ import com.creator.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户表(User)表服务实现类
@@ -50,6 +55,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Override
     public ResponseResult userInfo() {
@@ -87,33 +95,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public ResponseResult register(User user) {
         //TODO 多线程下有可能同时都判断为不冲突，但结果两个人的昵称都相同。 可以在数据库中设置唯一性约束解决此问题吗？
-        //对数据进行非空判断
-        if(!StringUtils.hasText(user.getUserName())) {
-            throw new SystemException(AppHttpCodeEnum.USERNAME_NOT_NULL);
-        }
-        if(!StringUtils.hasText(user.getPassword())) {
-            throw new SystemException(AppHttpCodeEnum.PASSWORD_NOT_NULL);
-        }
-        if(!StringUtils.hasText(user.getEmail())) {
-            throw new SystemException(AppHttpCodeEnum.EMAIL_NOT_NULL);
-        }
-        if(!StringUtils.hasText(user.getNickName())) {
-            throw new SystemException(AppHttpCodeEnum.NICKNAME_NOT_NULL);
-        }
-        //对数据进行是否存在的判断
-        if(userDataExist(User::getUserName ,user.getUserName())) {
-            throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
-        }
-        if(userDataExist(User::getNickName, user.getNickName())) {
-            throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
-        }
-        if(userDataExist(User::getEmail, user.getEmail())) {
-            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
-        }
-        //对密码进行加密
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        //存入数据库
-        save(user);
+        saveUser(user);
         return ResponseResult.okResult();
     }
 
@@ -168,6 +150,18 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return ResponseResult.okResult(new PageVo(userAdminListVos, page.getTotal()));
     }
 
+    @Override
+    @Transactional  //开启事务
+    public ResponseResult addUser(AddUserDto addUserDto) {
+        //保存用户
+        User user = BeanCopyUtils.copyBean(addUserDto, User.class);
+        saveUser(user);
+        //保存用户与角色的关联信息
+        List<UserRole> userRoles = addUserDto.getRoleIds().stream().map(roleId -> new UserRole(user.getId(), roleId)).collect(Collectors.toList());
+        userRoleService.saveBatch(userRoles);
+        return ResponseResult.okResult();
+    }
+
     /**
      * 查找根菜单下有哪些子菜单
      * @param menuVo 父菜单
@@ -182,6 +176,40 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
                 findSubMenu(m, menuVos);
             }
         }
+    }
+
+    /**
+     * 将用户保存到数据库并判断是否符合要求
+     * @param user
+     */
+    private void saveUser(User user) {
+        //对数据进行非空判断
+        if(!StringUtils.hasText(user.getUserName())) {
+            throw new SystemException(AppHttpCodeEnum.USERNAME_NOT_NULL);
+        }
+        if(!StringUtils.hasText(user.getPassword())) {
+            throw new SystemException(AppHttpCodeEnum.PASSWORD_NOT_NULL);
+        }
+        if(!StringUtils.hasText(user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_NOT_NULL);
+        }
+        if(!StringUtils.hasText(user.getNickName())) {
+            throw new SystemException(AppHttpCodeEnum.NICKNAME_NOT_NULL);
+        }
+        //对数据进行是否存在的判断
+        if(userDataExist(User::getUserName , user.getUserName())) {
+            throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
+        }
+        if(userDataExist(User::getNickName, user.getNickName())) {
+            throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
+        }
+        if(userDataExist(User::getEmail, user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
+        }
+        //对密码进行加密
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //存入数据库
+        save(user);
     }
 
     /**

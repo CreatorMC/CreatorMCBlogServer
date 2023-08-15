@@ -2,6 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.UserListDto;
 import com.creator.service.UserService;
 import io.swagger.annotations.Api;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings("rawtypes")
@@ -50,5 +53,15 @@ public class UserController {
     @GetMapping("system/user/list")
     public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, UserListDto userListDto) {
         return userService.getPageUserList(pageNum, pageSize, userListDto);
+    }
+
+    @ApiOperation("添加用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "添加用户")
+    @PostMapping("system/user")
+    public ResponseResult addUser(@RequestBody AddUserDto addUserDto) {
+        return userService.addUser(addUserDto);
     }
 }
