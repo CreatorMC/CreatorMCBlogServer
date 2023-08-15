@@ -2,6 +2,7 @@ package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.CategoryListDto;
 import com.creator.domain.entity.Category;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,5 +34,14 @@ public interface CategoryService extends IService<Category> {
      * 导出分类表到Excel
      */
     void export(HttpServletResponse response);
+
+    /**
+     * 分页查询分类列表
+     * @param pageNum 第几页
+     * @param pageSize 每页几条记录
+     * @param categoryListDto
+     * @return
+     */
+    ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, CategoryListDto categoryListDto);
 }
 

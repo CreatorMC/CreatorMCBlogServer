@@ -2,6 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.CategoryListDto;
 import com.creator.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -43,5 +44,17 @@ public class CategoryController {
     @GetMapping("/export")
     public void export(HttpServletResponse response) {
         categoryService.export(response);
+    }
+
+    @ApiOperation("分页查询分类列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "pageNum", value = "第几页", defaultValue = "1", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "query")
+    })
+    @SystemLog(businessName = "分页查询分类列表")
+    @GetMapping("/list")
+    public ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, CategoryListDto categoryListDto) {
+        return categoryService.getPageCategoryList(pageNum, pageSize, categoryListDto);
     }
 }

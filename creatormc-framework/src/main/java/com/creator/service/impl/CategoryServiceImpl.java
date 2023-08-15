@@ -3,15 +3,15 @@ package com.creator.service.impl;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.CategoryDao;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.CategoryListDto;
 import com.creator.domain.entity.Article;
 import com.creator.domain.entity.Category;
-import com.creator.domain.vo.CategoryAllVo;
-import com.creator.domain.vo.CategoryExcelVo;
-import com.creator.domain.vo.CategoryVo;
+import com.creator.domain.vo.*;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.service.ArticleService;
 import com.creator.service.CategoryService;
@@ -19,6 +19,7 @@ import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -86,6 +87,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
             ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
             WebUtils.renderString(response, JSON.toJSONString(result));
         }
+    }
+
+    @Override
+    public ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, CategoryListDto categoryListDto) {
+        //分页查询
+        Page<Category> page = new Page<>(pageNum, pageSize);
+        page(page, new LambdaQueryWrapper<Category>()
+                //根据分类名称进行模糊查询
+                .like(StringUtils.hasText(categoryListDto.getName()), Category::getName, categoryListDto.getName())
+                //根据状态进行查询
+                .eq(StringUtils.hasText(categoryListDto.getStatus()), Category::getStatus, categoryListDto.getStatus())
+        );
+        //转换为Vo
+        List<Category> categories = page.getRecords();
+        List<CategoryAdminListVo> categoryAdminListVos = BeanCopyUtils.copyBeanList(categories, CategoryAdminListVo.class);
+        //封装
+        return ResponseResult.okResult(new PageVo(categoryAdminListVos, page.getTotal()));
     }
 }
 
