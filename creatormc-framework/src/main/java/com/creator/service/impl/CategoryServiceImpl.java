@@ -111,5 +111,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
         save(category);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult getCategory(Long id) {
+        Category category = getById(id);
+        CategoryAdminVo categoryAdminVo = BeanCopyUtils.copyBean(category, CategoryAdminVo.class);
+        return ResponseResult.okResult(categoryAdminVo);
+    }
 }
 

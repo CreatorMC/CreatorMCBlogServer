@@ -68,4 +68,14 @@ public class CategoryController {
     public ResponseResult addCategory(@RequestBody AddCategoryDto addCategoryDto) {
         return categoryService.addCategory(BeanCopyUtils.copyBean(addCategoryDto, Category.class));
     }
+
+    @ApiOperation("查询单个分类")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "查询单个分类")
+    @GetMapping("/{id}")
+    public ResponseResult getCategory(@PathVariable Long id) {
+        return categoryService.getCategory(id);
+    }
 }

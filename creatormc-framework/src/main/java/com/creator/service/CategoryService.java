@@ -50,5 +50,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResponseResult addCategory(Category category);
+
+    /**
+     * 查询单个分类
+     * @param id 分类 id
+     * @return
+     */
+    ResponseResult getCategory(Long id);
 }
 
