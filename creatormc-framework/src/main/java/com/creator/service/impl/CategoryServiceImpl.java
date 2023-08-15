@@ -118,5 +118,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
         CategoryAdminVo categoryAdminVo = BeanCopyUtils.copyBean(category, CategoryAdminVo.class);
         return ResponseResult.okResult(categoryAdminVo);
     }
+
+    @Override
+    public ResponseResult updateCategory(Category category) {
+        updateById(category);
+        return ResponseResult.okResult();
+    }
 }
 

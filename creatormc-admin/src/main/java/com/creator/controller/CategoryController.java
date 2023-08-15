@@ -4,6 +4,7 @@ import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddCategoryDto;
 import com.creator.domain.dto.CategoryListDto;
+import com.creator.domain.dto.UpdateCategoryDto;
 import com.creator.domain.entity.Category;
 import com.creator.service.CategoryService;
 import com.creator.utils.BeanCopyUtils;
@@ -77,5 +78,15 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseResult getCategory(@PathVariable Long id) {
         return categoryService.getCategory(id);
+    }
+
+    @ApiOperation("更新分类")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "更新分类")
+    @PutMapping
+    public ResponseResult updateCategory(@RequestBody UpdateCategoryDto updateCategoryDto) {
+        return categoryService.updateCategory(BeanCopyUtils.copyBean(updateCategoryDto, Category.class));
     }
 }

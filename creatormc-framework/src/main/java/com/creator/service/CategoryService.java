@@ -57,5 +57,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResponseResult getCategory(Long id);
+
+    /**
+     * 更新分类
+     * @param category
+     * @return
+     */
+    ResponseResult updateCategory(Category category);
 }
 
