@@ -10,6 +10,7 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.UserListDto;
 import com.creator.domain.entity.Menu;
+import com.creator.domain.entity.Role;
 import com.creator.domain.entity.User;
 import com.creator.domain.entity.UserRole;
 import com.creator.domain.vo.*;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -168,6 +170,23 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     public ResponseResult deleteUser(List<Long> id) {
         removeByIds(id);
         return ResponseResult.okResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ResponseResult getUser(Long id) {
+        //查询用户所关联的角色id列表
+        List<UserRole> userRoles = userRoleService.list(new LambdaQueryWrapper<UserRole>()
+                .eq(UserRole::getUserId, id)
+        );
+        //得到角色id列表
+        List<Long> roleIds = userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+        //查询所有正常状态的角色列表
+        List<Role> roles = (List<Role>) roleService.getRoleList().getData();
+        //查询用户信息
+        UserAdminGetVo user = BeanCopyUtils.copyBean(getById(id), UserAdminGetVo.class);
+        //封装
+        return ResponseResult.okResult(new UserAdminVo(roleIds, roles, user));
     }
 
     /**

@@ -73,5 +73,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult deleteUser(List<Long> id);
+
+    /**
+     * 查询单个用户
+     * @param id 用户 id
+     * @return
+     */
+    ResponseResult getUser(Long id);
 }
 

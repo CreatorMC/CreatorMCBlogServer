@@ -61,6 +61,7 @@ public class UserController {
     @SystemLog(businessName = "添加用户")
     @PostMapping("/system/user")
     public ResponseResult addUser(@RequestBody AddUserDto addUserDto) {
+        //TODO 还没有用户类型的选择
         return userService.addUser(addUserDto);
     }
 
@@ -73,5 +74,16 @@ public class UserController {
     @DeleteMapping("/system/user/{id}")
     public ResponseResult deleteUser(@PathVariable Long ...id) {
         return userService.deleteUser(Arrays.asList(id));
+    }
+
+    @ApiOperation("查询单个用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "id", value = "用户id", defaultValue = "1", paramType = "path", required = true)
+    })
+    @SystemLog(businessName = "查询单个用户")
+    @GetMapping("/system/user/{id}")
+    public ResponseResult getUser(@PathVariable Long id) {
+        return userService.getUser(id);
     }
 }
