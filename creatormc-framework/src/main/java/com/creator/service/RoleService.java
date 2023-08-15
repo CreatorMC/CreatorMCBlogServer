@@ -57,5 +57,12 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     ResponseResult updateRole(UpdateRoleDto updateRoleDto);
+
+    /**
+     * 删除单个角色
+     * @param id 角色 id
+     * @return
+     */
+    ResponseResult deleteRole(Long id);
 }
 

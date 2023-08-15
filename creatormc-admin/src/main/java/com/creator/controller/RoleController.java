@@ -74,4 +74,14 @@ public class RoleController {
     public ResponseResult updateRole(@RequestBody UpdateRoleDto updateRoleDto) {
         return roleService.updateRole(updateRoleDto);
     }
+
+    @ApiOperation("删除单个角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "删除单个角色")
+    @DeleteMapping("/{id}")
+    public ResponseResult deleteRole(@PathVariable Long id) {
+        return roleService.deleteRole(id);
+    }
 }

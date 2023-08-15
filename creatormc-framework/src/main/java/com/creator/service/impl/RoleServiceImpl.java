@@ -118,5 +118,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
         roleMenuService.saveBatch(roleMenus);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult deleteRole(Long id) {
+        removeById(id);
+        return ResponseResult.okResult();
+    }
 }
 
