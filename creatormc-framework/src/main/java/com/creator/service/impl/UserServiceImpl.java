@@ -31,6 +31,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -159,6 +161,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         //保存用户与角色的关联信息
         List<UserRole> userRoles = addUserDto.getRoleIds().stream().map(roleId -> new UserRole(user.getId(), roleId)).collect(Collectors.toList());
         userRoleService.saveBatch(userRoles);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult deleteUser(List<Long> id) {
+        removeByIds(id);
         return ResponseResult.okResult();
     }
 

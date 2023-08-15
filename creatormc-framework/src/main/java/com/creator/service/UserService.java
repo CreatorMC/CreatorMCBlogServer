@@ -7,6 +7,8 @@ import com.creator.domain.dto.UserListDto;
 import com.creator.domain.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * 用户表(User)表服务接口
  *
@@ -64,5 +66,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult addUser(AddUserDto addUserDto);
+
+    /**
+     * 删除用户
+     * @param id 用户 id
+     * @return
+     */
+    ResponseResult deleteUser(List<Long> id);
 }
 

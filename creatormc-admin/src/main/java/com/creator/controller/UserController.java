@@ -10,10 +10,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -50,7 +49,7 @@ public class UserController {
             @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "query", required = true)
     })
     @SystemLog(businessName = "分页查询用户列表")
-    @GetMapping("system/user/list")
+    @GetMapping("/system/user/list")
     public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, UserListDto userListDto) {
         return userService.getPageUserList(pageNum, pageSize, userListDto);
     }
@@ -60,8 +59,19 @@ public class UserController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加用户")
-    @PostMapping("system/user")
+    @PostMapping("/system/user")
     public ResponseResult addUser(@RequestBody AddUserDto addUserDto) {
         return userService.addUser(addUserDto);
+    }
+
+    @ApiOperation("删除用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "id", value = "用户id（可以多个）", defaultValue = "1", paramType = "path", required = true)
+    })
+    @SystemLog(businessName = "删除用户")
+    @DeleteMapping("/system/user/{id}")
+    public ResponseResult deleteUser(@PathVariable Long ...id) {
+        return userService.deleteUser(Arrays.asList(id));
     }
 }
