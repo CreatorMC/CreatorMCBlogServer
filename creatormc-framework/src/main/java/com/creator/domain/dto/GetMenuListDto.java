@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MenuListDto {
+public class GetMenuListDto {
     //菜单状态（0正常 1停用）
     private String status;
     //菜单名称

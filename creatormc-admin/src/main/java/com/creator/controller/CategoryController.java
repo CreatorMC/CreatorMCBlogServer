@@ -3,7 +3,7 @@ package com.creator.controller;
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddCategoryDto;
-import com.creator.domain.dto.CategoryListDto;
+import com.creator.domain.dto.GetPageCategoryListDto;
 import com.creator.domain.dto.UpdateCategoryDto;
 import com.creator.domain.entity.Category;
 import com.creator.service.CategoryService;
@@ -56,8 +56,8 @@ public class CategoryController {
     })
     @SystemLog(businessName = "分页查询分类列表")
     @GetMapping("/list")
-    public ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, CategoryListDto categoryListDto) {
-        return categoryService.getPageCategoryList(pageNum, pageSize, categoryListDto);
+    public ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, GetPageCategoryListDto dto) {
+        return categoryService.getPageCategoryList(pageNum, pageSize, dto);
     }
 
     @ApiOperation("添加分类")

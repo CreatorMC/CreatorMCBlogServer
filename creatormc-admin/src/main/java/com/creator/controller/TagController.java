@@ -2,7 +2,7 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
-import com.creator.domain.dto.TagDto;
+import com.creator.domain.dto.UpdateTagDto;
 import com.creator.domain.dto.TagListDto;
 import com.creator.service.TagService;
 import io.swagger.annotations.Api;
@@ -73,8 +73,8 @@ public class TagController {
     })
     @SystemLog(businessName = "更新标签信息")
     @PutMapping
-    public ResponseResult upDataTag(@RequestBody TagDto tagDto) {
-        return tagService.upDataTag(tagDto);
+    public ResponseResult updateTag(@RequestBody UpdateTagDto dto) {
+        return tagService.updateTag(dto);
     }
 
     @ApiOperation("查询所有标签")

@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserListDto {
-    //用户名
-    private String userName;
-    //手机号
-    private String phonenumber;
+public class ChangeUserStatusDto {
+    //用户id
+    private Long id;
     //账号状态（0正常 1停用）
     private String status;
 }

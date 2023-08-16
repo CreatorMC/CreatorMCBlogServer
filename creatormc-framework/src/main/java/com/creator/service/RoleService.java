@@ -3,7 +3,7 @@ package com.creator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddRoleDto;
-import com.creator.domain.dto.RoleListDto;
+import com.creator.domain.dto.GetPageRoleListDto;
 import com.creator.domain.dto.UpdateRoleDto;
 import com.creator.domain.entity.Role;
 
@@ -24,10 +24,10 @@ public interface RoleService extends IService<Role> {
      * 分页查询角色列表
      * @param pageNum 第几页
      * @param pageSize 一页几条记录
-     * @param roleListDto
+     * @param dto
      * @return
      */
-    ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, RoleListDto roleListDto);
+    ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, GetPageRoleListDto dto);
 
     /**
      * 更新角色状态

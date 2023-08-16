@@ -2,7 +2,7 @@ package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
-import com.creator.domain.dto.TagDto;
+import com.creator.domain.dto.UpdateTagDto;
 import com.creator.domain.dto.TagListDto;
 import com.creator.domain.entity.Tag;
 
@@ -23,7 +23,7 @@ public interface TagService extends IService<Tag> {
 
     ResponseResult getTag(Long id);
 
-    ResponseResult upDataTag(TagDto tagDto);
+    ResponseResult updateTag(UpdateTagDto dto);
 
     ResponseResult getAllTag();
 }

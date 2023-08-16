@@ -8,7 +8,7 @@ import com.creator.dao.RoleDao;
 import com.creator.dao.UserRoleDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddRoleDto;
-import com.creator.domain.dto.RoleListDto;
+import com.creator.domain.dto.GetPageRoleListDto;
 import com.creator.domain.dto.UpdateRoleDto;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
@@ -63,14 +63,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     }
 
     @Override
-    public ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, RoleListDto roleListDto) {
+    public ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, GetPageRoleListDto dto) {
         //分页查询
         Page<Role> page = new Page<>(pageNum, pageSize);
         page(page, new LambdaQueryWrapper<Role>()
                 //根据角色名进行模糊查询
-                .like(StringUtils.hasText(roleListDto.getRoleName()), Role::getRoleName, roleListDto.getRoleName())
+                .like(StringUtils.hasText(dto.getRoleName()), Role::getRoleName, dto.getRoleName())
                 //根据状态进行查询
-                .eq(StringUtils.hasText(roleListDto.getStatus()), Role::getStatus, roleListDto.getStatus())
+                .eq(StringUtils.hasText(dto.getStatus()), Role::getStatus, dto.getStatus())
                 //按照role_sort进行升序排列
                 .orderByAsc(Role::getRoleSort)
         );

@@ -4,8 +4,8 @@ import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.UpdateUserDto;
-import com.creator.domain.dto.UserListDto;
-import com.creator.domain.dto.UserStatusDto;
+import com.creator.domain.dto.GetPageUserListDto;
+import com.creator.domain.dto.ChangeUserStatusDto;
 import com.creator.domain.entity.User;
 import com.creator.service.UserService;
 import com.creator.utils.BeanCopyUtils;
@@ -54,8 +54,8 @@ public class UserController {
     })
     @SystemLog(businessName = "分页查询用户列表")
     @GetMapping("/system/user/list")
-    public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, UserListDto userListDto) {
-        return userService.getPageUserList(pageNum, pageSize, userListDto);
+    public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, GetPageUserListDto dto) {
+        return userService.getPageUserList(pageNum, pageSize, dto);
     }
 
     @ApiOperation("添加用户")
@@ -107,7 +107,7 @@ public class UserController {
     })
     @SystemLog(businessName = "更新用户状态")
     @PutMapping("/system/user/changeStatus")
-    public ResponseResult changeUserStatus(@RequestBody UserStatusDto userStatusDto) {
-        return userService.changeUserStatus(BeanCopyUtils.copyBean(userStatusDto, User.class));
+    public ResponseResult changeUserStatus(@RequestBody ChangeUserStatusDto dto) {
+        return userService.changeUserStatus(BeanCopyUtils.copyBean(dto, User.class));
     }
 }

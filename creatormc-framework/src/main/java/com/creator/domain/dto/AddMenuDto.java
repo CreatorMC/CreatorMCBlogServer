@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MenuDto {
+public class AddMenuDto {
     //菜单名称
     private String menuName;
     //父菜单ID

@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleListDto {
-    //角色名称
-    private String roleName;
-    //角色状态（0正常 1停用）
+public class GetPageCategoryListDto {
+    //分类名
+    private String name;
+    //状态0:正常,1禁用
     private String status;
 }

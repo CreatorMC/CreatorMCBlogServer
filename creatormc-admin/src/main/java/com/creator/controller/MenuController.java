@@ -2,8 +2,8 @@ package com.creator.controller;
 
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
-import com.creator.domain.dto.MenuDto;
-import com.creator.domain.dto.MenuListDto;
+import com.creator.domain.dto.AddMenuDto;
+import com.creator.domain.dto.GetMenuListDto;
 import com.creator.domain.dto.UpdateMenuDto;
 import com.creator.domain.entity.Menu;
 import com.creator.service.MenuService;
@@ -30,8 +30,8 @@ public class MenuController {
     })
     @SystemLog(businessName = "后台查询菜单列表")
     @GetMapping("/list")
-    public ResponseResult getMenuList(MenuListDto menuListDto) {
-        return menuService.getMenuList(menuListDto);
+    public ResponseResult getMenuList(GetMenuListDto dto) {
+        return menuService.getMenuList(dto);
     }
 
     @ApiOperation("添加菜单")
@@ -40,8 +40,8 @@ public class MenuController {
     })
     @SystemLog(businessName = "添加菜单")
     @PostMapping
-    public ResponseResult addMenu(@RequestBody MenuDto menuDto) {
-        return menuService.addMenu(BeanCopyUtils.copyBean(menuDto, Menu.class));
+    public ResponseResult addMenu(@RequestBody AddMenuDto dto) {
+        return menuService.addMenu(BeanCopyUtils.copyBean(dto, Menu.class));
     }
 
     @ApiOperation("查询单个菜单")

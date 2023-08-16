@@ -6,7 +6,7 @@ import com.creator.constants.SystemConstants;
 import com.creator.dao.MenuDao;
 import com.creator.dao.UserRoleDao;
 import com.creator.domain.ResponseResult;
-import com.creator.domain.dto.MenuListDto;
+import com.creator.domain.dto.GetMenuListDto;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.RoleMenu;
@@ -106,11 +106,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
     }
 
     @Override
-    public ResponseResult getMenuList(MenuListDto menuListDto) {
+    public ResponseResult getMenuList(GetMenuListDto dto) {
         List<Menu> menus = list(new LambdaQueryWrapper<Menu>()
                 //模糊查找
-                .like(StringUtils.hasText(menuListDto.getStatus()), Menu::getStatus, menuListDto.getStatus())
-                .like(StringUtils.hasText(menuListDto.getMenuName()), Menu::getMenuName, menuListDto.getMenuName())
+                .like(StringUtils.hasText(dto.getStatus()), Menu::getStatus, dto.getStatus())
+                .like(StringUtils.hasText(dto.getMenuName()), Menu::getMenuName, dto.getMenuName())
                 //先按父菜单id排序，再按orderNum排序，都是升序排序
                 .orderByAsc(Menu::getParentId, Menu::getOrderNum)
         );

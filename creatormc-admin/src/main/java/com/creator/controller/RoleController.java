@@ -3,8 +3,8 @@ package com.creator.controller;
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddRoleDto;
-import com.creator.domain.dto.RoleListDto;
-import com.creator.domain.dto.RoleStatusDto;
+import com.creator.domain.dto.GetPageRoleListDto;
+import com.creator.domain.dto.ChangeRoleStatusDto;
 import com.creator.domain.dto.UpdateRoleDto;
 import com.creator.domain.entity.Role;
 import com.creator.service.RoleService;
@@ -31,8 +31,8 @@ public class RoleController {
     })
     @SystemLog(businessName = "分页查询角色列表")
     @GetMapping("/list")
-    public ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, RoleListDto roleListDto) {
-        return roleService.getPageRoleList(pageNum, pageSize, roleListDto);
+    public ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, GetPageRoleListDto dto) {
+        return roleService.getPageRoleList(pageNum, pageSize, dto);
     }
 
     @ApiOperation("更新角色状态")
@@ -41,8 +41,8 @@ public class RoleController {
     })
     @SystemLog(businessName = "更新角色状态")
     @PutMapping("/changeStatus")
-    public ResponseResult changeRoleStatus(@RequestBody RoleStatusDto roleStatusDto) {
-        return roleService.changeRoleStatus(BeanCopyUtils.copyBean(roleStatusDto, Role.class));
+    public ResponseResult changeRoleStatus(@RequestBody ChangeRoleStatusDto dto) {
+        return roleService.changeRoleStatus(BeanCopyUtils.copyBean(dto, Role.class));
     }
 
     @ApiOperation("添加角色")

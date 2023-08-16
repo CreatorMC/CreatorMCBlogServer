@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagDto {
-    //id
+public class ChangeRoleStatusDto {
+    //角色ID
     private Long id;
-    //标签名
-    private String name;
-    //标签备注
-    private String remark;
+    //角色状态（0正常 1停用）
+    private String status;
 }

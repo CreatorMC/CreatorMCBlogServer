@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.CategoryDao;
 import com.creator.domain.ResponseResult;
-import com.creator.domain.dto.CategoryListDto;
+import com.creator.domain.dto.GetPageCategoryListDto;
 import com.creator.domain.entity.Article;
 import com.creator.domain.entity.Category;
 import com.creator.domain.vo.*;
@@ -90,14 +90,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
     }
 
     @Override
-    public ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, CategoryListDto categoryListDto) {
+    public ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, GetPageCategoryListDto dto) {
         //分页查询
         Page<Category> page = new Page<>(pageNum, pageSize);
         page(page, new LambdaQueryWrapper<Category>()
                 //根据分类名称进行模糊查询
-                .like(StringUtils.hasText(categoryListDto.getName()), Category::getName, categoryListDto.getName())
+                .like(StringUtils.hasText(dto.getName()), Category::getName, dto.getName())
                 //根据状态进行查询
-                .eq(StringUtils.hasText(categoryListDto.getStatus()), Category::getStatus, categoryListDto.getStatus())
+                .eq(StringUtils.hasText(dto.getStatus()), Category::getStatus, dto.getStatus())
         );
         //转换为Vo
         List<Category> categories = page.getRecords();

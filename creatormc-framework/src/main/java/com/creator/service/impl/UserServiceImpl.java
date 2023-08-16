@@ -9,7 +9,7 @@ import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.UpdateUserDto;
-import com.creator.domain.dto.UserListDto;
+import com.creator.domain.dto.GetPageUserListDto;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.User;
@@ -137,16 +137,16 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
-    public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, UserListDto userListDto) {
+    public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, GetPageUserListDto dto) {
         //分页查询
         Page<User> page = new Page<>(pageNum, pageSize);
         page(page, new LambdaQueryWrapper<User>()
                 //根据用户名模糊搜索
-                .like(StringUtils.hasText(userListDto.getUserName()), User::getUserName, userListDto.getUserName())
+                .like(StringUtils.hasText(dto.getUserName()), User::getUserName, dto.getUserName())
                 //根据手机号模糊搜索
-                .like(StringUtils.hasText(userListDto.getPhonenumber()), User::getPhonenumber, userListDto.getPhonenumber())
+                .like(StringUtils.hasText(dto.getPhonenumber()), User::getPhonenumber, dto.getPhonenumber())
                 //根据状态进行查询
-                .eq(StringUtils.hasText(userListDto.getStatus()), User::getStatus, userListDto.getStatus())
+                .eq(StringUtils.hasText(dto.getStatus()), User::getStatus, dto.getStatus())
         );
         List<UserAdminListVo> userAdminListVos = BeanCopyUtils.copyBeanList(page.getRecords(), UserAdminListVo.class);
         return ResponseResult.okResult(new PageVo(userAdminListVos, page.getTotal()));

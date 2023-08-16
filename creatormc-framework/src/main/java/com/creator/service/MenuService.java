@@ -2,7 +2,7 @@ package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
-import com.creator.domain.dto.MenuListDto;
+import com.creator.domain.dto.GetMenuListDto;
 import com.creator.domain.entity.Menu;
 
 import java.util.List;
@@ -22,10 +22,10 @@ public interface MenuService extends IService<Menu> {
 
     /**
      * 后台获取菜单列表
-     * @param menuListDto
+     * @param dto
      * @return
      */
-    ResponseResult getMenuList(MenuListDto menuListDto);
+    ResponseResult getMenuList(GetMenuListDto dto);
 
     /**
      * 后台添加菜单

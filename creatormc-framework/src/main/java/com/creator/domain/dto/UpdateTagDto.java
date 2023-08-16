@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryListDto {
-    //分类名
+public class UpdateTagDto {
+    //id
+    private Long id;
+    //标签名
     private String name;
-    //状态0:正常,1禁用
-    private String status;
+    //标签备注
+    private String remark;
 }
