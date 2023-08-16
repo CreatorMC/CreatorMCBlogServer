@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public class LinkController {
             @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "query")
     })
     @SystemLog(businessName = "分页查询友链列表")
+    @PreAuthorize("@ps.hasPermission('content:link:query')")    //友链查询
     @GetMapping("/list")
     public ResponseResult getPageLinkList(Integer pageNum, Integer pageSize, GetPageLinkListDto dto) {
         return linkService.getPageLinkList(pageNum, pageSize, dto);
@@ -43,6 +45,7 @@ public class LinkController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加友链")
+    @PreAuthorize("@ps.hasPermission('content:link:add')")  //友链新增
     @PostMapping
     public ResponseResult addLink(@RequestBody AddLinkDto dto) {
         return linkService.addLink(BeanCopyUtils.copyBean(dto, Link.class));
@@ -63,6 +66,7 @@ public class LinkController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新友链")
+    @PreAuthorize("@ps.hasPermission('content:link:edit')") //友链修改
     @PutMapping
     public ResponseResult updateLink(@RequestBody UpdateLinkDto dto) {
         return linkService.updateLink(BeanCopyUtils.copyBean(dto, Link.class));
@@ -74,6 +78,7 @@ public class LinkController {
             @ApiImplicitParam(name = "id", value = "友链id（可以多个）", defaultValue = "1", paramType = "path", required = true)
     })
     @SystemLog(businessName = "删除友链")
+    @PreAuthorize("@ps.hasPermission('content:link:remove')")   //友链删除
     @DeleteMapping("/{id}")
     public ResponseResult deleteLink(@PathVariable Long ...id) {
         return linkService.deleteLink(Arrays.asList(id));
