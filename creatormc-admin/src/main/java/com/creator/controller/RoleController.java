@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
@@ -30,6 +31,7 @@ public class RoleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "分页查询角色列表")
+    @PreAuthorize("@ps.hasPermission('system:role:query')") //角色查询
     @GetMapping("/list")
     public ResponseResult getPageRoleList(Integer pageNum, Integer pageSize, GetPageRoleListDto dto) {
         return roleService.getPageRoleList(pageNum, pageSize, dto);
@@ -40,6 +42,7 @@ public class RoleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新角色状态")
+    @PreAuthorize("@ps.hasPermission('system:role:edit')")  //角色修改
     @PutMapping("/changeStatus")
     public ResponseResult changeRoleStatus(@RequestBody ChangeRoleStatusDto dto) {
         return roleService.changeRoleStatus(BeanCopyUtils.copyBean(dto, Role.class));
@@ -50,6 +53,7 @@ public class RoleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加角色")
+    @PreAuthorize("@ps.hasPermission('system:role:add')")   //角色新增
     @PostMapping
     public ResponseResult addRole(@RequestBody AddRoleDto addRoleDto) {
         return roleService.addRole(addRoleDto);
@@ -70,6 +74,7 @@ public class RoleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新角色")
+    @PreAuthorize("@ps.hasPermission('system:role:edit')")  //角色修改
     @PutMapping
     public ResponseResult updateRole(@RequestBody UpdateRoleDto updateRoleDto) {
         return roleService.updateRole(updateRoleDto);
@@ -80,6 +85,7 @@ public class RoleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "删除单个角色")
+    @PreAuthorize("@ps.hasPermission('system:role:remove')")    //角色删除
     @DeleteMapping("/{id}")
     public ResponseResult deleteRole(@PathVariable Long id) {
         return roleService.deleteRole(id);
