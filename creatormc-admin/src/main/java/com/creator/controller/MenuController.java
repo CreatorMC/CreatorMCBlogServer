@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
@@ -29,6 +30,7 @@ public class MenuController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "后台查询菜单列表")
+    @PreAuthorize("@ps.hasPermission('system:menu:query')") //菜单查询
     @GetMapping("/list")
     public ResponseResult getMenuList(GetMenuListDto dto) {
         return menuService.getMenuList(dto);
@@ -39,6 +41,7 @@ public class MenuController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加菜单")
+    @PreAuthorize("@ps.hasPermission('system:menu:add')")   //菜单新增
     @PostMapping
     public ResponseResult addMenu(@RequestBody AddMenuDto dto) {
         return menuService.addMenu(BeanCopyUtils.copyBean(dto, Menu.class));
@@ -59,6 +62,7 @@ public class MenuController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新菜单")
+    @PreAuthorize("@ps.hasPermission('system:menu:edit')")  //菜单修改
     @PutMapping
     public ResponseResult updateMenu(@RequestBody UpdateMenuDto updateMenuDto) {
         return menuService.updateMenu(BeanCopyUtils.copyBean(updateMenuDto, Menu.class));
@@ -69,6 +73,7 @@ public class MenuController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "删除菜单")
+    @PreAuthorize("@ps.hasPermission('system:menu:remove')")    //菜单删除
     @DeleteMapping("/{id}")
     public ResponseResult deleteMenu(@PathVariable Long id) {
         return menuService.deleteMenu(id);
