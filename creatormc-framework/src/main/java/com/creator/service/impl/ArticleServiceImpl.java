@@ -62,7 +62,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
                 .map(article -> article.setViewCount(getViewCount(article.getId()).longValue()))
                 .collect(Collectors.toList());
         //将结果放进VO列表中
-        List<HotArticleVo> articleVos = BeanCopyUtils.copyBeanList(articles, HotArticleVo.class);
+        List<ArticleHotVo> articleVos = BeanCopyUtils.copyBeanList(articles, ArticleHotVo.class);
         return ResponseResult.okResult(articleVos);
     }
 

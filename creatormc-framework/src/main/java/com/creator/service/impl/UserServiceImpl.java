@@ -113,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         List<String> roles = roleService.selectRoleKeysByUserId(userId);
         //获取权限数组
         List<String> perms = menuService.selectMenuPermsByUserId(userId);
-        return ResponseResult.okResult(new AdminUserInfoVo(perms, roles, userInfoVo));
+        return ResponseResult.okResult(new UserAdminInfoVo(perms, roles, userInfoVo));
     }
 
     @Override

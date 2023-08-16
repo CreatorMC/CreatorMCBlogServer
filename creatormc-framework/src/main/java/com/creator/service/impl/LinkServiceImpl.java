@@ -8,7 +8,7 @@ import com.creator.dao.LinkDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.GetPageLinkListDto;
 import com.creator.domain.entity.Link;
-import com.creator.domain.vo.GetPageLinkListVo;
+import com.creator.domain.vo.LinkPageListVo;
 import com.creator.domain.vo.LinkVo;
 import com.creator.domain.vo.PageVo;
 import com.creator.service.LinkService;
@@ -46,7 +46,7 @@ public class LinkServiceImpl extends ServiceImpl<LinkDao, Link> implements LinkS
                 .eq(StringUtils.hasText(dto.getStatus()), Link::getStatus, dto.getStatus())
         );
         //转换
-        List<GetPageLinkListVo> vos = BeanCopyUtils.copyBeanList(page.getRecords(), GetPageLinkListVo.class);
+        List<LinkPageListVo> vos = BeanCopyUtils.copyBeanList(page.getRecords(), LinkPageListVo.class);
         //封装
         return ResponseResult.okResult(new PageVo(vos, page.getTotal()));
     }
@@ -60,7 +60,7 @@ public class LinkServiceImpl extends ServiceImpl<LinkDao, Link> implements LinkS
     @Override
     public ResponseResult getLink(Long id) {
         Link link = getById(id);
-        GetPageLinkListVo vo = BeanCopyUtils.copyBean(link, GetPageLinkListVo.class);
+        LinkPageListVo vo = BeanCopyUtils.copyBean(link, LinkPageListVo.class);
         return ResponseResult.okResult(vo);
     }
 

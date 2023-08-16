@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminUserInfoVo {
+public class UserAdminInfoVo {
     //权限列表
     List<String> permissions;
     //角色列表

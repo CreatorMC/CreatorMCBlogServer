@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetPageLinkListVo {
+public class LinkPageListVo {
     //友链id
     private Long id;
     //友链名

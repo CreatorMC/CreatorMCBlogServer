@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminUserLoginVo {
+public class UserAdminLoginVo {
     private String token;
 }

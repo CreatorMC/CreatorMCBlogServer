@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotArticleVo {
+public class ArticleHotVo {
     private Long id;
     //标题
     public String title;
