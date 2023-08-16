@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -53,6 +54,7 @@ public class UserController {
             @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "query", required = true)
     })
     @SystemLog(businessName = "分页查询用户列表")
+    @PreAuthorize("@ps.hasPermission('system:user:query')") //用户查询
     @GetMapping("/system/user/list")
     public ResponseResult getPageUserList(Integer pageNum, Integer pageSize, GetPageUserListDto dto) {
         return userService.getPageUserList(pageNum, pageSize, dto);
@@ -63,6 +65,7 @@ public class UserController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加用户")
+    @PreAuthorize("@ps.hasPermission('system:user:add')")   //用户新增
     @PostMapping("/system/user")
     public ResponseResult addUser(@RequestBody AddUserDto addUserDto) {
         //TODO 还没有用户类型的选择
@@ -75,6 +78,7 @@ public class UserController {
             @ApiImplicitParam(name = "id", value = "用户id（可以多个）", defaultValue = "1", paramType = "path", required = true)
     })
     @SystemLog(businessName = "删除用户")
+    @PreAuthorize("@ps.hasPermission('system:user:remove')")    //用户删除
     @DeleteMapping("/system/user/{id}")
     public ResponseResult deleteUser(@PathVariable Long ...id) {
         return userService.deleteUser(Arrays.asList(id));
@@ -96,6 +100,7 @@ public class UserController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新用户")
+    @PreAuthorize("@ps.hasPermission('system:user:edit')")  //用户修改
     @PutMapping("/system/user")
     public ResponseResult updateUser(@RequestBody UpdateUserDto updateUserDto) {
         return userService.updateUser(updateUserDto);
@@ -106,6 +111,7 @@ public class UserController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新用户状态")
+    @PreAuthorize("@ps.hasPermission('system:user:edit')")  //用户修改
     @PutMapping("/system/user/changeStatus")
     public ResponseResult changeUserStatus(@RequestBody ChangeUserStatusDto dto) {
         return userService.changeUserStatus(BeanCopyUtils.copyBean(dto, User.class));
