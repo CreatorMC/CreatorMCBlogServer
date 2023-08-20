@@ -120,4 +120,24 @@ public class SystemConstants {
      * 更新菜单时父菜单id和当前菜单id相同
      */
     public static final String UPDATE_MENU_ERROR = "修改菜单'%s'失败，上级菜单不能选择自己";
+
+    /**
+     * 随机图片显示
+     */
+    public static final String IMAGE_RANDOM_SHOW = "1";
+
+    /**
+     * 检查是否是移动设备的UA的正则表达式
+     */
+    public static final String REGEX_DEVICE_IS_MOBILE = ".*(Android|iPhone|Windows Phone|iPad|iPod).*";
+
+    /**
+     * 随机图片类型是移动设备
+     */
+    public static final String IMAGE_RANDOM_TYPE_MOBILE = "1";
+
+    /**
+     * 随机图片类型是电脑
+     */
+    public static final String IMAGE_RANDOM_TYPE_PC = "0";
 }

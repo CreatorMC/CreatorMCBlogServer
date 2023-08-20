@@ -2,10 +2,12 @@ package com.creator.service.impl;
 
 import com.creator.constants.SystemConstants;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.entity.ImageRandom;
 import com.creator.domain.entity.LoginUser;
 import com.creator.domain.entity.User;
 import com.creator.domain.vo.UserAdminLoginVo;
 import com.creator.enums.AppHttpCodeEnum;
+import com.creator.service.ImageRandomService;
 import com.creator.service.LoginService;
 import com.creator.utils.JwtUtil;
 import com.creator.utils.RedisCache;
@@ -16,7 +18,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @SuppressWarnings({"rawtypes", "DuplicatedCode"})
 @Service
@@ -27,6 +31,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private ImageRandomService imageRandomService;
 
     @Override
     public ResponseResult login(User user) {
@@ -51,6 +58,20 @@ public class LoginServiceImpl implements LoginService {
     public ResponseResult logout() {
         redisCache.deleteObject(SystemConstants.LOGIN_ADMIN_KEY + SecurityUtils.getUserId());
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getRandomImg(String userAgent) {
+        //获取设备是电脑还是手机
+        boolean isMobile = Pattern.matches(SystemConstants.REGEX_DEVICE_IS_MOBILE, userAgent);
+        String type = isMobile ? SystemConstants.IMAGE_RANDOM_TYPE_MOBILE : SystemConstants.IMAGE_RANDOM_TYPE_PC;
+        //获取所有参与随机显示的图片的链接
+        List<ImageRandom> imageRandoms = imageRandomService.listShowImg(type);
+        int index = (int) (Math.random() * imageRandoms.size());
+        if(index >= imageRandoms.size()) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.IMAGE_RANDOM_NULL);
+        }
+        return ResponseResult.okResult(imageRandoms.get(index).getUrl());
     }
 }
 

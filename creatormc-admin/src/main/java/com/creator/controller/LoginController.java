@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -47,5 +44,12 @@ public class LoginController {
     @PostMapping("/logout")
     public ResponseResult logout() {
         return loginService.logout();
+    }
+
+    @ApiOperation("获取随机图片")
+    @SystemLog(businessName = "获取随机图片")
+    @GetMapping("/randomImg")
+    public ResponseResult getRandomImg(@RequestHeader("User-Agent") String userAgent) {
+        return loginService.getRandomImg(userAgent);
     }
 }

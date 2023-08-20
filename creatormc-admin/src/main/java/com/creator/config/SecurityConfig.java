@@ -40,7 +40,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 //只有未登录才能访问
-                .antMatchers("/user/login").anonymous()
+                .antMatchers("/user/login",
+                        "/user/randomImg").anonymous()
                 //其他接口都需要登录后才能访问
                 .anyRequest().authenticated();
         http
