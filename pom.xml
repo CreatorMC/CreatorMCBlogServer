@@ -63,7 +63,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.1.16</version>
+                <version>1.2.18</version>
             </dependency>
 <!--            腾讯云对象存储COS-->
             <dependency>
