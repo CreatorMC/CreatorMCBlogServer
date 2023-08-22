@@ -35,4 +35,11 @@ public class UploadServiceImpl implements UploadService {
         //如果判断通过上传文件到COS
         return ResponseResult.okResult(cosOperate.uploadFile(key, file));
     }
+
+    @Override
+    public ResponseResult deleteArticleCover(String url) {
+        String key = cosOperate.extractKey(url);
+        cosOperate.deleteFile(key);
+        return ResponseResult.okResult();
+    }
 }

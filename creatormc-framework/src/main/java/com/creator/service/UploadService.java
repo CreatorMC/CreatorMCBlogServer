@@ -11,4 +11,11 @@ public interface UploadService {
      * @return
      */
     ResponseResult uploadArticleCover(MultipartFile file);
+
+    /**
+     * 删除文章封面
+     * @param url 图片链接
+     * @return
+     */
+    ResponseResult deleteArticleCover(String url);
 }

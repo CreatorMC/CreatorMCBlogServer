@@ -77,4 +77,18 @@ public class COSOperate {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * 从链接中获取COS的key
+     * @param url 链接
+     * @return key 文件在COS中的Key
+     */
+    public String extractKey(String url) {
+        String keyword = ".com";
+        int startIndex = url.indexOf(keyword);
+        if(startIndex != -1) {
+            return url.substring(startIndex + keyword.length());
+        }
+        return "";
+    }
 }

@@ -8,9 +8,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @SuppressWarnings("rawtypes")
@@ -29,5 +27,15 @@ public class UploadController {
     @PostMapping("/upload")
     public ResponseResult uploadArticleCover(@RequestParam("img") MultipartFile file) {
         return uploadService.uploadArticleCover(file);
+    }
+
+    @ApiOperation("删除文章封面")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "删除文章封面")
+    @DeleteMapping("/deleteArticleCover")
+    public  ResponseResult deleteArticleCover(@RequestBody String url) {
+        return uploadService.deleteArticleCover(url);
     }
 }
