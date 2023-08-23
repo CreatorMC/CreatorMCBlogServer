@@ -1,5 +1,7 @@
 package com.creator.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class PathUtils {
@@ -14,5 +16,14 @@ public class PathUtils {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         String fileType = filename.substring(filename.lastIndexOf('.'));
         return prefix + uuid + fileType;
+    }
+
+    /**
+     * 生成年月文件夹路径
+     * @return "2023/08/"
+     */
+    public static String generateYearMonthFilePath() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/");
+        return simpleDateFormat.format(new Date());
     }
 }

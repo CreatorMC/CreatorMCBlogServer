@@ -31,7 +31,7 @@ public class UploadServiceImpl implements UploadService {
         if(file.getSize() >= COSConstants.ARTICLE_COVER_SIZE_LIMIT) {
             throw new SystemException(AppHttpCodeEnum.FILE_SIZE_ERROR);
         }
-        String key = PathUtils.generateFilePath(COSConstants.COS_ARTICLE_COVER_DIR, originalFilename);
+        String key = PathUtils.generateFilePath(COSConstants.COS_ARTICLE_COVER_DIR + PathUtils.generateYearMonthFilePath(), originalFilename);
         //如果判断通过上传文件到COS
         return ResponseResult.okResult(cosOperate.uploadFile(key, file));
     }

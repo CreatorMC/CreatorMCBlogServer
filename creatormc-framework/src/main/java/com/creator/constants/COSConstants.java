@@ -8,9 +8,9 @@ public class COSConstants {
     public static final String COS_HEAD_DIR = "head/";
 
     /**
-     * 文章缩略图存储位置
+     * 文章相关图片存储位置
      */
-    public static final String COS_ARTICLE_COVER_DIR = "article_cover/";
+    public static final String COS_ARTICLE_COVER_DIR = "article/";
 
     /**
      * 头像存储大小限制<br>
