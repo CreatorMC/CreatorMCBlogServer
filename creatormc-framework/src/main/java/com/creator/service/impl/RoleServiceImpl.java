@@ -119,8 +119,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     }
 
     @Override
-    public ResponseResult deleteRole(Long id) {
-        removeById(id);
+    public ResponseResult deleteRole(List<Long> id) {
+        removeByIds(id);
         return ResponseResult.okResult();
     }
 

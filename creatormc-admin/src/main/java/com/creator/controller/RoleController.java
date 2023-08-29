@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/system/role")
@@ -80,15 +82,15 @@ public class RoleController {
         return roleService.updateRole(updateRoleDto);
     }
 
-    @ApiOperation("删除单个角色")
+    @ApiOperation("删除角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
-    @SystemLog(businessName = "删除单个角色")
+    @SystemLog(businessName = "删除角色")
     @PreAuthorize("@ps.hasPermission('system:role:remove')")    //角色删除
     @DeleteMapping("/{id}")
-    public ResponseResult deleteRole(@PathVariable Long id) {
-        return roleService.deleteRole(id);
+    public ResponseResult deleteRole(@PathVariable Long ...id) {
+        return roleService.deleteRole(Arrays.asList(id));
     }
 
     @ApiOperation("查询角色列表")

@@ -62,7 +62,7 @@ public interface RoleService extends IService<Role> {
      * @param id 角色 id
      * @return
      */
-    ResponseResult deleteRole(Long id);
+    ResponseResult deleteRole(List<Long> id);
 
     /**
      * 查询角色列表
