@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,4 +36,6 @@ public class MenuAdminListVo {
     private String icon;
     //备注
     private String remark;
+    //创建时间
+    private Date createTime;
 }
