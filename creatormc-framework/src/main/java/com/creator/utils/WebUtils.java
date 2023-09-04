@@ -35,6 +35,6 @@ public class WebUtils {
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
         String fileName = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
-        response.setHeader("Content-disposition", "attachment;filename*=" + fileName + ".xlsx");
+        response.setHeader("content-disposition", "attachment;filename*=" + fileName + ".xlsx");
     }
 }
