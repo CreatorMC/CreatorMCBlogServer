@@ -126,8 +126,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
     }
 
     @Override
-    public ResponseResult deleteCategory(Long id) {
-        removeById(id);
+    public ResponseResult deleteCategory(List<Long> ids) {
+        removeByIds(ids);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult changeCategoryStatus(Category category) {
+        updateById(category);
         return ResponseResult.okResult();
     }
 }

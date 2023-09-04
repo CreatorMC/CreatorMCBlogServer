@@ -6,6 +6,7 @@ import com.creator.domain.dto.GetPageCategoryListDto;
 import com.creator.domain.entity.Category;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 分类表(Category)表服务接口
@@ -67,9 +68,17 @@ public interface CategoryService extends IService<Category> {
 
     /**
      * 删除分类
-     * @param id 分类 id
+     *
+     * @param ids 分类 id
      * @return
      */
-    ResponseResult deleteCategory(Long id);
+    ResponseResult deleteCategory(List<Long> ids);
+
+    /**
+     * 更新分类状态
+     * @param category
+     * @return
+     */
+    ResponseResult changeCategoryStatus(Category category);
 }
 

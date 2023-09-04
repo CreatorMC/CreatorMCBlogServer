@@ -5,6 +5,8 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddArticleDto;
 import com.creator.domain.entity.Article;
 
+import java.util.List;
+
 /**
  * 文章表(Article)表服务接口
  *
@@ -79,9 +81,10 @@ public interface ArticleService extends IService<Article> {
 
     /**
      * 删除文章
-     * @param id 文章 id
+     *
+     * @param ids 文章 id
      * @return
      */
-    ResponseResult deleteArticle(Long id);
+    ResponseResult deleteArticle(List<Long> ids);
 }
 

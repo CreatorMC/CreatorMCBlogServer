@@ -166,8 +166,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     }
 
     @Override
-    public ResponseResult deleteArticle(Long id) {
-        removeById(id);
+    public ResponseResult deleteArticle(List<Long> ids) {
+        removeByIds(ids);
         return ResponseResult.okResult();
     }
 

@@ -3,6 +3,7 @@ package com.creator.controller;
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddCategoryDto;
+import com.creator.domain.dto.ChangeCategoryStatusDto;
 import com.creator.domain.dto.GetPageCategoryListDto;
 import com.creator.domain.dto.UpdateCategoryDto;
 import com.creator.domain.entity.Category;
@@ -17,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -96,7 +98,17 @@ public class CategoryController {
     })
     @SystemLog(businessName = "删除分类")
     @DeleteMapping("/{id}")
-    public ResponseResult deleteCategory(@PathVariable Long id) {
-        return categoryService.deleteCategory(id);
+    public ResponseResult deleteCategory(@PathVariable Long ...id) {
+        return categoryService.deleteCategory(Arrays.asList(id));
+    }
+
+    @ApiOperation("更新分类状态")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "更新分类状态")
+    @PutMapping("/changeStatus")
+    public ResponseResult changeCategoryStatus(@RequestBody ChangeCategoryStatusDto dto) {
+        return categoryService.changeCategoryStatus(BeanCopyUtils.copyBean(dto, Category.class));
     }
 }

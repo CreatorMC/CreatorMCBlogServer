@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/content/article")
@@ -76,7 +78,7 @@ public class ArticleController {
     })
     @SystemLog(businessName = "删除文章")
     @DeleteMapping("/{id}")
-    public ResponseResult deleteArticle(@PathVariable Long id) {
-        return articleService.deleteArticle(id);
+    public ResponseResult deleteArticle(@PathVariable Long ...id) {
+        return articleService.deleteArticle(Arrays.asList(id));
     }
 }
