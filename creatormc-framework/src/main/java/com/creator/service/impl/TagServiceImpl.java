@@ -36,8 +36,8 @@ public class TagServiceImpl extends ServiceImpl<TagDao, Tag> implements TagServi
         Page<Tag> page = new Page<>(pageNum, pageSize);
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
         if(!Objects.isNull(tagListDto)) {
-            queryWrapper.eq(StringUtils.hasText(tagListDto.getName()), Tag::getName, tagListDto.getName());
-            queryWrapper.eq(StringUtils.hasText(tagListDto.getRemark()), Tag::getRemark, tagListDto.getRemark());
+            queryWrapper.like(StringUtils.hasText(tagListDto.getName()), Tag::getName, tagListDto.getName());
+            queryWrapper.like(StringUtils.hasText(tagListDto.getRemark()), Tag::getRemark, tagListDto.getRemark());
         }
         page(page,queryWrapper);
         PageVo pageVo = new PageVo(BeanCopyUtils.copyBeanList(page.getRecords(), TagVo.class), page.getTotal());
