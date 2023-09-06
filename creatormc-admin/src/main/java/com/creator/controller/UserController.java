@@ -68,7 +68,6 @@ public class UserController {
     @PreAuthorize("@ps.hasPermission('system:user:add')")   //用户新增
     @PostMapping("/system/user")
     public ResponseResult addUser(@RequestBody AddUserDto addUserDto) {
-        //TODO 还没有用户类型的选择
         return userService.addUser(addUserDto);
     }
 
