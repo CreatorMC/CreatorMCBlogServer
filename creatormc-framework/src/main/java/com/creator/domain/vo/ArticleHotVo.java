@@ -13,4 +13,6 @@ public class ArticleHotVo {
     public String title;
     //访问量
     private Long viewCount;
+    //缩略图
+    private String thumbnail;
 }
