@@ -7,6 +7,7 @@ import com.creator.domain.entity.User;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
 import com.creator.service.BlogLoginService;
+import com.creator.service.LoginService;
 import com.creator.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,9 +15,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -25,6 +24,12 @@ public class BlogLoginController {
 
     @Autowired
     private BlogLoginService blogLoginService;
+
+    /**
+     * 后台的登录service，这里仅用于获取随机图片
+     */
+    @Autowired
+    private LoginService loginService;
 
     @ApiOperation("用户名登录")
     @SystemLog(businessName = "用户名登录")
@@ -45,5 +50,12 @@ public class BlogLoginController {
     @PostMapping("/logout")
     public ResponseResult logout() {
         return blogLoginService.logout();
+    }
+
+    @ApiOperation("获取随机图片")
+    @SystemLog(businessName = "获取随机图片")
+    @GetMapping("/randomImg")
+    public ResponseResult getRandomImg(@RequestHeader("User-Agent") String userAgent) {
+        return loginService.getRandomImg(userAgent);
     }
 }
