@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creator.constants.COSConstants;
+import com.creator.constants.SystemConstants;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
@@ -34,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -77,17 +79,20 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         //TODO 修改个人信息时也需判断昵称等是否已存在
         //从token中获取用户id
         Long userId = SecurityUtils.getUserId();
-        //获取旧头像路径
-        String oldAvatar = getById(userId).getAvatar();
-        if(StringUtils.hasText(oldAvatar)) {
-            //如果存在旧头像，拼接得到旧头像的key
-            String key = COSConstants.COS_HEAD_DIR + oldAvatar.substring(oldAvatar.lastIndexOf('/') + 1);
-            //删除旧头像
-            cosOperate.deleteFile(key);
+        //判断非空才删除并上传头像，当用户没有修改头像时，file为null
+        if(!Objects.isNull(file)) {
+            //获取旧头像路径
+            String oldAvatar = getById(userId).getAvatar();
+            if(StringUtils.hasText(oldAvatar)) {
+                //如果存在旧头像，拼接得到旧头像的key
+                String key = COSConstants.COS_HEAD_DIR + oldAvatar.substring(oldAvatar.lastIndexOf('/') + 1);
+                //删除旧头像
+                cosOperate.deleteFile(key);
+            }
+            //上传头像到COS，并获取链接
+            String url = uploadImg(file);
+            user.setAvatar(url);
         }
-        //上传头像到COS，并获取链接
-        String url = uploadImg(file);
-        user.setAvatar(url);
         user.setId(userId);
         //更新数据库
         updateById(user);
@@ -97,6 +102,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public ResponseResult register(User user) {
         //TODO 多线程下有可能同时都判断为不冲突，但结果两个人的昵称都相同。 可以在数据库中设置唯一性约束解决此问题吗？
+        //新注册用户默认性别
+        user.setSex(SystemConstants.USER_SEX_UNKNOWN);
         saveUser(user);
         return ResponseResult.okResult();
     }

@@ -117,6 +117,11 @@ public class SystemConstants {
     public static final String USER_TYPE_ADMIN = "1";
 
     /**
+     * 用户性别为未知
+     */
+    public static final String USER_SEX_UNKNOWN = "2";
+
+    /**
      * 更新菜单时父菜单id和当前菜单id相同
      */
     public static final String UPDATE_MENU_ERROR = "修改菜单'%s'失败，上级菜单不能选择自己";
