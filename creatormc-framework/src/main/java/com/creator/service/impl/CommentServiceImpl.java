@@ -8,6 +8,7 @@ import com.creator.dao.CommentDao;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.entity.Comment;
+import com.creator.domain.entity.User;
 import com.creator.domain.vo.CommentVo;
 import com.creator.domain.vo.PageVo;
 import com.creator.enums.AppHttpCodeEnum;
@@ -46,7 +47,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
                 //这条评论是根评论
                 .eq(Comment::getRootId, SystemConstants.COMMENT_ROOT_ID)
                 //这条评论的类型
-                .eq(Comment::getType, commentType);
+                .eq(Comment::getType, commentType)
+                //降序排列，最新的评论会在最前面
+                .orderByDesc(Comment::getCreateTime);
         //分页查询
         Page<Comment> page = new Page<>(pageNum, pageSize);
         page(page, queryWrapper);
@@ -57,7 +60,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
         commentVos = commentVos.stream().peek(commentVo -> {
             LambdaQueryWrapper<Comment> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             lambdaQueryWrapper.eq(Comment::getToCommentId, commentVo.getId())
-                    //子评论按时间降序
+                    //子评论按时间升序，新的子评论会在最后
                     .orderByAsc(Comment::getCreateTime);
             commentVo.setChildren(getCommentVos(list(lambdaQueryWrapper)));
         }).collect(Collectors.toList());
@@ -85,8 +88,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
 
         commentVos = commentVos.stream().peek(commentVo -> {
 
+            User userSelf = userDao.selectById(commentVo.getCreateBy());
             //注意显示的是昵称
-            commentVo.setUsername(userDao.selectById(commentVo.getCreateBy()).getNickName());
+            commentVo.setUsername(userSelf.getNickName());
+            //设置头像链接
+            commentVo.setAvatar(userSelf.getAvatar());
 
             Long toCommentUserId = commentVo.getToCommentUserId();
             if (!SystemConstants.TO_COMMENT_USER_ID_NULL.equals(toCommentUserId)) {
