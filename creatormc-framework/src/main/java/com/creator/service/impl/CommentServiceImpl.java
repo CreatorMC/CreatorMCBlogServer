@@ -59,7 +59,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
         //查询所有根评论对应的子评论集合
         commentVos = commentVos.stream().peek(commentVo -> {
             LambdaQueryWrapper<Comment> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-            lambdaQueryWrapper.eq(Comment::getToCommentId, commentVo.getId())
+            lambdaQueryWrapper.eq(Comment::getRootId, commentVo.getId())
                     //子评论按时间升序，新的子评论会在最后
                     .orderByAsc(Comment::getCreateTime);
             commentVo.setChildren(getCommentVos(list(lambdaQueryWrapper)));
