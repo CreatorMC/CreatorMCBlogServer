@@ -95,5 +95,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult changeUserStatus(User user);
+
+    /**
+     * 获取指定id的用户信息
+     * @param id 用户id
+     * @return
+     */
+    ResponseResult getUserInfo(Long id);
 }
 

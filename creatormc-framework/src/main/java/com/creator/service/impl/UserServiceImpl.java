@@ -75,6 +75,15 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
+    public ResponseResult getUserInfo(Long id) {
+        //根据用户id查询用户信息
+        User user = getById(id);
+        //封装
+        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user, UserInfoVo.class);
+        return ResponseResult.okResult(userInfoVo);
+    }
+
+    @Override
     public ResponseResult updateUserInfo(MultipartFile file, User user) {
         //TODO 修改个人信息时也需判断昵称等是否已存在
         //从token中获取用户id

@@ -34,6 +34,13 @@ public class UserController {
         return userService.userInfo();
     }
 
+    @ApiOperation("获取指定id的用户信息")
+    @SystemLog(businessName = "获取指定id的用户信息")
+    @GetMapping("/{id}")
+    public ResponseResult getUserInfo(@PathVariable Long id) {
+        return userService.getUserInfo(id);
+    }
+
     @ApiOperation("更新用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "头像文件", paramType = "form"),
