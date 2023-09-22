@@ -23,7 +23,9 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Article::getStatus, SystemConstants.ARTICLE_STATUS_NORMAL);
         List<Article> articleList = articleService.list(queryWrapper);
+        if(Objects.isNull(articleList) || articleList.size() <= 0) {
+            //没有已发布的文章，没必要往下查了，直接返回，这里不处理的话会在下面的 listByIds 处引发 SQL 错误
+            return ResponseResult.okResult(new ArrayList<>());
+        }
         //获取文章分类id，并且去重
         Set<Long> categoryIds = articleList.stream()
                 .map(Article::getCategoryId)

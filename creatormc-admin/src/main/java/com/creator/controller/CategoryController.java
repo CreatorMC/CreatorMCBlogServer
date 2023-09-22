@@ -34,6 +34,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "查询所有分类")
+    @PreAuthorize("@ps.hasPermission('content:category:query')")
     @GetMapping("/listAllCategory")
     public ResponseResult getAllCategory() {
         return categoryService.getAllCategory();
@@ -57,6 +58,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "query")
     })
     @SystemLog(businessName = "分页查询分类列表")
+    @PreAuthorize("@ps.hasPermission('content:category:query')")
     @GetMapping("/list")
     public ResponseResult getPageCategoryList(Integer pageNum, Integer pageSize, GetPageCategoryListDto dto) {
         return categoryService.getPageCategoryList(pageNum, pageSize, dto);
@@ -67,6 +69,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加分类")
+    @PreAuthorize("@ps.hasPermission('content:category:add')")
     @PostMapping
     public ResponseResult addCategory(@RequestBody AddCategoryDto addCategoryDto) {
         return categoryService.addCategory(BeanCopyUtils.copyBean(addCategoryDto, Category.class));
@@ -77,6 +80,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "查询单个分类")
+    @PreAuthorize("@ps.hasPermission('content:category:query')")
     @GetMapping("/{id}")
     public ResponseResult getCategory(@PathVariable Long id) {
         return categoryService.getCategory(id);
@@ -87,6 +91,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新分类")
+    @PreAuthorize("@ps.hasPermission('content:category:edit')")
     @PutMapping
     public ResponseResult updateCategory(@RequestBody UpdateCategoryDto updateCategoryDto) {
         return categoryService.updateCategory(BeanCopyUtils.copyBean(updateCategoryDto, Category.class));
@@ -97,6 +102,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "删除分类")
+    @PreAuthorize("@ps.hasPermission('content:category:remove')")
     @DeleteMapping("/{id}")
     public ResponseResult deleteCategory(@PathVariable Long ...id) {
         return categoryService.deleteCategory(Arrays.asList(id));
@@ -107,6 +113,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新分类状态")
+    @PreAuthorize("@ps.hasPermission('content:category:edit')")
     @PutMapping("/changeStatus")
     public ResponseResult changeCategoryStatus(@RequestBody ChangeCategoryStatusDto dto) {
         return categoryService.changeCategoryStatus(BeanCopyUtils.copyBean(dto, Category.class));

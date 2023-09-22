@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
@@ -30,6 +31,7 @@ public class TagController {
             @ApiImplicitParam(name = "remark", value = "标签备注", paramType = "query", required = false)
     })
     @SystemLog(businessName = "分页查询标签列表")
+    @PreAuthorize("@ps.hasPermission('content:tag:query')")
     @GetMapping("/list")
     public ResponseResult getTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
         return tagService.getTagList(pageNum, pageSize, tagListDto);
@@ -40,6 +42,7 @@ public class TagController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "添加标签")
+    @PreAuthorize("@ps.hasPermission('content:tag:add')")
     @PostMapping
     public ResponseResult addTag(@RequestBody TagListDto tagListDto) {
         return tagService.addTag(tagListDto);
@@ -51,6 +54,7 @@ public class TagController {
             @ApiImplicitParam(name = "id", value = "标签id（变长参数）", defaultValue = "1", paramType = "path", required = true)
     })
     @SystemLog(businessName = "删除标签")
+    @PreAuthorize("@ps.hasPermission('content:tag:remove')")
     @DeleteMapping("/{id}")
     public ResponseResult deleteTag(@PathVariable Long ...id) {
         return tagService.deleteTag(id);
@@ -62,6 +66,7 @@ public class TagController {
             @ApiImplicitParam(name = "id", value = "标签id", defaultValue = "1", paramType = "path", required = true)
     })
     @SystemLog(businessName = "查询标签信息")
+    @PreAuthorize("@ps.hasPermission('content:tag:query')")
     @GetMapping("/{id}")
     public ResponseResult getTag(@PathVariable Long id) {
         return tagService.getTag(id);
@@ -72,6 +77,7 @@ public class TagController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "更新标签信息")
+    @PreAuthorize("@ps.hasPermission('content:tag:edit')")
     @PutMapping
     public ResponseResult updateTag(@RequestBody UpdateTagDto dto) {
         return tagService.updateTag(dto);
@@ -82,6 +88,7 @@ public class TagController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "查询所有标签")
+    @PreAuthorize("@ps.hasPermission('content:tag:query')")
     @GetMapping("/listAllTag")
     public ResponseResult getAllTag() {
         return tagService.getAllTag();
