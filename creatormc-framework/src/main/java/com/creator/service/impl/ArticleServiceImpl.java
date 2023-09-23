@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -134,6 +135,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
                 .like(StringUtils.hasText(summary), Article::getSummary, summary)
         );
         List<Article> articles = page.getRecords();
+        //设置文章分类名称
+        articles = articles.stream().peek(article -> article.setCategoryName(categoryService.getById(article.getId()).getName())).collect(Collectors.toList());
         return ResponseResult.okResult(new PageVo(BeanCopyUtils.copyBeanList(articles, ArticleAdminListVo.class), page.getTotal()));
     }
 
