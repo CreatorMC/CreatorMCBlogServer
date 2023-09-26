@@ -225,4 +225,13 @@ public class RedisCache {
     public void incrementCacheMapValue(String key, String hashKey, int v) {
         redisTemplate.opsForHash().increment(key, hashKey, v);
     }
+
+    /**
+     * 判断redis中的key是否存在
+     * @param key
+     * @return
+     */
+    public boolean hasKey(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
 }

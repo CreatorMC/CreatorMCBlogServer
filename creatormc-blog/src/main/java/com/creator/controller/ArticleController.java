@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
 @RestController
-@RequestMapping("/article")
+    @RequestMapping("/article")
 @Api(tags = "文章")
 public class ArticleController {
 
@@ -59,5 +59,37 @@ public class ArticleController {
     @PutMapping("/updateViewCount/{id}")
     public ResponseResult updateViewCount(@PathVariable Long id) {
         return articleService.updateViewCount(id);
+    }
+
+    @ApiOperation("更新对应文章的点赞量")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path")
+    })
+    @SystemLog(businessName = "更新对应文章的点赞量")
+    @PutMapping("/updateLikeCount/{id}")
+    public ResponseResult updateLikeCount(@PathVariable Long id) {
+        return articleService.updateLikeCount(id);
+    }
+
+    @ApiOperation("查询对应文章的点赞量")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path")
+    })
+    @SystemLog(businessName = "查询对应文章的点赞量")
+    @GetMapping("/getLikeCount/{id}")
+    public ResponseResult getLikeCount(@PathVariable Long id) {
+        return articleService.getLikeCount(id);
+    }
+
+    @ApiOperation("查询对应文章是否被当前用户点赞过")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true),
+            @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path")
+    })
+    @SystemLog(businessName = "查询对应文章是否被当前用户点赞过")
+    @GetMapping("/getUserLike/{id}")
+    public ResponseResult getUserLike(@PathVariable Long id) {
+        return articleService.getUserLike(id);
     }
 }

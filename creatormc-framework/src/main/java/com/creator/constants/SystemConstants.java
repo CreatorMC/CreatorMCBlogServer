@@ -72,6 +72,21 @@ public class SystemConstants {
     public static final String ARTICLE_VIEW_COUNT_KEY = "article:viewCount";
 
     /**
+     * 文章点赞量redis中的key
+     */
+    public static final String ARTICLE_LIKE_COUNT_KEY = "article:likeCount";
+
+    /**
+     * 文章点赞列表redis中的key
+     */
+    public static final String ARTICLE_LIKE_USER_KEY = "article:likeUser";
+
+    /**
+     * 文章点赞列表的key在redis中的超时时间
+     */
+    public static final Long ARTICLE_LIKE_LIST_TIME = 1800L; //30分钟(单位秒)
+
+    /**
      * 角色状态正常
      */
     public static final String ROLE_STATUS_NORMAL = "0";

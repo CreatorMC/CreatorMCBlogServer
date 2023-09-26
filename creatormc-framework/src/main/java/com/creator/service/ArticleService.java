@@ -86,5 +86,32 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     ResponseResult deleteArticle(List<Long> ids);
+
+    /**
+     * 更新对应文章的点赞量
+     *
+     * @param id 文章id
+     * @return
+     */
+    ResponseResult updateLikeCount(Long id);
+
+    /**
+     * 从数据库中加载文章浏览量到redis中
+     */
+    void loadArticleLikeCountToRedis();
+
+    /**
+     * 查询对应文章的点赞量
+     * @param id 文章id
+     * @return
+     */
+    ResponseResult getLikeCount(Long id);
+
+    /**
+     * 查询对应文章是否被当前用户点赞过
+     * @param id 文章id
+     * @return
+     */
+    ResponseResult getUserLike(Long id);
 }
 
