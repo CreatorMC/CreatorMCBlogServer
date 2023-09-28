@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("rawtypes")
 @RestController
-    @RequestMapping("/article")
+@RequestMapping("/article")
 @Api(tags = "文章")
 public class ArticleController {
 
