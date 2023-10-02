@@ -15,10 +15,14 @@ public class ArticleVo {
     private String title;
     //文章内容
     private String content;
+    //文章摘要
+    private String summary;
     //所属分类id
     private Long categoryId;
     //属性名
     private String categoryName;
+    //缩略图
+    private String thumbnail;
     //访问量
     private Long viewCount;
     //是否允许评论 1是，0否
