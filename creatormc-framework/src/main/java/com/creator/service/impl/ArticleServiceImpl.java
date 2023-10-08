@@ -3,6 +3,7 @@ package com.creator.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.creator.constants.RabbitMQConstants;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.ArticleDao;
 import com.creator.dao.ArticleUserLikeDao;
@@ -19,6 +20,7 @@ import com.creator.utils.BeanCopyUtils;
 import com.creator.utils.RedisCache;
 import com.creator.utils.SecurityUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
 
     @Autowired
     private ArticleUserLikeDao articleUserLikeDao;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -131,6 +136,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         //将文章的标签保存到数据库中
         List<ArticleTag> articleTags = articleDto.getTags().stream().map(tagId -> new ArticleTag(article.getId(),tagId)).collect(Collectors.toList());
         articleTagService.saveBatch(articleTags);
+        //向mq发送添加文章的消息
+        if(String.valueOf(SystemConstants.ARTICLE_STATUS_NORMAL).equals(article.getStatus())) {
+            rabbitTemplate.convertAndSend(RabbitMQConstants.BLOG_EXCHANGE, RabbitMQConstants.ADD_ARTICLE_ROUTING_KEY, article);
+        }
         return ResponseResult.okResult();
     }
 
@@ -173,12 +182,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         List<ArticleTag> articleTags = article.getTags().stream().map(tagId -> new ArticleTag(article.getId(), tagId)).collect(Collectors.toList());
         //保存到文章与标签的关联表中
         articleTagService.saveBatch(articleTags);
+        //向mq发送更新文章的消息
+        if(String.valueOf(SystemConstants.ARTICLE_STATUS_NORMAL).equals(article.getStatus())) {
+            rabbitTemplate.convertAndSend(RabbitMQConstants.BLOG_EXCHANGE, RabbitMQConstants.UPDATE_ARTICLE_ROUTING_KEY, article);
+        }
         return ResponseResult.okResult();
     }
 
     @Override
     public ResponseResult deleteArticle(List<Long> ids) {
         removeByIds(ids);
+        //向mq发送删除文章的消息
+        rabbitTemplate.convertAndSend(RabbitMQConstants.BLOG_EXCHANGE, RabbitMQConstants.DELETE_ARTICLE_ROUTING_KEY, ids);
         return ResponseResult.okResult();
     }
 

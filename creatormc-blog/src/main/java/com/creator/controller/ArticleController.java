@@ -3,6 +3,7 @@ package com.creator.controller;
 import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.service.ArticleService;
+import com.creator.service.ESArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,6 +19,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private ESArticleService esArticleService;
 
     @ApiOperation("查询浏览量前10条的文章")
     @SystemLog(businessName = "查询浏览量前10条的文章")
@@ -91,5 +95,17 @@ public class ArticleController {
     @GetMapping("/getUserLike/{id}")
     public ResponseResult getUserLike(@PathVariable Long id) {
         return articleService.getUserLike(id);
+    }
+
+    @ApiOperation("搜索文章")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "第几页（是从0开始的）", defaultValue = "0", paramType = "path"),
+            @ApiImplicitParam(name = "pageSize", value = "每页几条记录", defaultValue = "10", paramType = "path"),
+            @ApiImplicitParam(name = "text", value = "要搜索的文本", defaultValue = "文本", paramType = "path")
+    })
+    @SystemLog(businessName = "搜索文章")
+    @GetMapping("/getSearchArticle/{pageNum}/{pageSize}/{text}")
+    public ResponseResult getSearchArticle(@PathVariable Integer pageNum, @PathVariable Integer pageSize, @PathVariable String text) {
+        return esArticleService.searchArticle(text, pageNum, pageSize);
     }
 }
