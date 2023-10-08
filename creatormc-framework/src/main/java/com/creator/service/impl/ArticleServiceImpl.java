@@ -153,7 +153,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         );
         List<Article> articles = page.getRecords();
         //设置文章分类名称
-        articles = articles.stream().peek(article -> article.setCategoryName(categoryService.getById(article.getId()).getName())).collect(Collectors.toList());
+        articles = articles.stream().peek(article -> article.setCategoryName(categoryService.getById(article.getCategoryId()).getName())).collect(Collectors.toList());
         return ResponseResult.okResult(new PageVo(BeanCopyUtils.copyBeanList(articles, ArticleAdminListVo.class), page.getTotal()));
     }
 

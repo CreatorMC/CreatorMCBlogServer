@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 //生成链式方法
 @Accessors(chain = true)
-public class Article {
+public class Article implements Serializable {
 
     @TableId
     private Long id;
