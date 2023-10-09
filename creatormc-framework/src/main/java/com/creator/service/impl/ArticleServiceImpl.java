@@ -128,7 +128,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     public ResponseResult updateViewCount(Long id) {
         //更新对应文章的浏览量
         redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString(), 1);
-        return ResponseResult.okResult();
+        Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
+        return ResponseResult.okResult(viewCount.longValue());
     }
 
     @Override
