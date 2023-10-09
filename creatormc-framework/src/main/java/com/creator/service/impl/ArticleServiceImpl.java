@@ -13,6 +13,7 @@ import com.creator.domain.entity.Article;
 import com.creator.domain.entity.ArticleTag;
 import com.creator.domain.entity.ArticleUserLike;
 import com.creator.domain.vo.*;
+import com.creator.enums.AppHttpCodeEnum;
 import com.creator.service.ArticleService;
 import com.creator.service.ArticleTagService;
 import com.creator.service.CategoryService;
@@ -113,6 +114,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     @Override
     public ResponseResult getArticle(Long id) {
         Article article = getById(id);
+        if(Objects.isNull(article)) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.ARTICLE_IS_NULL);
+        }
         article.setCategoryName(categoryService.getById(article.getCategoryId()).getName());
         //从Redis中获取浏览量并设置给Article对象
         article.setViewCount(getViewCount(id).longValue());
@@ -190,8 +194,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     }
 
     @Override
+    @Transactional  //开启事务功能
     public ResponseResult deleteArticle(List<Long> ids) {
         removeByIds(ids);
+        //删除redis中对应的文章浏览量和点赞量
+        for (Long id : ids) {
+            redisCache.delCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
+            redisCache.delCacheMapValue(SystemConstants.ARTICLE_LIKE_COUNT_KEY, id.toString());
+        }
         //向mq发送删除文章的消息
         rabbitTemplate.convertAndSend(RabbitMQConstants.BLOG_EXCHANGE, RabbitMQConstants.DELETE_ARTICLE_ROUTING_KEY, ids);
         return ResponseResult.okResult();

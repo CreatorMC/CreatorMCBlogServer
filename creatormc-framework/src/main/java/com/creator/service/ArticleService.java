@@ -96,7 +96,7 @@ public interface ArticleService extends IService<Article> {
     ResponseResult updateLikeCount(Long id);
 
     /**
-     * 从数据库中加载文章浏览量到redis中
+     * 从数据库中加载文章点赞量到redis中
      */
     void loadArticleLikeCountToRedis();
 

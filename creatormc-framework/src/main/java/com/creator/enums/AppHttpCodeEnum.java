@@ -21,6 +21,7 @@ public enum AppHttpCodeEnum {
     EMAIL_NOT_NULL(512, "邮箱不能为空"),
     NICKNAME_EXIST(513, "昵称已存在"),
     IMAGE_RANDOM_NULL(514, "没有图片可以显示"),
+    ARTICLE_IS_NULL(515, "文章不存在"),
     MENU_DELETE_ERROR(500, "存在子菜单不允许删除");
     int code;
     String msg;
