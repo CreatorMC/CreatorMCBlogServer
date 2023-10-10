@@ -23,6 +23,8 @@ public enum AppHttpCodeEnum {
     IMAGE_RANDOM_NULL(514, "没有图片可以显示"),
     ARTICLE_IS_NULL(515, "文章不存在"),
     EMAIL_IS_NULL(516, "邮箱未注册"),
+    EMAIL_CODE_NOT_EQUALS(517, "验证码错误或已过期"),
+    UPDATE_PASSWORD_ERROR(518, "密码更新失败，请检查邮箱输入是否正确"),
     MENU_DELETE_ERROR(500, "存在子菜单不允许删除");
     int code;
     String msg;

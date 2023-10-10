@@ -5,6 +5,7 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.GetPageUserListDto;
 import com.creator.domain.dto.UpdateUserDto;
+import com.creator.domain.dto.UpdateUserPasswordDto;
 import com.creator.domain.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -102,5 +103,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult getUserInfo(Long id);
+
+    /**
+     * 更新用户密码
+     * @param updateUserPasswordDto
+     * @return
+     */
+    ResponseResult updateUserPassword(UpdateUserPasswordDto updateUserPasswordDto);
 }
 

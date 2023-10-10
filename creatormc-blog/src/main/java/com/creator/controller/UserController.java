@@ -4,6 +4,7 @@ import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.RegisterDto;
 import com.creator.domain.dto.UpdateUserInfoDto;
+import com.creator.domain.dto.UpdateUserPasswordDto;
 import com.creator.domain.entity.User;
 import com.creator.service.UserService;
 import com.creator.utils.BeanCopyUtils;
@@ -60,5 +61,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseResult register(@RequestBody RegisterDto registerDto) {
         return userService.register(BeanCopyUtils.copyBean(registerDto, User.class));
+    }
+
+    @ApiOperation("更新用户密码")
+    @SystemLog(businessName = "更新用户密码")
+    @PutMapping("/userPassword")
+    public ResponseResult updateUserPassword(@RequestBody UpdateUserPasswordDto updateUserPasswordDto) {
+        return userService.updateUserPassword(updateUserPasswordDto);
     }
 }

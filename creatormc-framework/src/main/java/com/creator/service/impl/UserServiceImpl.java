@@ -11,6 +11,7 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddUserDto;
 import com.creator.domain.dto.GetPageUserListDto;
 import com.creator.domain.dto.UpdateUserDto;
+import com.creator.domain.dto.UpdateUserPasswordDto;
 import com.creator.domain.entity.Menu;
 import com.creator.domain.entity.Role;
 import com.creator.domain.entity.User;
@@ -22,11 +23,9 @@ import com.creator.service.MenuService;
 import com.creator.service.RoleService;
 import com.creator.service.UserRoleService;
 import com.creator.service.UserService;
-import com.creator.utils.BeanCopyUtils;
-import com.creator.utils.COSOperate;
-import com.creator.utils.PathUtils;
-import com.creator.utils.SecurityUtils;
+import com.creator.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +61,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Autowired
     private UserRoleService userRoleService;
+    
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     public ResponseResult userInfo() {
@@ -81,6 +83,27 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         //封装
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user, UserInfoVo.class);
         return ResponseResult.okResult(userInfoVo);
+    }
+
+    @Override
+    public ResponseResult updateUserPassword(UpdateUserPasswordDto updateUserPasswordDto) {
+        //检查验证码是否与 Redis 中的验证码一致
+        String vCode = redisCache.getCacheObject(updateUserPasswordDto.getUuid());
+        if(!StringUtils.hasText(vCode) || !vCode.equals(updateUserPasswordDto.getVCode())) {
+            //验证码不一致
+            return ResponseResult.errorResult(AppHttpCodeEnum.EMAIL_CODE_NOT_EQUALS);
+        }
+        //验证码一致，更新用户密码
+        //加密密码
+        User user = new User();
+        user.setPassword(passwordEncoder.encode(updateUserPasswordDto.getPassword()));
+        boolean isSuccess = update(user, new LambdaQueryWrapper<User>()
+                .eq(User::getEmail, updateUserPasswordDto.getEmail())
+        );
+        if(!isSuccess) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.UPDATE_PASSWORD_ERROR);
+        }
+        return ResponseResult.okResult();
     }
 
     @Override
