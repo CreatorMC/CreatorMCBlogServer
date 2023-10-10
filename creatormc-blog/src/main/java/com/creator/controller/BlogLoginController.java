@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @SuppressWarnings("rawtypes")
 @RestController
 @Api(tags = "登录退出")
@@ -57,5 +60,12 @@ public class BlogLoginController {
     @GetMapping("/randomImg")
     public ResponseResult getRandomImg(@RequestHeader("User-Agent") String userAgent) {
         return loginService.getRandomImg(userAgent);
+    }
+
+    @ApiOperation("发送邮箱验证码")
+    @SystemLog(businessName = "发送邮箱验证码")
+    @PostMapping("/sendEmailVCode")
+    public ResponseResult sendEmailVCode(@RequestBody String email) {
+        return loginService.sendEmailVCode(email);
     }
 }

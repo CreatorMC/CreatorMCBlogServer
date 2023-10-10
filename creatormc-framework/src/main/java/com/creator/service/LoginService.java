@@ -16,5 +16,12 @@ public interface LoginService {
      * @return
      */
     ResponseResult getRandomImg(String userAgent);
+
+    /**
+     * 发送邮箱验证码
+     * @param email 电子邮箱
+     * @return
+     */
+    ResponseResult sendEmailVCode(String email);
 }
 
