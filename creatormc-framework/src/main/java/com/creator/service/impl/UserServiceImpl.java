@@ -108,9 +108,19 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public ResponseResult updateUserInfo(MultipartFile file, User user) {
-        //TODO 修改个人信息时也需判断昵称等是否已存在
         //从token中获取用户id
         Long userId = SecurityUtils.getUserId();
+
+        //为null的字段不会被更新，所以没必要检查
+        //检查是否有其他用户使用了此昵称
+        if(!Objects.isNull(user.getUserName()) && userDataExist(User::getNickName, user.getNickName(), userId)) {
+            throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
+        }
+        //检查邮箱是否已被其他用户使用
+        if(!Objects.isNull(user.getEmail()) && userDataExist(User::getEmail, user.getEmail(), userId)) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
+        }
+
         //判断非空才删除并上传头像，当用户没有修改头像时，file为null
         if(!Objects.isNull(file)) {
             //获取旧头像路径
@@ -133,7 +143,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public ResponseResult register(User user) {
-        //TODO 多线程下有可能同时都判断为不冲突，但结果两个人的昵称都相同。 可以在数据库中设置唯一性约束解决此问题吗？
         //新注册用户默认性别
         user.setSex(SystemConstants.USER_SEX_UNKNOWN);
         saveUser(user);
@@ -229,6 +238,24 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     @Transactional  //开启事务
     public ResponseResult updateUser(UpdateUserDto updateUserDto) {
+        //为null的字段不会被更新，所以也没必要检查
+        //检查是否有其他用户使用了此用户名
+        if(!Objects.isNull(updateUserDto.getUserName()) && userDataExist(User::getUserName , updateUserDto.getUserName(), updateUserDto.getId())) {
+            throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
+        }
+        //检查是否有其他用户使用了此昵称
+        if(!Objects.isNull(updateUserDto.getNickName()) && userDataExist(User::getNickName, updateUserDto.getNickName(), updateUserDto.getId())) {
+            throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
+        }
+        //检查邮箱是否已被其他用户使用
+        if(!Objects.isNull(updateUserDto.getEmail()) && userDataExist(User::getEmail, updateUserDto.getEmail(), updateUserDto.getId())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
+        }
+        //检查手机号是否已被其他用户使用
+        if(!Objects.isNull(updateUserDto.getPhonenumber()) && userDataExist(User::getPhonenumber, updateUserDto.getPhonenumber(), updateUserDto.getId())) {
+            throw new SystemException(AppHttpCodeEnum.PHONENUMBER_EXIST);
+        }
+
         //更新用户
         User user = BeanCopyUtils.copyBean(updateUserDto, User.class);
         updateById(user);
@@ -265,10 +292,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     /**
-     * 将用户保存到数据库并判断是否符合要求
+     * 将用户保存到数据库并判断是否符合要求<br>
+     * 加锁保证唯一性
      * @param user
      */
-    private void saveUser(User user) {
+    private synchronized void saveUser(User user) {
         //对数据进行非空判断
         if(!StringUtils.hasText(user.getUserName())) {
             throw new SystemException(AppHttpCodeEnum.USERNAME_NOT_NULL);
@@ -307,6 +335,20 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private boolean userDataExist(SFunction<User, ?> column, String data) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(column, data);
+        return count(queryWrapper) > 0;
+    }
+
+    /**
+     * 除特定用户外，判断是否存在该字符串数据
+     * @param column 列
+     * @param data 数据
+     * @param userId 排除的用户 id
+     * @return
+     */
+    private boolean userDataExist(SFunction<User, ?> column, String data, Long userId) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(column, data);
+        queryWrapper.ne(User::getId, userId);
         return count(queryWrapper) > 0;
     }
 
