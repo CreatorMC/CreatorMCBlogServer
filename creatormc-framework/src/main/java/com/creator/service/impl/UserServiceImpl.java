@@ -113,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
         //为null的字段不会被更新，所以没必要检查
         //检查是否有其他用户使用了此昵称
-        if(!Objects.isNull(user.getUserName()) && userDataExist(User::getNickName, user.getNickName(), userId)) {
+        if(!Objects.isNull(user.getNickName()) && userDataExist(User::getNickName, user.getNickName(), userId)) {
             throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
         }
         //检查邮箱是否已被其他用户使用
