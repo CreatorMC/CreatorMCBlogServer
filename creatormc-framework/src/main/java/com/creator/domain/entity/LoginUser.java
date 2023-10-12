@@ -19,6 +19,9 @@ public class LoginUser implements UserDetails {
     //权限字段列表
     private List<String> perms;
 
+    //jwt 字符串
+    private String token;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

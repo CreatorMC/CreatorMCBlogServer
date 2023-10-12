@@ -160,4 +160,9 @@ public class SystemConstants {
      * 随机图片类型是电脑
      */
     public static final String IMAGE_RANDOM_TYPE_PC = "0";
+
+    /**
+     * 登录过期时间（秒）
+     */
+    public static final Integer LOGIN_TTL = 7 * 24 * 60 * 60;  //7天
 }

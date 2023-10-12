@@ -38,9 +38,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(SystemConstants.USER_TYPE_ADMIN.equals(user.getType())) {
             //判断是后台用户
             List<String> perms = menuService.selectMenuPermsByUserId(user.getId());
-            return new LoginUser(user, perms);
+            return new LoginUser(user, perms, null);
         }
         //查到用户  返回用户信息
-        return new LoginUser(user, null);
+        return new LoginUser(user, null, null);
     }
 }

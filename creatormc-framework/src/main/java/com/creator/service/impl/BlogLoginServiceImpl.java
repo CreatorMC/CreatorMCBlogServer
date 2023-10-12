@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"rawtypes", "DuplicatedCode"})
 @Service
@@ -42,8 +43,10 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
+        //loginUser 设置token，为了实现用户已重新登录，拿以前的token不能再登录的功能
+        loginUser.setToken(jwt);
         //把用户信息存入redis
-        redisCache.setCacheObject(SystemConstants.LOGIN_BLOG_KEY + userId, loginUser);
+        redisCache.setCacheObject(SystemConstants.LOGIN_BLOG_KEY + userId, loginUser, SystemConstants.LOGIN_TTL, TimeUnit.SECONDS);
         //把token和userinfo封装返回
         UserLoginVo vo = new UserLoginVo(jwt, BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class));
         return ResponseResult.okResult(vo);

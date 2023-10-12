@@ -54,8 +54,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String userId = claims.getSubject();
         //从redis中获取用户信息
         LoginUser loginUser = redisCache.getCacheObject(SystemConstants.LOGIN_BLOG_KEY + userId);
-        if(Objects.isNull(loginUser)) {
+        if(Objects.isNull(loginUser) || !token.equals(loginUser.getToken())) {
             //key不存在，说明redis中的信息过期了
+            //当前token与之前登录时存到redis中的token不同，说明当前token不应该使用了
             ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.NEED_LOGIN);
             WebUtils.renderString(response, JSON.toJSONString(result));
             return;
