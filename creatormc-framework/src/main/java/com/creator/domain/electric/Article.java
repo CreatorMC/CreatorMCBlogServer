@@ -35,7 +35,7 @@ public class Article {
     //只有已发布的文章在 ElectricSearch 里，需要在发布文章的消息队列的生产者处进行判断！！！
     //private String status;
     //标签id列表
-    @Field(type = FieldType.Nested)
+    @Field(type = FieldType.Long)
     private List<Long> tags;
 
     @Field(type = FieldType.Long)
