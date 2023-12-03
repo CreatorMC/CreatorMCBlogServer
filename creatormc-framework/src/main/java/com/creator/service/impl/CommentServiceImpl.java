@@ -7,13 +7,15 @@ import com.creator.constants.SystemConstants;
 import com.creator.dao.CommentDao;
 import com.creator.dao.UserDao;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.GetPageCommentListDto;
 import com.creator.domain.entity.Comment;
 import com.creator.domain.entity.User;
-import com.creator.domain.vo.CommentVo;
-import com.creator.domain.vo.PageVo;
+import com.creator.domain.vo.*;
 import com.creator.enums.AppHttpCodeEnum;
 import com.creator.exception.SystemException;
+import com.creator.service.ArticleService;
 import com.creator.service.CommentService;
+import com.creator.service.UserService;
 import com.creator.utils.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +40,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private ArticleService articleService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
@@ -76,6 +86,46 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
         }
         save(comment);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getPageCommentList(Integer pageNum, Integer pageSize, GetPageCommentListDto dto) {
+        Page<Comment> page = new Page<>(pageNum, pageSize);
+        page(page, new LambdaQueryWrapper<Comment>()
+                //根据评论内容模糊查询
+                .like(StringUtils.hasText(dto.getContent()), Comment::getContent, dto.getContent())
+                //根据文章id查询
+                .eq(!Objects.isNull(dto.getArticleId()), Comment::getArticleId, dto.getArticleId())
+                //根据用户查询
+                .eq(!Objects.isNull(dto.getCreateBy()), Comment::getCreateBy, dto.getCreateBy())
+        );
+        List<Comment> comments = page.getRecords();
+        List<CommentAdminListVo> commentAdminListVos = comments.stream().map(comment -> {
+            ResponseResult articleResponse = articleService.getArticle(comment.getArticleId());
+            String articleTitle = AppHttpCodeEnum.ARTICLE_IS_NULL.getMsg();
+            if(!articleResponse.getCode().equals(AppHttpCodeEnum.ARTICLE_IS_NULL.getCode())) {
+                //文章查到了，获得文章标题
+                articleTitle = ((ArticleVo)articleResponse.getData()).getTitle();
+            }
+            if(comment.getType().equals(SystemConstants.LINK_COMMENT)) {
+                //如果是友链评论，设置文章标题为 "友情链接"
+                articleTitle = SystemConstants.LINK_COMMENT_TITLE;
+            }
+            //如果查询不到对应的用户，getUser 会引发异常，异常会被全局异常处理捕获到。
+            ResponseResult userResponse = userService.getUserInfo(comment.getCreateBy());
+            //获得发送者的昵称
+            String createName = ((UserInfoVo)userResponse.getData()).getNickName();
+            return new CommentAdminListVo(
+                    comment.getId(),
+                    comment.getContent(),
+                    comment.getArticleId(),
+                    articleTitle,
+                    comment.getCreateBy(),
+                    createName,
+                    comment.getCreateTime()
+            );
+        }).collect(Collectors.toList());
+        return ResponseResult.okResult(new PageVo(commentAdminListVos, page.getTotal()));
     }
 
     /**

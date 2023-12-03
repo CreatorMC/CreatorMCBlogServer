@@ -67,6 +67,11 @@ public class SystemConstants {
     public static final String LINK_COMMENT = "1";
 
     /**
+     * 友情链接
+     */
+    public static final String LINK_COMMENT_TITLE = "友情链接";
+
+    /**
      * 文章浏览量redis中的key
      */
     public static final String ARTICLE_VIEW_COUNT_KEY = "article:viewCount";

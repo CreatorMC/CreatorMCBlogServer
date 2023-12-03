@@ -2,6 +2,7 @@ package com.creator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.creator.domain.ResponseResult;
+import com.creator.domain.dto.GetPageCommentListDto;
 import com.creator.domain.entity.Comment;
 
 /**
@@ -30,4 +31,10 @@ public interface CommentService extends IService<Comment> {
      * @return
      */
     ResponseResult addComment(Comment comment);
+
+    /**
+     * 分页查询评论列表
+     * @return
+     */
+    ResponseResult getPageCommentList(Integer pageNum, Integer pageSize, GetPageCommentListDto dto);
 }
