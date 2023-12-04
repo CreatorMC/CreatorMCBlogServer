@@ -128,6 +128,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
         return ResponseResult.okResult(new PageVo(commentAdminListVos, page.getTotal()));
     }
 
+    @Override
+    public ResponseResult deleteComment(List<Long> ids) {
+        removeByIds(ids);
+        return ResponseResult.okResult();
+    }
+
     /**
      * 得到封装好的CommentVo列表
      * @param comments List

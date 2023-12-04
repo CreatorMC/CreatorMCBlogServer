@@ -5,6 +5,8 @@ import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.GetPageCommentListDto;
 import com.creator.domain.entity.Comment;
 
+import java.util.List;
+
 /**
  * 评论表(Comment)表服务接口
  *
@@ -37,4 +39,11 @@ public interface CommentService extends IService<Comment> {
      * @return
      */
     ResponseResult getPageCommentList(Integer pageNum, Integer pageSize, GetPageCommentListDto dto);
+
+    /**
+     * 删除评论
+     * @param ids 评论 id 列表
+     * @return
+     */
+    ResponseResult deleteComment(List<Long> ids);
 }

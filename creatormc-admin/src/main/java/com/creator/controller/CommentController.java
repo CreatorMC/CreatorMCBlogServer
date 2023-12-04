@@ -10,9 +10,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -34,5 +34,16 @@ public class CommentController {
     @GetMapping("/list")
     public ResponseResult getPageCommentList(Integer pageNum, Integer pageSize, GetPageCommentListDto dto) {
         return commentService.getPageCommentList(pageNum, pageSize, dto);
+    }
+
+    @ApiOperation("删除评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
+    })
+    @SystemLog(businessName = "删除评论")
+    @PreAuthorize("@ps.hasPermission('content:comment:remove')")
+    @DeleteMapping("/{id}")
+    public ResponseResult deleteCategory(@PathVariable Long ...id) {
+        return commentService.deleteComment(Arrays.asList(id));
     }
 }
