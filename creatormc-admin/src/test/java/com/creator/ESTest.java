@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SpringBootTest
-public class RabbitMQTest {
+public class ESTest {
 
     @Autowired
     private ESArticleRepository esArticleRepository;

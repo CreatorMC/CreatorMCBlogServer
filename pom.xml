@@ -83,6 +83,12 @@
                 <artifactId>easyexcel</artifactId>
                 <version>3.0.5</version>
             </dependency>
+<!--            屏蔽词-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sensitive-word</artifactId>
+                <version>0.9.0</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.springfox</groupId>

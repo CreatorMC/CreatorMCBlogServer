@@ -142,6 +142,16 @@ public class SystemConstants {
     public static final String USER_SEX_UNKNOWN = "2";
 
     /**
+     * 敏感词类型为黑名单
+     */
+    public static final String SENSITIVE_WORD_TYPE_DENY = "0";
+
+    /**
+     * 敏感词类型为白名单
+     */
+    public static final String SENSITIVE_WORD_TYPE_ALLOW = "1";
+
+    /**
      * 更新菜单时父菜单id和当前菜单id相同
      */
     public static final String UPDATE_MENU_ERROR = "修改菜单'%s'失败，上级菜单不能选择自己";

@@ -107,6 +107,12 @@
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
         </dependency>
+        <!--        屏蔽词-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word</artifactId>
+        </dependency>
+
         <!--        邮件服务-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -3,6 +3,7 @@ package com.creator.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.creator.annotation.SensitiveWordFilter;
 import com.creator.constants.SystemConstants;
 import com.creator.dao.CommentDao;
 import com.creator.dao.UserDao;
@@ -80,6 +81,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
     }
 
     @Override
+    @SensitiveWordFilter
     public ResponseResult addComment(Comment comment) {
         if(!StringUtils.hasText(comment.getContent())) {
             throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
