@@ -9,8 +9,11 @@ import com.creator.domain.dto.GetPageSensitiveListDto;
 import com.creator.domain.entity.SensitiveWord;
 import com.creator.domain.vo.PageVo;
 import com.creator.domain.vo.SensitiveAdminVo;
+import com.creator.enums.AppHttpCodeEnum;
+import com.creator.exception.SystemException;
 import com.creator.service.SensitiveWordService;
 import com.creator.utils.BeanCopyUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -39,13 +42,25 @@ public class SensitiveWordServiceImpl extends ServiceImpl<SensitiveWordDao, Sens
 
     @Override
     public ResponseResult addSensitive(SensitiveWord sensitiveWord) {
-        save(sensitiveWord);
+        try {
+            save(sensitiveWord);
+        } catch (DuplicateKeyException e) {
+            throw new SystemException(AppHttpCodeEnum.SENSITIVE_WORD_EXISTED);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return ResponseResult.okResult();
     }
 
     @Override
     public ResponseResult updateSensitive(SensitiveWord sensitiveWord) {
-        updateById(sensitiveWord);
+        try {
+            updateById(sensitiveWord);
+        } catch (DuplicateKeyException e) {
+            throw new SystemException(AppHttpCodeEnum.SENSITIVE_WORD_EXISTED);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return ResponseResult.okResult();
     }
 
