@@ -177,6 +177,11 @@ public class SystemConstants {
     public static final String IMAGE_RANDOM_TYPE_PC = "0";
 
     /**
+     * 用户被封禁时显示的时间格式
+     */
+    public static final String USER_BAN_MESSAGE = "yyyy 年 MM 月 dd 日";
+
+    /**
      * 登录过期时间（秒）
      */
     public static final Integer LOGIN_TTL = 7 * 24 * 60 * 60;  //7天

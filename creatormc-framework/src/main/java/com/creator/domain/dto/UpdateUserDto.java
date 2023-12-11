@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -28,4 +29,6 @@ public class UpdateUserDto {
     private String sex;
     //关联的角色id列表
     List<Long> roleIds;
+    //封禁结束时间
+    private Date banEndTime;
 }

@@ -18,14 +18,16 @@ import com.creator.service.ArticleService;
 import com.creator.service.CommentService;
 import com.creator.service.UserService;
 import com.creator.utils.BeanCopyUtils;
+import com.creator.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -83,6 +85,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, Comment> impleme
     @Override
     @SensitiveWordFilter
     public ResponseResult addComment(Comment comment) {
+        //检查此用户是否被封禁，封禁后不能评论
+        Date banEndTime = userService.getById(SecurityUtils.getUserId()).getBanEndTime();
+        if(!Objects.isNull(banEndTime)) {
+            //封禁结束时间不为空
+            Date now = new Date();
+            if(now.compareTo(banEndTime) < 0) {
+                //此用户被封禁了
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SystemConstants.USER_BAN_MESSAGE);
+                return ResponseResult.errorResult(AppHttpCodeEnum.USER_BAN.getCode(),
+                        String.format(AppHttpCodeEnum.USER_BAN.getMsg(), simpleDateFormat.format(banEndTime)));
+            }
+        }
+        //评论不能为空
         if(!StringUtils.hasText(comment.getContent())) {
             throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
         }

@@ -43,6 +43,8 @@ public class User {
     private String sex;
     //头像
     private String avatar;
+    //封禁结束时间
+    private Date banEndTime;
     //创建人的用户id
     @TableField(fill = FieldFill.INSERT)
     private Long createBy;

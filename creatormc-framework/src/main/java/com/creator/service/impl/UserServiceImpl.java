@@ -257,7 +257,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
         //更新用户
         User user = BeanCopyUtils.copyBean(updateUserDto, User.class);
-        updateById(user);
+        //采用自己的方法，当封禁时间为 null 时也更新。
+        getBaseMapper().updateByIdAndBanEndTime(user);
+        //updateById(user);
         //删除原来用户与角色的关联
         userRoleService.remove(new LambdaQueryWrapper<UserRole>()
                 .eq(UserRole::getUserId, user.getId())

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +26,6 @@ public class UserAdminGetVo {
     private String phonenumber;
     //用户性别（0男，1女，2未知）
     private String sex;
+    //封禁结束时间
+    private Date banEndTime;
 }
