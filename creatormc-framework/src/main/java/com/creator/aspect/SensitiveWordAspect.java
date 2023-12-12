@@ -19,6 +19,9 @@ public class SensitiveWordAspect {
     @Pointcut("@annotation(com.creator.annotation.SensitiveWordFilter)")
     public void pt() {}
 
+    @Pointcut("@annotation(com.creator.annotation.SensitiveWordInit)")
+    public void ptInit() {}
+
     /**
      * 过滤敏感词
      * @param joinPoint
@@ -36,5 +39,18 @@ public class SensitiveWordAspect {
             }
         }
         return joinPoint.proceed(args);
+    }
+
+    /**
+     * 重新加载敏感词
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
+    @Around("ptInit()")
+    public Object sensitiveWordInit(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object result = joinPoint.proceed();
+        sensitiveWordBs.init();
+        return result;
     }
 }

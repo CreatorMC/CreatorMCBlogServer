@@ -3,6 +3,7 @@ package com.creator.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.creator.annotation.SensitiveWordInit;
 import com.creator.dao.SensitiveWordDao;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.GetPageSensitiveListDto;
@@ -40,6 +41,7 @@ public class SensitiveWordServiceImpl extends ServiceImpl<SensitiveWordDao, Sens
         return ResponseResult.okResult(new PageVo(sensitiveWords, page.getTotal()));
     }
 
+    @SensitiveWordInit
     @Override
     public ResponseResult addSensitive(SensitiveWord sensitiveWord) {
         try {
@@ -52,6 +54,7 @@ public class SensitiveWordServiceImpl extends ServiceImpl<SensitiveWordDao, Sens
         return ResponseResult.okResult();
     }
 
+    @SensitiveWordInit
     @Override
     public ResponseResult updateSensitive(SensitiveWord sensitiveWord) {
         try {
