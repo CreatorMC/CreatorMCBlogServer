@@ -67,6 +67,7 @@ public class SensitiveWordServiceImpl extends ServiceImpl<SensitiveWordDao, Sens
         return ResponseResult.okResult();
     }
 
+    @SensitiveWordInit
     @Override
     public ResponseResult deleteSensitive(List<Long> ids) {
         removeByIds(ids);
