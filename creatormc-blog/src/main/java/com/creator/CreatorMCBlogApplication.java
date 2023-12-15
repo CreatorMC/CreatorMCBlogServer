@@ -10,6 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class CreatorMCBlogApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CreatorMCBlogApplication.class);
+        SpringApplication.run(CreatorMCBlogApplication.class, args);
     }
 }

@@ -9,6 +9,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class CreatorMCAdminApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CreatorMCAdminApplication.class);
+        SpringApplication.run(CreatorMCAdminApplication.class, args);
     }
 }
