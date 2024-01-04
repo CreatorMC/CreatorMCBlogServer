@@ -46,6 +46,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "summary", value = "文章摘要", defaultValue = "摘要", paramType = "query")
     })
     @SystemLog(businessName = "后台查询文章列表")
+    @PreAuthorize("@ps.hasPermission('content:article:query')")
     @GetMapping("/list")
     public ResponseResult getArticleList(Integer pageNum, Integer pageSize, String title, String summary) {
         return articleService.getArticleList(pageNum, pageSize, title, summary);
@@ -57,6 +58,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path", required = true)
     })
     @SystemLog(businessName = "后台查询文章详情")
+    @PreAuthorize("@ps.hasPermission('content:article:query')")
     @GetMapping("/{id}")
     public ResponseResult getArticle(@PathVariable Long id) {
         return articleService.getArticleAdmin(id);
@@ -67,6 +69,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "后台更新文章")
+    @PreAuthorize("@ps.hasPermission('content:article:edit')")
     @PutMapping
     public ResponseResult updateArticle(@RequestBody UpdateArticleDto updateArticleDto) {
         return articleService.updateArticle(BeanCopyUtils.copyBean(updateArticleDto, Article.class));
@@ -77,6 +80,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "token", value = "登录后的token", paramType = "header", required = true)
     })
     @SystemLog(businessName = "删除文章")
+    @PreAuthorize("@ps.hasPermission('content:article:remove')")
     @DeleteMapping("/{id}")
     public ResponseResult deleteArticle(@PathVariable Long ...id) {
         return articleService.deleteArticle(Arrays.asList(id));
