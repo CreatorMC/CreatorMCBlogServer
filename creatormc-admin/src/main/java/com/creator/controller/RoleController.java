@@ -1,6 +1,6 @@
 package com.creator.controller;
 
-import com.creator.annotation.SystemLog;
+import com.creator.funnellog.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddRoleDto;
 import com.creator.domain.dto.ChangeRoleStatusDto;

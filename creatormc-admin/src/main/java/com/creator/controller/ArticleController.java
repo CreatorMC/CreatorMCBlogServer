@@ -1,10 +1,10 @@
 package com.creator.controller;
 
-import com.creator.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddArticleDto;
 import com.creator.domain.dto.UpdateArticleDto;
 import com.creator.domain.entity.Article;
+import com.creator.funnellog.annotation.SystemLog;
 import com.creator.service.ArticleService;
 import com.creator.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;

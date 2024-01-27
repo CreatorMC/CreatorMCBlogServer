@@ -1,6 +1,6 @@
 package com.creator.controller;
 
-import com.creator.annotation.SystemLog;
+import com.creator.funnellog.annotation.SystemLog;
 import com.creator.constants.SystemConstants;
 import com.creator.domain.ResponseResult;
 import com.creator.domain.dto.AddCommentDto;

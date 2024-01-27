@@ -1,6 +1,6 @@
 package com.creator.controller;
 
-import com.creator.annotation.SystemLog;
+import com.creator.funnellog.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.service.CategoryService;
 import io.swagger.annotations.Api;
