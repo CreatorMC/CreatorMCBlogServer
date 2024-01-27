@@ -1,5 +1,6 @@
 package com.creator.controller;
 
+import com.creator.funnellog.annotation.DoRateLimiter;
 import com.creator.funnellog.annotation.SystemLog;
 import com.creator.domain.ResponseResult;
 import com.creator.service.ArticleService;
@@ -71,6 +72,12 @@ public class ArticleController {
             @ApiImplicitParam(name = "id", value = "文章id", defaultValue = "1", paramType = "path")
     })
     @SystemLog(businessName = "更新对应文章的点赞量")
+    @DoRateLimiter(permitsPerSecond = 1.0, returnJson =
+            "{" +
+                    "\"code\": 500," +
+                    "\"msg\": \"请休息一下再点击~\"," +
+                    "\"data\": null" +
+                    "}")
     @PutMapping("/updateLikeCount/{id}")
     public ResponseResult updateLikeCount(@PathVariable Long id) {
         return articleService.updateLikeCount(id);

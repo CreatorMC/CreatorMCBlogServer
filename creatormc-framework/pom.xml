@@ -133,7 +133,7 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
-
+        <!--        自己写的日志和限流中间件-->
         <dependency>
             <groupId>com.creator</groupId>
             <artifactId>funnellog-spring-boot-starter</artifactId>
