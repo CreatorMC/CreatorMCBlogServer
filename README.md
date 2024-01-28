@@ -1,3 +1,11 @@
+> **实验分支**
+> 
+> 此分支是实验性的，此分支中的变动可能不会应用到实际网站中。
+
+# 改动
+
+1. 使用自己的日志和限流中间件 [FunnelLog](https://github.com/CreatorMC/FunnelLog)。
+
 # 网站地址
 
 - 前台：https://creatormc.top
